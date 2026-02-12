@@ -1,0 +1,189 @@
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  padding-top: 80px;
+  background-color: #C5F82A;
+}
+.register-page {
+  padding-top: 100px;
+  padding-bottom: 60px;
+  min-height: calc(100vh - 80px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #F4F7F7;
+  font-family: 'Inter', sans-serif;
+}
+.register-container {
+  background-color: #FFFFFF;
+  width: 90%;
+  max-width: 1100px;
+  display: flex;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+}
+.register-form-side {
+  flex: 1;
+  padding: 50px;
+}
+.register-form-side .register-header {
+  margin-bottom: 30px;
+}
+.register-form-side .register-header .logo-circle {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+}
+.register-form-side .register-header .logo-circle img {
+  height: 50px;
+  width: auto;
+  object-fit: contain;
+}
+.register-form-side .register-header h1 {
+  color: #062121;
+  font-size: 26px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+.register-form-side .register-header p {
+  color: #555;
+  font-size: 14px;
+}
+.form-container .form-row {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+.form-container .form-row .form-group {
+  flex: 1;
+}
+.form-container .form-group {
+  margin-bottom: 15px;
+}
+.form-container .form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #062121;
+  margin-bottom: 6px;
+}
+.form-container .form-group input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #E2E8F0;
+  background: #F8FAFC;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+.form-container .form-group input:focus {
+  border-color: #C5F82A;
+  outline: none;
+  background: #FFFFFF;
+  box-shadow: 0 0 0 3px rgba(197, 248, 42, 0.2);
+}
+.form-container .form-group .input-wrapper {
+  position: relative;
+}
+.form-container .form-group .input-wrapper i {
+  position: absolute;
+  right: 12px;
+  top: 13px;
+  color: #A0AEC0;
+  cursor: pointer;
+}
+.form-container .form-group .hint {
+  font-size: 11px;
+  color: #718096;
+  margin-top: 4px;
+  display: block;
+}
+.form-container .form-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 20px 0;
+}
+.form-container .form-checkbox input {
+  margin-top: 4px;
+  accent-color: #062121;
+  width: 16px;
+  height: 16px;
+}
+.form-container .form-checkbox label {
+  font-size: 12px;
+  color: #4A5568;
+  line-height: 1.6;
+}
+.form-container .form-checkbox label strong {
+  color: #062121;
+}
+.form-container .bouton-submit {
+  width: 100%;
+  padding: 14px;
+  background-color: #062121;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.form-container .bouton-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(6, 33, 33, 0.15);
+}
+.form-container .login-link {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 13px;
+  color: #718096;
+}
+.form-container .login-link a {
+  color: #062121;
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 2px solid #C5F82A;
+}
+.register-image-side {
+  flex: 1;
+  background-image: linear-gradient(rgba(6, 33, 33, 0.2), rgba(6, 33, 33, 0.2)), url('../images/fonds-register.jpg');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.register-image-side .image-overlay {
+  text-align: center;
+}
+.register-image-side .image-overlay h2 {
+  color: #FFFFFF;
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: 3px;
+  border: 4px solid #FFFFFF;
+  padding: 15px 25px;
+}
+@media (max-width: 900px) {
+  .register-page {
+    padding-top: 80px;
+  }
+  .register-container {
+    flex-direction: column;
+    width: 95%;
+    border-radius: 0;
+  }
+  .register-image-side {
+    display: none;
+  }
+  .register-form-side {
+    padding: 35px 20px;
+  }
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+}

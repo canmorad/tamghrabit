@@ -1,0 +1,214 @@
+@couleur-primaire: #C5F82A;
+@couleur-noire: #062121;
+@couleur-blanche: #FFFFFF;
+@police-principale: 'Inter', sans-serif;
+
+body {
+    margin: 0;
+    font-family: @police-principale;
+    padding-top: 80px;
+    background-color: @couleur-primaire;
+}
+
+.login-page {
+    padding-top: 100px;
+    padding-bottom: 60px;
+    min-height: calc(100vh - 80px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #F4F7F7;
+    font-family: @police-principale;
+}
+
+.login-container {
+    background-color: @couleur-blanche;
+    width: 90%;
+    max-width: 1000px; // أصغر قليلاً من صفحة التسجيل
+    display: flex;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+}
+
+.login-form-side {
+    flex: 1;
+    padding: 60px;
+
+    .login-header {
+        margin-bottom: 35px;
+
+        .logo-circle {
+            margin-bottom: 20px;
+
+            img {
+                height: 55px;
+                width: auto;
+                object-fit: contain;
+            }
+        }
+
+        h1 {
+            color: @couleur-noire;
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        p {
+            color: #555;
+            font-size: 14px;
+        }
+    }
+}
+
+.form-container {
+    .form-group {
+        margin-bottom: 20px;
+
+        .label-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: @couleur-noire;
+        }
+
+        .forgot-password {
+            font-size: 12px;
+            color: @couleur-noire;
+            text-decoration: none;
+            font-weight: 600;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid #E2E8F0;
+            background: #F8FAFC;
+            font-size: 14px;
+            transition: all 0.3s ease;
+
+            &:focus {
+                border-color: @couleur-primaire;
+                outline: none;
+                background: @couleur-blanche;
+                box-shadow: 0 0 0 3px fade(@couleur-primaire, 20%);
+            }
+        }
+
+        .input-wrapper {
+            position: relative;
+
+            i {
+                position: absolute;
+                right: 12px;
+                top: 13px;
+                color: #A0AEC0;
+                cursor: pointer;
+            }
+        }
+    }
+
+    .form-checkbox {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 20px 0;
+
+        input {
+            accent-color: @couleur-noire;
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        label {
+            font-size: 13px;
+            color: #4A5568;
+            cursor: pointer;
+        }
+    }
+
+    .bouton-submit {
+        width: 100%;
+        padding: 14px;
+        background-color: @couleur-noire;
+        color: @couleur-blanche;
+        border: none;
+        border-radius: 10px;
+        font-weight: 700;
+        font-size: 15px;
+        cursor: pointer;
+        transition: 0.3s;
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(6, 33, 33, 0.15);
+        }
+    }
+
+    .register-link {
+        text-align: center;
+        margin-top: 25px;
+        font-size: 13px;
+        color: #718096;
+
+        a {
+            color: @couleur-noire;
+            font-weight: 700;
+            text-decoration: none;
+            border-bottom: 2px solid @couleur-primaire;
+        }
+    }
+}
+
+.login-image-side {
+    flex: 1;
+    background-image: linear-gradient(rgba(6, 33, 33, 0.3), rgba(6, 33, 33, 0.3)), url('../images/fonds-register.jpg');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .image-overlay {
+        text-align: center;
+
+        h2 {
+            color: @couleur-blanche;
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            border: 4px solid @couleur-blanche;
+            padding: 15px 25px;
+        }
+    }
+}
+
+@media (max-width: 900px) {
+    .login-container {
+        flex-direction: column;
+        width: 95%;
+        border-radius: 0;
+    }
+
+    .login-image-side {
+        display: none;
+    }
+
+    .login-form-side {
+        padding: 40px 20px;
+    }
+}

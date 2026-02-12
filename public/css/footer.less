@@ -1,0 +1,128 @@
+@couleur-fond-footer: #062121;
+@couleur-texte-footer: #FFFFFF;
+@couleur-accent: #C5F82A;
+
+.footer {
+    background-color: @couleur-fond-footer;
+    color: @couleur-texte-footer;
+    padding: 60px 0 30px 0;
+    margin: 20px;
+    border-radius: 80px 30px 30px 30px;
+    position: relative;
+
+    &-conteneur {
+        width: 90%;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    &-haut {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 40px;
+        padding-bottom: 40px;
+    }
+
+    &-info {
+        flex: 1;
+        min-width: 250px;
+    }
+
+    &-logo-image {
+        height: 100px;
+        margin-bottom: 30px;
+    }
+
+    &-titre-reseaux {
+        color: @couleur-accent;
+        font-size: 18px;
+        margin-bottom: 15px;
+    }
+
+    &-icones {
+        display: flex;
+        gap: 12px;
+    }
+
+    &-icone-lien {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background-color: rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+        color: white;
+        text-decoration: none;
+        transition: 0.3s;
+
+        &:hover {
+            background-color: @couleur-accent;
+            color: @couleur-fond-footer;
+        }
+    }
+
+    &-navigation {
+        display: flex;
+        gap: 60px;
+        flex: 2;
+        justify-content: flex-end;
+    }
+
+    &-titre {
+        color: @couleur-accent;
+        font-size: 18px;
+        margin-bottom: 20px;
+        font-weight: 600;
+    }
+
+    &-liste {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        li {
+            margin-bottom: 12px;
+
+            a,
+            span {
+                color: @couleur-texte-footer;
+                text-decoration: none;
+                opacity: 0.7;
+                font-size: 14px;
+                transition: 0.3s;
+
+                &:hover {
+                    opacity: 1;
+                    color: @couleur-accent;
+                }
+            }
+        }
+    }
+
+    &-bas {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding-top: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 13px;
+        opacity: 0.8;
+    }
+
+    &-legal {
+        display: flex;
+        gap: 20px;
+
+        a {
+            color: white;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+}

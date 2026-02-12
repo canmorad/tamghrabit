@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tamghrabit - Plateforme de Dons</title>
+    <link rel="stylesheet" href="../public/css/accueil.css">
+    <link rel="stylesheet" href="../public/css/footer.css">
+    <link rel="stylesheet" href="../public/css/header.css">
+    <link rel="stylesheet" href="../public/css/all.min.css">
+</head>
+
+<body>
+
+    <?php include './layouts/header.php'; ?>
+
+    <main class="principal">
+        <section class="hero">
+            <div class="conteneur">
+                <div class="hero-contenu">
+                    <h1 class="hero-titre">La solidarité marocaine à portée de main</h1>
+                    <p class="hero-description">
+                        Avec la plateforme Tamghrabit, chaque geste compte. Laissez votre empreinte solidaire et
+                        soutenez vos concitoyens à travers tout le Royaume.
+                        Petit à petit, nous bâtissons ensemble un avenir meilleur pour tous.
+                    </p>
+
+                    <div class="hero-actions">
+                        <button class="bouton bouton-sombre">Faire un don</button>
+                        <button class="bouton bouton-secondaire">Explorer les causes</button>
+                    </div>
+                </div>
+
+                <div class="grille-cartes">
+                    <div class="carte-gauche">
+                        <div class="carte-communaute">
+                            <div class="carte-image-wrapper">
+                                <img src="../public/images/donation_1.jpg"
+                                    alt="Enfants heureux" class="carte-image">
+                            </div>
+                            <button class="bouton bouton-vert-clair carte-bouton">Rejoindre la communauté</button>
+                        </div>
+
+                        <div class="carte-statistiques">
+                            <div class="carte-contenu-centre">
+                                <h3 class="carte-titre">Plus de 8000</h3>
+                                <p class="carte-sous-titre">Donateurs engagés</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="carte-principale">
+                        <img src="../public/images/donation_3.jpg"
+                            alt="Groupe d'enfants" class="carte-image-pleine">
+                    </div>
+
+                    <div class="carte-action">
+                        <div class="carte-image-wrapper">
+                            <img src="../public/images/donation_2.jpg"
+                                alt="Main tendue" class="carte-image">
+                        </div>
+                        <div class="carte-texte">
+                            <h3 class="carte-titre-action">Tendez la main,</h3>
+                            <h3 class="carte-titre-action">Changez une vie</h3>
+                            <button class="bouton bouton-lien">En savoir plus</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="missions">
+            <div class="conteneur">
+                <div class="missions-entete">
+                    <div class="missions-titre-bloc">
+                        <h2 class="missions-titre">La compassion transforme les <em>épreuves</em> en force</h2>
+                    </div>
+                    <div class="missions-description-bloc">
+                        <p class="missions-texte-intro">Chaque jour, d'innombrables familles font face à la faim, au
+                            manque d'eau potable et à l'absence d'abri sûr. Grâce à votre soutien, nous pouvons changer
+                            cela.</p>
+                    </div>
+                </div>
+
+                <div class="missions-grille">
+                    <div class="mission-carte">
+                        <div class="mission-icone-fond">
+                            <img src="../public/images/food-icon.png" alt="Nourriture" class="mission-icone">
+                        </div>
+                        <h3 class="mission-nom">Nourrir les nécessiteux</h3>
+                        <p class="mission-description">Votre don permet d'offrir des repas quotidiens aux enfants et aux
+                            familles, garantissant que personne ne se couche le ventre vide.</p>
+                    </div>
+
+                    <div class="mission-carte">
+                        <div class="mission-icone-fond">
+                            <img src="../public/images/education-icon.png" alt="Éducation" class="mission-icone">
+                        </div>
+                        <h3 class="mission-nom">Soutien à l'éducation</h3>
+                        <p class="mission-description">Aidez les enfants à aller à l'école et à poursuivre leurs études
+                            en fournissant des livres, des frais de scolarité et des ressources d'apprentissage.</p>
+                    </div>
+
+                    <div class="mission-carte">
+                        <div class="mission-icone-fond">
+                            <img src="../public/images/medicine-icon.png" alt="Médical" class="mission-icone">
+                        </div>
+                        <h3 class="mission-nom">Aide Médicale</h3>
+                        <p class="mission-description">Soutenez les initiatives de santé qui fournissent des médicaments
+                            essentiels et des traitements d'urgence aux communautés vulnérables.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="dons-urgents">
+            <div class="conteneur">
+                <div class="dons-urgents-entete">
+                    <h2 class="dons-urgents-titre">Urgent Fundraising!</h2>
+                    <p class="dons-urgents-sous-titre">Le temps est précieux ! Rejoignez notre mission MAINTENANT pour
+                        un impact immédiat. Chaque seconde compte !</p>
+                </div>
+
+                <div class="dons-urgents-grille">
+
+                    <div class="carte-don">
+                        <div class="carte-don-image-wrapper">
+                            <img src="../public/images/test.jpg" alt="Ecologie" class="carte-don-image">
+                        </div>
+                        <div class="carte-don-corps">
+                            <div class="carte-don-auteur">
+                                <span>We Care</span> <i class="fas fa-check-circle"></i>
+                            </div>
+                            <h3 class="carte-don-titre">GreenFund: Sustain Earth Now</h3>
+
+                            <div class="barre-progression-fond">
+                                <div class="barre-progression-remplissage" style="width: 85%;"></div>
+                            </div>
+
+                            <div class="carte-don-footer">
+                                <span class="don-montant">$50.240.210</span>
+                                <span class="don-temps">7 days left</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="carte-don">
+                        <div class="carte-don-image-wrapper">
+                            <img src="../public/images/test.jpg" alt="Santé" class="carte-don-image">
+                        </div>
+                        <div class="carte-don-corps">
+                            <div class="carte-don-auteur">
+                                <span>Unicef</span> <i class="fas fa-check-circle"></i>
+                            </div>
+                            <h3 class="carte-don-titre">SeniorHealth: Support Campaign</h3>
+
+                            <div class="barre-progression-fond">
+                                <div class="barre-progression-remplissage" style="width: 60%;"></div>
+                            </div>
+
+                            <div class="carte-don-footer">
+                                <span class="don-montant">$4.240.310</span>
+                                <span class="don-temps">19 days left</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="carte-don">
+                        <div class="carte-don-image-wrapper">
+                            <img src="../public/images/test.jpg" alt="Urgence" class="carte-don-image">
+                        </div>
+                        <div class="carte-don-corps">
+                            <div class="carte-don-auteur">
+                                <span>Unity Foundation</span> <i class="fas fa-check-circle"></i>
+                            </div>
+                            <h3 class="carte-don-titre">DisasterCare: Urgent Support</h3>
+
+                            <div class="barre-progression-fond">
+                                <div class="barre-progression-remplissage" style="width: 45%;"></div>
+                            </div>
+
+                            <div class="carte-don-footer">
+                                <span class="don-montant">$2.100.210</span>
+                                <span class="don-temps">23 days left</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section class="impact-global">
+            <div class="conteneur">
+                <div class="impact-card">
+                    <div class="impact-deco impact-deco-gauche">{</div>
+                    <div class="impact-deco impact-deco-droite">}</div>
+
+                    <div class="impact-contenu">
+                        <h2 class="impact-titre">Ensemble, nous bâtissons l'espoir et créons un impact.</h2>
+                        <p class="impact-description">Chaque acte de bonté a le pouvoir de changer des vies, d'apporter
+                            de la dignité et de façonner un avenir meilleur.</p>
+
+                        <div class="impact-nombre">421,530+</div>
+
+                        <button class="bouton bouton-noir bouton-xl">
+                            Join Us Today <i class="fas fa-arrow-right"></i>
+                        </button>
+
+                        <p class="impact-footer">Des cœurs compatissants font déjà la différence</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="impact-futur">
+            <div class="conteneur">
+                <div class="impact-futur-entete">
+                    <h2 class="impact-futur-titre">Bâtir un avenir meilleur pour tous</h2>
+                    <p class="impact-futur-description">Depuis des années, nous travaillons main dans la main avec les
+                        communautés pour apporter espoir, opportunités et dignité. Voici comment votre soutien fait la
+                        différence :</p>
+                </div>
+
+                <div class="impact-futur-grille">
+
+                    <div class="carte-impact">
+                        <div class="carte-impact-icone">
+                            <div class="fancy-blob">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                        </div>
+                        <h3 class="carte-impact-titre">Nourrir les Communautés</h3>
+                        <p class="carte-impact-texte">
+                            Nous avons fourni des milliers de repas nutritifs aux enfants, aux femmes et aux familles
+                            confrontés à la faim dans des zones vulnérables.
+                            Grâce à des partenariats locaux et à l'engagement de bénévoles, nous avons pu mettre en
+                            place des cuisines communautaires,
+                            des distributions alimentaires régulières et des programmes d'aide d'urgence. Ces actions ne
+                            se limitent pas uniquement
+                            à nourrir les corps, mais redonnent également espoir et dignité aux personnes les plus
+                            touchées par la précarité,
+                            en leur offrant un soutien durable et humain.
+                        </p>
+
+                        <a href="#" class="carte-impact-lien">Lire la suite...</a>
+                    </div>
+
+                    <div class="carte-impact">
+                        <div class="carte-impact-icone">
+                            <div class="fancy-blob">
+                                <i class="fas fa-tint"></i>
+                            </div>
+                        </div>
+                        <h3 class="carte-impact-titre">Santé et Hygiène</h3>
+                        <p class="carte-impact-texte">
+                            En distribuant des kits d'hygiène essentiels comprenant du savon, des produits sanitaires et
+                            du matériel de prévention,
+                            nous contribuons à améliorer les conditions de vie dans les régions défavorisées.
+                            Parallèlement, nous soutenons des programmes médicaux locaux, des campagnes de
+                            sensibilisation
+                            et des consultations gratuites afin de prévenir les maladies, réduire les infections
+                            et garantir un accès minimal aux soins de santé pour tous, en particulier pour les enfants
+                            et les personnes âgées.
+                        </p>
+
+                        <a href="#" class="carte-impact-lien">Lire la suite...</a>
+                    </div>
+
+                    <div class="carte-impact">
+                        <div class="carte-impact-icone">
+                            <div class="fancy-blob">
+                                <i class="fas fa-globe-africa"></i>
+                            </div>
+                        </div>
+                        <h3 class="carte-impact-titre">Moyens de Subsistance Durables</h3>
+                        <p class="carte-impact-texte">
+                            Nous accompagnons les familles dans la création de sources de revenus stables à travers le
+                            soutien aux petites entreprises,
+                            aux coopératives locales et aux initiatives agricoles durables.
+                            En offrant des formations, des outils et un accompagnement continu, nous aidons les
+                            communautés
+                            à devenir autonomes, à renforcer leur résilience économique et à construire un avenir fondé
+                            sur
+                            l'indépendance financière et la transmission des savoir-faire locaux.
+                        </p>
+
+                        <a href="#" class="carte-impact-lien">Lire la suite...</a>
+                    </div>
+
+                    <div class="carte-impact">
+                        <div class="carte-impact-icone">
+                            <div class="fancy-blob">
+                                <i class="fas fa-user-graduate"></i>
+                            </div>
+                        </div>
+                        <h3 class="carte-impact-titre">Éducation et Apprentissage</h3>
+                        <p class="carte-impact-texte">
+                            Nous soutenons l'accès des enfants et des jeunes à une éducation de qualité en fournissant
+                            des fournitures scolaires,
+                            des infrastructures adaptées et des bourses d'études.
+                            Notre objectif est de créer un environnement propice à l'apprentissage, où chaque enfant
+                            peut développer ses compétences,
+                            renforcer sa confiance en lui et envisager un avenir meilleur.
+                            L'éducation reste pour nous le levier principal pour briser le cycle de la pauvreté et
+                            favoriser le développement durable.
+                        </p>
+
+                        <a href="#" class="carte-impact-lien">Lire la suite...</a>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section class="temoignages">
+            <div class="conteneur">
+                <div class="temoignages-entete">
+                    <h2 class="temoignages-titre">Votre soutien crée de réelles histoires de <em>changement</em></h2>
+                </div>
+
+                <div class="temoignages-grille">
+
+                    <div class="carte-temoignage carte-verte">
+                        <div class="quote-icon"><i class="fas fa-quote-left"></i></div>
+                        <p class="temoignage-texte">"Faire un don ici est vraiment différent. Je peux voir où va ma
+                            contribution et comment elle touche des vies. Savoir qu'une petite partie de mon revenu peut
+                            offrir de la nourriture ou des soins me donne un sentiment de but."</p>
+                        <div class="temoignage-auteur">
+                            <img src="../public/images/profile-cv.png" alt="Amina Racel" class="auteur-img">
+                            <div class="auteur-infos">
+                                <h4 class="auteur-nom">Amina Racel</h4>
+                                <span class="auteur-role">Manager</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="carte-temoignage carte-gris">
+                        <div class="quote-icon"><i class="fas fa-quote-left"></i></div>
+                        <p class="temoignage-texte">"Faire un don ici est vraiment différent. Je peux voir où va ma
+                            contribution et comment elle touche des vies. Savoir qu'une petite partie de mon revenu peut
+                            offrir de la nourriture ou des soins me donne un sentiment de but."</p>
+                        <div class="temoignage-auteur">
+                            <img src="../public/images/profile-cv.png" alt="Amina Racel" class="auteur-img">
+                            <div class="auteur-infos">
+                                <h4 class="auteur-nom">Amina Racel</h4>
+                                <span class="auteur-role">Manager</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="carte-temoignage carte-bleue">
+                        <div class="quote-icon"><i class="fas fa-quote-left"></i></div>
+                        <p class="temoignage-texte">"Je n'aurais jamais pensé que quelques clics en ligne pourraient
+                            signifier de la nourriture pour une famille en difficulté. Cette plateforme rend le don si
+                            simple, transparent et significatif."</p>
+                        <div class="temoignage-auteur">
+                            <img src="../public/images/profile-cv.png" alt="David Rodrigo" class="auteur-img">
+                            <div class="auteur-infos">
+                                <h4 class="auteur-nom">David Rodrigo</h4>
+                                <span class="auteur-role">Manager</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section class="faq-section">
+            <div class="conteneur">
+                <div class="faq-card">
+                    <div class="faq-header">
+                        <h2 class="faq-titre">Questions Fréquemment Posées</h2>
+                        <button class="bouton-contact">Contactez-nous</button>
+                    </div>
+
+                    <div class="faq-liste">
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span>Où va mon don ?</span>
+                                <i class="fas fa-plus"></i>
+                            </div>
+                            <div class="faq-reponse">
+                                <p>Vos dons sont directement alloués aux projets que vous choisissez de soutenir,
+                                    garantissant une transparence totale sur l'impact de votre générosité.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span>Puis-je choisir la cause que je soutiens ?</span>
+                                <i class="fas fa-plus"></i>
+                            </div>
+                            <div class="faq-reponse">
+                                <p>Oui, vous pouvez naviguer à travers nos différentes campagnes urgentes et choisir
+                                    celle qui vous tient le plus à cœur.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span>Puis-je faire un don mensuel ?</span>
+                                <i class="fas fa-plus"></i>
+                            </div>
+                            <div class="faq-reponse">
+                                <p>Absolument ! Nous proposons une option de don récurrent pour soutenir nos actions sur
+                                    le long terme et assurer une aide constante.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span>Mon don en ligne est-il sécurisé ?</span>
+                                <i class="fas fa-plus"></i>
+                            </div>
+                            <div class="faq-reponse">
+                                <p>Nous utilisons les dernières technologies de cryptage SSL pour garantir que vos
+                                    transactions et vos données personnelles sont 100% sécurisées.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span>Comment savoir si mon don a un impact ?</span>
+                                <i class="fas fa-plus"></i>
+                            </div>
+                            <div class="faq-reponse">
+                                <p>Nous publions régulièrement des rapports d'impact et des mises à jour directes depuis
+                                    le terrain pour que vous puissiez voir concrètement le changement que vous avez
+                                    rendu possible.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <?php include './layouts/footer.php'; ?>
+    <script src="../public/js/accueil.js"></script>
+</body>
+
+</html>

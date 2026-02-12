@@ -1,0 +1,20 @@
+<svg width="350" height="100" viewBox="0 0 280 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <filter id="shadow1">
+            <feDropShadow dx="0" dy="4" stdDeviation="3" flood-opacity="0.2" />
+        </filter>
+    </defs>
+
+    <path
+        d="M50 60C50 60 30 44 30 32C30 24 34 20 39 20C43 20 46 22 50 26C54 22 57 20 61 20C66 20 70 24 70 32C70 44 50 60 50 60Z"
+        fill="#C5F82A" filter="url(#shadow1)" />
+    <path
+        d="M50 60C50 60 30 44 30 32C30 24 34 20 39 20C43 20 46 22 50 26C54 22 57 20 61 20C66 20 70 24 70 32C70 44 50 60 50 60Z"
+        stroke="#0A2E2E" stroke-width="2.5" stroke-linejoin="round" />
+
+    <path d="M35 58L42 66L50 60L58 66L65 58" stroke="#0A2E2E" stroke-width="3.5"
+        stroke-linecap="round" stroke-linejoin="round" filter="url(#shadow1)" />
+
+    <text x="95" y="55" font-family="'Arial Black', Arial, sans-serif" font-size="32"
+        font-weight="900" fill="#0A2E2E">Tamghrabit</text>
+</svg>
