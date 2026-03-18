@@ -5,15 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tamghrabit - Plateforme de Dons</title>
-    <link rel="stylesheet" href="../public/css/accueil.css">
-    <link rel="stylesheet" href="../public/css/footer.css">
-    <link rel="stylesheet" href="../public/css/header.css">
-    <link rel="stylesheet" href="../public/css/all.min.css">
+    <link rel="stylesheet" href="<?=url('public/css/accueil.css')?>">
+    <link rel="stylesheet" href="<?=url('public/css/footer.css')?>">
+    <link rel="stylesheet" href="<?=url('public/css/header.css')?>" >
+    <link rel="stylesheet" href="<?=url('public/css/all.min.css')?>">
 </head>
 
 <body>
 
-    <?php include './layouts/header.php'; ?>
+    <?php include BASE_PATH.'/views/layouts/header.php'; ?>
 
     <main class="principal">
         <section class="hero">
@@ -36,7 +36,7 @@
                     <div class="carte-gauche">
                         <div class="carte-communaute">
                             <div class="carte-image-wrapper">
-                                <img src="../public/images/donation_1.jpg"
+                                <img src="<?=url(path: 'public/images/donation_1.jpg')?>"
                                     alt="Enfants heureux" class="carte-image">
                             </div>
                             <button class="bouton bouton-vert-clair carte-bouton">Rejoindre la communauté</button>
@@ -51,13 +51,13 @@
                     </div>
 
                     <div class="carte-principale">
-                        <img src="../public/images/donation_3.jpg"
+                        <img src="<?=url(path: 'public/images/donation_3.jpg')?>"
                             alt="Groupe d'enfants" class="carte-image-pleine">
                     </div>
 
                     <div class="carte-action">
                         <div class="carte-image-wrapper">
-                            <img src="../public/images/donation_2.jpg"
+                            <img src="<?=url(path: 'public/images/donation_2.jpg')?>"
                                 alt="Main tendue" class="carte-image">
                         </div>
                         <div class="carte-texte">
@@ -86,7 +86,7 @@
                 <div class="missions-grille">
                     <div class="mission-carte">
                         <div class="mission-icone-fond">
-                            <img src="../public/images/food-icon.png" alt="Nourriture" class="mission-icone">
+                            <img src="<?=url(path: 'public/images/food-icon.png')?>" alt="Nourriture" class="mission-icone">
                         </div>
                         <h3 class="mission-nom">Nourrir les nécessiteux</h3>
                         <p class="mission-description">Votre don permet d'offrir des repas quotidiens aux enfants et aux
@@ -95,7 +95,7 @@
 
                     <div class="mission-carte">
                         <div class="mission-icone-fond">
-                            <img src="../public/images/education-icon.png" alt="Éducation" class="mission-icone">
+                            <img src="<?=url(path: 'public/images/education-icon.png')?>" alt="Éducation" class="mission-icone">
                         </div>
                         <h3 class="mission-nom">Soutien à l'éducation</h3>
                         <p class="mission-description">Aidez les enfants à aller à l'école et à poursuivre leurs études
@@ -104,7 +104,7 @@
 
                     <div class="mission-carte">
                         <div class="mission-icone-fond">
-                            <img src="../public/images/medicine-icon.png" alt="Médical" class="mission-icone">
+                            <img src="<?=url(path: 'public/images/medicine-icon.png')?>" alt="Médical" class="mission-icone">
                         </div>
                         <h3 class="mission-nom">Aide Médicale</h3>
                         <p class="mission-description">Soutenez les initiatives de santé qui fournissent des médicaments
@@ -126,7 +126,7 @@
 
                     <div class="carte-don">
                         <div class="carte-don-image-wrapper">
-                            <img src="../public/images/test.jpg" alt="Ecologie" class="carte-don-image">
+                            <img src="<?=url(path: 'public/images/test.jpg')?>" alt="Ecologie" class="carte-don-image">
                         </div>
                         <div class="carte-don-corps">
                             <div class="carte-don-auteur">
@@ -147,7 +147,7 @@
 
                     <div class="carte-don">
                         <div class="carte-don-image-wrapper">
-                            <img src="../public/images/test.jpg" alt="Santé" class="carte-don-image">
+                            <img src="<?=url(path: 'public/images/test.jpg')?>" alt="Santé" class="carte-don-image">
                         </div>
                         <div class="carte-don-corps">
                             <div class="carte-don-auteur">
@@ -168,7 +168,7 @@
 
                     <div class="carte-don">
                         <div class="carte-don-image-wrapper">
-                            <img src="../public/images/test.jpg" alt="Urgence" class="carte-don-image">
+                            <img src="<?=url(path: 'public/images/test.jpg')?>" alt="Urgence" class="carte-don-image">
                         </div>
                         <div class="carte-don-corps">
                             <div class="carte-don-auteur">
@@ -328,7 +328,7 @@
                             contribution et comment elle touche des vies. Savoir qu'une petite partie de mon revenu peut
                             offrir de la nourriture ou des soins me donne un sentiment de but."</p>
                         <div class="temoignage-auteur">
-                            <img src="../public/images/profile-cv.png" alt="Amina Racel" class="auteur-img">
+                            <img src="<?=url(path: 'public/images/profile-cv.png')?>" alt="Amina Racel" class="auteur-img">
                             <div class="auteur-infos">
                                 <h4 class="auteur-nom">Amina Racel</h4>
                                 <span class="auteur-role">Manager</span>
@@ -342,7 +342,7 @@
                             contribution et comment elle touche des vies. Savoir qu'une petite partie de mon revenu peut
                             offrir de la nourriture ou des soins me donne un sentiment de but."</p>
                         <div class="temoignage-auteur">
-                            <img src="../public/images/profile-cv.png" alt="Amina Racel" class="auteur-img">
+                            <img src="<?=url(path: 'public/images/profile-cv.png')?>" alt="Amina Racel" class="auteur-img">
                             <div class="auteur-infos">
                                 <h4 class="auteur-nom">Amina Racel</h4>
                                 <span class="auteur-role">Manager</span>
@@ -356,7 +356,7 @@
                             signifier de la nourriture pour une famille en difficulté. Cette plateforme rend le don si
                             simple, transparent et significatif."</p>
                         <div class="temoignage-auteur">
-                            <img src="../public/images/profile-cv.png" alt="David Rodrigo" class="auteur-img">
+                            <img src="<?=url(path: 'public/images/profile-cv.png')?>" alt="David Rodrigo" class="auteur-img">
                             <div class="auteur-infos">
                                 <h4 class="auteur-nom">David Rodrigo</h4>
                                 <span class="auteur-role">Manager</span>
@@ -438,8 +438,8 @@
         </section>
     </main>
 
-    <?php include './layouts/footer.php'; ?>
-    <script src="../public/js/accueil.js"></script>
+    <?php include BASE_PATH.'/views/layouts/footer.php'; ?>
+    <script src="<?=url('public/js/accueil.js')?>"></script>
 </body>
 
 </html>

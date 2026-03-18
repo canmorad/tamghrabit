@@ -1,9 +1,3 @@
-body {
-  margin: 0;
-  font-family: 'Inter', sans-serif;
-  padding-top: 80px;
-  background-color: #C5F82A;
-}
 .register-page {
   padding-top: 100px;
   padding-bottom: 60px;
@@ -30,12 +24,12 @@ body {
 .register-form-side .register-header {
   margin-bottom: 30px;
 }
-.register-form-side .register-header .logo-circle {
+.register-form-side .register-header .logo {
   margin-bottom: 20px;
   display: flex;
   align-items: center;
 }
-.register-form-side .register-header .logo-circle img {
+.register-form-side .register-header .logo img {
   height: 50px;
   width: auto;
   object-fit: contain;
@@ -49,6 +43,67 @@ body {
 .register-form-side .register-header p {
   color: #555;
   font-size: 14px;
+}
+.form-container .section-genre {
+  margin-bottom: 25px;
+  font-family: 'Inter', sans-serif;
+}
+.form-container .section-genre .titre-section {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  color: #062121;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.form-container .section-genre .options-genre {
+  display: flex;
+  gap: 15px;
+}
+.form-container .section-genre .options-genre .item-genre {
+  flex: 1;
+  cursor: pointer;
+}
+.form-container .section-genre .options-genre .item-genre input[type="radio"] {
+  display: none;
+}
+.form-container .section-genre .options-genre .item-genre .carte-genre {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px;
+  background-color: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: #64748b;
+}
+.form-container .section-genre .options-genre .item-genre .carte-genre i {
+  font-size: 18px;
+}
+.form-container .section-genre .options-genre .item-genre .carte-genre span {
+  font-size: 15px;
+  font-weight: 600;
+}
+.form-container .section-genre .options-genre .item-genre:hover .carte-genre {
+  border-color: #c0cddf;
+  background-color: white;
+}
+.form-container .section-genre .options-genre .item-genre input[type="radio"]:checked + .carte-genre {
+  background-color: #062121;
+  border-color: #062121;
+  color: white;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+.form-container .section-genre .options-genre .item-genre input[type="radio"]:checked + .carte-genre i {
+  transform: scale(1.1);
+}
+@media (max-width: 480px) {
+  .form-container .options-genre {
+    flex-direction: column;
+  }
 }
 .form-container .form-row {
   display: flex;
@@ -101,7 +156,7 @@ body {
 }
 .form-container .form-checkbox {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 10px;
   margin: 20px 0;
 }
@@ -166,6 +221,34 @@ body {
   letter-spacing: 3px;
   border: 4px solid #FFFFFF;
   padding: 15px 25px;
+}
+.alert {
+  padding: 15px 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  font-family: 'Arial', sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+}
+.alert p {
+  margin: 0;
+}
+.alert i {
+  margin-right: 12px;
+  font-size: 18px;
+  color: white;
+}
+.alert.alert-danger {
+  background-color: #d93025;
+  color: #ffffff;
+  border: 1px solid #c32b21;
+}
+.alert.alert-success {
+  background-color: #e6f4ea;
+  color: #188038;
+  border: 1px solid #188038;
 }
 @media (max-width: 900px) {
   .register-page {

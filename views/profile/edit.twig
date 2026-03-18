@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Tamghrabit - Mon Profil</title>
+		<link rel="stylesheet" href="{{ url('public/css/dashboard.css') }}">
+		<link rel="stylesheet" href="{{ url('public/css/profile.css') }}">
+		<link rel="stylesheet" href="{{ url('public/css/all.min.css') }}">
+	</head>
+	<body>
+		<div class="main-wrapper">
+			{% include 'layouts/sidebar.twig' %}
+			<main>
+				<header>
+					<div class="search-bar">
+						<i class="fa-solid fa-magnifying-glass"></i>
+						<input type="text" placeholder="Rechercher...">
+					</div>
+					<div class="action-buttons">
+						<button class="icon-btn">
+							<i class="fa-solid fa-moon"></i>
+						</button>
+						<button class="icon-btn">
+							<i class="fa-solid fa-bell"></i>
+						</button>
+						<div class="profile-container">
+							<img src="{{ url('public/storage/profiles/') ~ user.imageProfile }}" alt="Profile" class="avatar">
+							<div class="user-info">
+								<span class="nom">{{ user.nom ~ ' ' ~ user.prenom }}</span>
+								<span class="email">{{ user.email }}</span>
+							</div>
+						</div>
+					</div>
+				</header>
+
+				<section class="dashboard-body">
+					<div id="profile-main-container" class="form-card">
+						<nav class="profile-tabs">
+							<button class="tab-btn active" onclick="switchTab(event, 'info')">
+								<i class="fa-solid fa-user-pen"></i>
+								Mes Informations
+							</button>
+							<button class="tab-btn" onclick="switchTab(event, 'docs')">
+								<i class="fa-solid fa-file-shield"></i>
+								Mes Documents
+							</button>
+							<button class="tab-btn" onclick="switchTab(event, 'orgs')">
+								<i class="fa-solid fa-building-ngo"></i>
+								Mes Organisations
+							</button>
+						</nav>
+
+						<div class="tab-separator"></div>
+
+						<section id="info" class="tab-content active">
+							<div class="avatar-section">
+								<div class="avatar-wrapper">
+									<img src="{{ url('public/storage/profiles/') ~ user.imageProfile }}" id="imagePreview" class="avatar-img">
+									<label for="avatarInput" class="upload-badge">
+										<i class="fa-solid fa-camera"></i>
+									</label>
+								</div>
+								<input type="file" name="imageProfile" id="avatarInput" hidden>
+							</div>
+
+							<form action="" method="POST" id="profileForm" enctype="multipart/form-data">
+								<div class="gender-selection">
+									<label>Vous êtes :</label>
+									<div class="radio-group">
+										<label class="radio-item">
+											<input type="radio" name="sexe" value="homme" {{ user.sexe == 'homme' ? 'checked' : '' }}>
+											<span>Homme</span>
+										</label>
+										<label class="radio-item">
+											<input type="radio" name="sexe" value="femme" {{ user.sexe == 'femme' ? 'checked' : '' }}>
+											<span>Femme</span>
+										</label>
+									</div>
+								</div>
+
+								<div class="grid-row">
+									<div class="form-group">
+										<label>Prénom</label><input type="text" name="prenom" value="{{ user.prenom }}"></div>
+									<div class="form-group">
+										<label>Nom</label><input type="text" name="nom" value="{{ user.nom }}"></div>
+								</div>
+
+								<div class="grid-row">
+									<div class="form-group">
+										<label>Email</label><input type="email" name="email" value="{{ user.email }}"></div>
+									<div class="form-group">
+										<label>Date de naissance</label><input type="date" name="dateNaissance" value="{{ user.dateNaissance }}"></div>
+								</div>
+
+								<div class="grid-row">
+									<div class="form-group">
+										<label>Pays</label>
+										<div class="custom-dropdown" id="countryDropdown">
+											<div class="dropdown-selected" onclick="toggleDropdown()">
+												<img src="" id="current-flag" class="flag-icon">
+												<span id="current-country-name"></span>
+												<i class="fa-solid fa-chevron-down"></i>
+											</div>
+											<div class="dropdown-list" id="countryList"></div>
+											<input type="hidden" name="pays" id="countryValue" value="{{ user.pays ?: 'ma' }}">
+										</div>
+									</div>
+									<div class="form-group">
+										<label>Téléphone</label>
+										<div class="dual-input">
+											<div class="custom-dropdown phone-code-dropdown" id="phoneDropdown">
+												<div class="dropdown-selected" onclick="togglePhoneDropdown()">
+													<img src="https://flagcdn.com/w40/{{ user.pays ?: 'ma' }}.png" id="current-phone-flag" class="flag-icon">
+													<span id="current-phone-code">{{ user.telephoneCode ?: '+212' }}</span>
+													<i class="fa-solid fa-chevron-down" style="font-size: 8px;"></i>
+												</div>
+												<div class="dropdown-list" id="phoneList"></div>
+												<input type="hidden" name="telephoneCode" id="phoneCodeValue" value="{{ user.telephoneCode ?: '+212' }}">
+											</div>
+											<input type="tel" name="telephone" value="{{ user.telephone }}" placeholder="600-000000">
+										</div>
+									</div>
+								</div>
+
+								<div class="grid-row">
+									<div class="form-group">
+										<label>Ville</label><input type="text" name="ville" value="{{ user.ville }}"></div>
+									<div class="form-group">
+										<label>Adresse</label><input type="text" name="adresse" value="{{ user.adresse }}"></div>
+								</div>
+
+								<div class="form-footer">
+									<button type="submit" class="btn-submit">Sauvegarder</button>
+								</div>
+							</form>
+						</section>
+
+						<section id="docs" class="tab-content">
+							<form action="" method="POST" enctype="multipart/form-data" id="identifierForm">
+								<h3 class="section-title">Pièces d'identité</h3>
+
+								<select class="identity-document-select" name="idType" id="idType" onchange="toggleIdUploads()" style="margin-bottom: 20px;">
+									<option value="cni" {{ identifiers.passport is empty ? 'selected' : '' }}>Carte Nationale</option>
+									<option value="passport" {{ identifiers.passport is not empty ? 'selected' : '' }}>Passeport</option>
+								</select>
+
+								<div id="cni-wrapper" class="grid-row docs-grid" style="{{ identifiers.passport is not empty ? 'display: none;' : 'display: grid;' }}">
+									<div class="file-upload-box {{ identifiers.cniRecto ? 'has-file' : '' }}" style="{{ identifiers.cniRecto ? 'background-image: url(' ~ url('public/storage/identifiers/') ~ identifiers.cniRecto ~ '); background-size: cover; border-color: #C5F82A;' : '' }}">
+										<input type="file" name="cniRecto" id="cni-recto-input" hidden>
+										<label for="cni-recto-input">
+											<i class="fa-solid {{ identifiers.cniRecto ? 'fa-circle-check' : 'fa-upload' }}"></i><br>
+											<span>{{ identifiers.cniRecto ?: 'Recto (Bout face)' }}</span>
+										</label>
+									</div>
+									<div class="file-upload-box {{ identifiers.cniVerso ? 'has-file' : '' }}" style="{{ identifiers.cniVerso ? 'background-image: url(' ~ url('public/storage/identifiers/') ~ identifiers.cniVerso ~ '); background-size: cover; border-color: #C5F82A;' : '' }}">
+										<input type="file" name="cniVerso" id="cni-verso-input" hidden>
+										<label for="cni-verso-input">
+											<i class="fa-solid {{ identifiers.cniVerso ? 'fa-circle-check' : 'fa-upload' }}"></i><br>
+											<span>{{ identifiers.cniVerso ?: 'Verso (Dos)' }}</span>
+										</label>
+									</div>
+								</div>
+
+								<div id="passport-wrapper" class="grid-row docs-grid" style="{{ identifiers.passport is empty ? 'display: none;' : 'display: grid;' }}">
+									<div class="file-upload-box full-box {{ identifiers.passport ? 'has-file' : '' }}" style="{{ identifiers.passport ? 'background-image: url(' ~ url('public/storage/identifiers/') ~ identifiers.passport ~ '); background-size: cover; border-color: #C5F82A;' : '' }}">
+										<input type="file" name="passport" id="passport-input" hidden>
+										<label for="passport-input">
+											<i class="fa-solid {{ identifiers.passport ? 'fa-circle-check' : 'fa-upload' }}"></i><br>
+											<span>{{ identifiers.passport ?: 'Page principale du Passeport' }}</span>
+										</label>
+									</div>
+								</div>
+
+								<div class="form-footer" style="margin-bottom: 40px;">
+									<button type="submit" class="btn-submit">Sauvegarder les documents</button>
+								</div>
+							</form>
+
+							<div class="tab-separator"></div>
+
+							<form action="" method="POST" id="bankForm" enctype="multipart/form-data">
+								<h3 class="section-title">Informations Bancaires</h3>
+								<div class="form-group full" style="margin-bottom: 15px;">
+									<label>RIB (24 chiffres)</label>
+									<input type="text" name="rib" value="{{ bankInfos.rib }}" placeholder="000 000 000000000000000 00">
+								</div>
+								<div class="file-upload-box full-box {{ bankInfos.attestationRib ? 'has-file' : '' }}" style="{{ bankInfos.attestationRib ? 'background-image: url(' ~ url('public/storage/ribs/') ~ bankInfos.attestationRib ~ '); background-size: cover; border-color: #C5F82A;' : '' }}">
+
+									<input type="file" name="attestationRib" id="rib-doc" hidden>
+
+									<label for="rib-doc">
+										<i class="fa-solid {{ bankInfos.attestationRib ? 'fa-file-circle-check' : 'fa-file-invoice-dollar' }}"></i><br>
+										<span>{{ bankInfos.attestationRib ?: 'Attestation de RIB' }}</span>
+									</label>
+								</div>
+								<div class="form-footer">
+									<button type="submit" class="btn-submit">Sauvegarder les infos bancaires</button>
+								</div>
+							</form>
+						</section>
+
+						<section id="orgs" class="tab-content">
+							<div class="org-header-flex" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+								<h3 class="section-title">Mes Organisations</h3>
+								<button class="btn-add-small" onclick="showAddOrg()">
+									<i class="fa-solid fa-plus"></i>
+									Ajouter une ONG</button>
+							</div>
+							<div class="org-card-item">
+								<div class="org-info">
+									<span class="org-name">Association Al Khair</span>
+									<br>
+									<span class="org-status">Statut :
+										<strong style="color: #C5F82A;">Agréée</strong>
+									</span>
+								</div>
+								<div class="org-btns">
+									<button class="icon-action-btn" onclick="showEditOrg('Association Al Khair')">
+										<i class="fa-solid fa-eye"></i>
+									</button>
+									<button class="icon-action-btn delete">
+										<i class="fa-solid fa-trash"></i>
+									</button>
+								</div>
+							</div>
+						</section>
+
+						<section id="add-org-view" class="tab-content">
+							<div class="org-header-flex" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+								<h3 class="section-title">Nouvelle Organisation</h3>
+								<button class="btn-submit" onclick="switchTab(event, 'orgs')">Enregistrer</button>
+							</div>
+							<div class="grid-row">
+								<div class="form-group">
+									<label>Nom de l'ONG</label><input type="text" placeholder="Nom officiel"></div>
+								<div class="form-group">
+									<label>Adresse du siège</label><input type="text" placeholder="Ville, Quartier..."></div>
+							</div>
+							<div class="grid-row">
+								<div class="form-group full">
+									<label>RIB de l'organisation (24 chiffres)</label><input type="text" placeholder="RIB Bancaire"></div>
+							</div>
+							<div class="docs-upload-grid">
+								<div class="doc-box">
+									<label>Logo</label>
+									<div class="upload-square"><input type="file" id="o1" hidden><label for="o1">
+											<i class="fa-solid fa-upload"></i>
+										</label>
+									</div>
+								</div>
+								<div class="doc-box">
+									<label>Statuts</label>
+									<div class="upload-square"><input type="file" id="o2" hidden><label for="o2">
+											<i class="fa-solid fa-upload"></i>
+										</label>
+									</div>
+								</div>
+								<div class="doc-box">
+									<label>RIB Doc</label>
+									<div class="upload-square"><input type="file" id="o3" hidden><label for="o3">
+											<i class="fa-solid fa-upload"></i>
+										</label>
+									</div>
+								</div>
+								<div class="doc-box">
+									<label>CIN P.(R)</label>
+									<div class="upload-square"><input type="file" id="o4" hidden><label for="o4">
+											<i class="fa-solid fa-upload"></i>
+										</label>
+									</div>
+								</div>
+								<div class="doc-box">
+									<label>CIN P.(V)</label>
+									<div class="upload-square"><input type="file" id="o5" hidden><label for="o5">
+											<i class="fa-solid fa-upload"></i>
+										</label>
+									</div>
+								</div>
+							</div>
+						</section>
+
+						<section id="edit-org-view" class="tab-content">
+							<div class="org-header-flex" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+								<div>
+									<h3 class="section-title">Modifier l'organisation</h3>
+									<span id="editing-org-name" style="color: #64748B; font-size: 13px;">Association Al Khair</span>
+								</div>
+								<div style="display: flex; gap: 10px;">
+									<button class="btn-submit outline" onclick="switchTab(event, 'orgs')">Annuler</button>
+									<button class="btn-submit" onclick="switchTab(event, 'orgs')">Enregistrer</button>
+								</div>
+							</div>
+
+							<div class="grid-row">
+								<div class="form-group">
+									<label>Nom de l'ONG</label>
+									<input type="text" value="Association Al Khair">
+								</div>
+								<div class="form-group">
+									<label>Adresse du siège</label>
+									<input type="text" value="Marrakech, Gueliz">
+								</div>
+							</div>
+
+							<div class="grid-row">
+								<div class="form-group full">
+									<label>RIB de l'organisation (24 chiffres)</label>
+									<input type="text" value="007 010 000012345678901 22">
+								</div>
+							</div>
+
+							<div class="docs-upload-grid">
+								<div class="doc-box">
+									<label>Logo</label>
+									<div class="upload-square has-file" style="background-image: url('path-to-logo.png'); background-size: cover;">
+										<input type="file" id="e1" hidden>
+										<label for="e1">
+											<i class="fa-solid fa-pen-to-square"></i>
+										</label>
+									</div>
+								</div>
+								<div class="doc-box">
+									<label>Statuts</label>
+									<div class="upload-square"><input type="file" id="e2" hidden><label for="e2">
+											<i class="fa-solid fa-upload"></i>
+										</label>
+									</div>
+								</div>
+								<div class="doc-box">
+									<label>RIB Doc</label>
+									<div class="upload-square"><input type="file" id="e3" hidden><label for="e3">
+											<i class="fa-solid fa-upload"></i>
+										</label>
+									</div>
+								</div>
+								<div class="doc-box">
+									<label>CIN P.(R)</label>
+									<div class="upload-square"><input type="file" id="e4" hidden><label for="e4">
+											<i class="fa-solid fa-upload"></i>
+										</label>
+									</div>
+								</div>
+								<div class="doc-box">
+									<label>CIN P.(V)</label>
+									<div class="upload-square"><input type="file" id="e5" hidden><label for="e5">
+											<i class="fa-solid fa-upload"></i>
+										</label>
+									</div>
+								</div>
+							</div>
+						</section>
+					</div>
+				</section>
+			</main>
+		</div>
+		<script src="{{ url('public/js/profile.js') }}"></script>
+	</body>
+</html>

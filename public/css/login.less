@@ -78,6 +78,7 @@ body {
             font-size: 13px;
             font-weight: 600;
             color: @couleur-noire;
+            margin-bottom: 6px;
         }
 
         .forgot-password {
@@ -194,6 +195,45 @@ body {
             border: 4px solid @couleur-blanche;
             padding: 15px 25px;
         }
+    }
+}
+
+@color-danger: #d93025;
+@bg-danger: #fce8e6;
+@color-success: #188038;
+@bg-success: #e6f4ea;
+
+.alert {
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    font-family: 'Arial', sans-serif;
+    font-size: 14px;
+    line-height: 1.4;
+
+    p {
+        margin: 0;
+    }
+
+    i {
+        margin-right: 12px;
+        font-size: 18px;
+        color: white;
+    }
+
+    &.alert-danger {
+        background-color: @color-danger;
+        color: #ffffff;
+        border: 1px solid darken(@color-danger, 5%);
+
+    }
+
+    &.alert-success {
+        background-color: @bg-success;
+        color: @color-success;
+        border: 1px solid @color-success;
     }
 }
 
