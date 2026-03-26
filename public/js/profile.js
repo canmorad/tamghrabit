@@ -55,28 +55,113 @@ function toggleIdUploads() {
     }
 }
 
+async function renderIdentifier() {
+    const identifierForm = document.getElementById("identifierForm");
+    const select = identifierForm.querySelector('select');
+
+    if (!identifierForm) return;
+
+    try {
+        const res = await fetch("/Tamghrabit/identifier/index");
+        const data = await res.json();
+
+        if (data.passport) {
+            select.value = "passport"
+        } else {
+            select.value = "cni"
+        }
+
+        toggleIdUploads()
+
+        identifierForm.querySelectorAll("input").forEach(input => {
+            const box = input.closest('.file-upload-box');
+            const label = box.querySelector("span");
+            const icon = box.querySelector("i");
+
+            if (data[input.name]) {
+                const fileUrl = data[input.name];
+
+                box.style.backgroundImage = `url(${fileUrl})`;
+                box.style.backgroundSize = "cover";
+                box.style.borderColor = "#C5F82A";
+
+                if (icon) {
+                    icon.className = "fa-solid fa-file-circle-check";
+                    icon.style.opacity = "1";
+                }
+
+                if (label) {
+                    label.innerText = data[input.name];
+                }
+            }
+        });
+    } catch (err) {
+        console.error("Erreur render identifier:", err);
+    }
+}
+
 function updateIdentifier() {
     const identifierForm = document.getElementById("identifierForm");
 
     if (identifierForm) {
-        identifierForm.addEventListener("submit", function (e) {
+        identifierForm.addEventListener("submit", async function (e) {
             e.preventDefault();
 
             const formData = new FormData(identifierForm);
-
-            fetch("/Tamghrabit/identifier/update", {
-                method: "POST",
-                body: formData
-            })
-                .then(res => res.text())
-                .then(data => {
-                    showAlert(data.message, data.type);
-                })
-                .catch(err => {
-                    showAlert("Erreur serveur", "error");
-                    console.error(err);
+            try {
+                const res = await fetch("/Tamghrabit/identifier/update", {
+                    method: "POST",
+                    body: formData
                 });
+
+                const data = await res.json();
+                console.log(data);
+
+                showAlert(data.message, data.type);
+
+            } catch (e) {
+                showAlert("Erreur serveur", "error");
+                console.error(e);
+            }
+
         });
+    }
+}
+
+async function renderBankInfos() {
+    const bankForm = document.getElementById("bankForm");
+    if (!bankForm) return;
+
+    try {
+        const res = await fetch("/Tamghrabit/bank/index");
+        const data = await res.json();
+
+        bankForm.querySelector("[name=rib]").value = data.rib ?? "";
+        const fileInput = bankForm.querySelector("[name=attestationRib]");
+        const box = fileInput.closest('.file-upload-box');
+        const label = box.querySelector("span");
+        const icon = box.querySelector("i");
+
+        if (data.attestationRib) {
+            const fileUrl = data.attestationRib;
+            console.log(fileUrl)
+
+            box.style.backgroundImage = `url(${fileUrl})`;
+            box.style.backgroundSize = "cover";
+            box.style.borderColor = "#C5F82A";
+
+            if (icon) {
+                icon.className = "fa-solid fa-file-circle-check";
+                icon.style.opacity = "1";
+            }
+
+            if (label) {
+                label.innerText = data.attestationRib;
+            }
+        }
+
+    } catch (err) {
+        console.error("Erreur render bank:", err);
     }
 }
 
@@ -89,9 +174,6 @@ async function updateBankInfos() {
 
             const formData = new FormData(bankForm);
 
-            const submitBtn = bankForm.querySelector('button[type="submit"]');
-            if (submitBtn) submitBtn.disabled = true;
-
             try {
                 const response = await fetch("/Tamghrabit/bank/update", {
                     method: "POST",
@@ -101,21 +183,21 @@ async function updateBankInfos() {
                 if (!response.ok) throw new Error("Erreur réseau");
 
                 const data = await response.json();
-                console.log(data);
+
+                if (data.type = "success")
+                    renderBankInfos();
 
                 showAlert(data.message, data.type);
 
             } catch (err) {
                 console.error("Erreur:", err);
                 showAlert("Erreur serveur ou connexion impossible", "error");
-            } finally {
-                if (submitBtn) submitBtn.disabled = false;
             }
         });
     }
 }
 
-async function renduImageProfile() {
+async function renderImageProfile() {
     const input = document.querySelector('#avatarInput');
     const img = document.querySelector('#imagePreview');
 
@@ -155,7 +237,7 @@ async function renduImageProfile() {
     });
 }
 
-async function renduCountries() {
+async function renderCountries() {
     try {
         const res = await fetch("../public/data/pays.json");
         const countries = await res.json();
@@ -200,7 +282,7 @@ function toggleDropdown() {
     document.querySelector("#countryList").classList.toggle("show");
 }
 
-async function renduPhones() {
+async function renderPhones() {
     try {
         const res = await fetch("../public/data/telephones.json");
         const phones = await res.json();
@@ -248,6 +330,36 @@ window.addEventListener("click", (e) => {
         document.querySelector("#phoneList").classList.remove("show");
     }
 });
+
+function renderFileUploads() {
+    const allInputs = document.querySelectorAll('input[type="file"]');
+    allInputs.forEach(input => {
+        if (input.name != "imageProfile") {
+            input.addEventListener('change', function () {
+                const file = this.files[0];
+                if (!file) return;
+
+                const box = this.closest('.file-upload-box, .upload-square');
+                const label = box.querySelector('span') || box.querySelector('label');
+                const icon = box.querySelector('i');
+
+                if (box) {
+                    box.style.borderColor = '#E2E8F0';
+                    box.style.backgroundImage = 'none';
+                }
+
+                if (icon) {
+                    icon.className = file.type === 'application/pdf' ? "fa-solid fa-file-pdf" : "fa-solid fa-file";
+                    icon.style.opacity = '1';
+                    icon.style.color = "#C5F82A";
+                }
+
+                if (label) label.innerText = file.name;
+
+            });
+        }
+    });
+}
 
 function renduFileUploads() {
     const allInputs = document.querySelectorAll('input[type="file"]');
@@ -348,13 +460,15 @@ function showAlert(message, type) {
 }
 
 function initApp() {
-    renduCountries();
-    renduPhones();
-    renduFileUploads();
-    renduImageProfile();
+    // renderCountries();
+    // renderPhones();
+    renderFileUploads();
+    renderImageProfile();
     updateProfile();
     updateIdentifier();
     updateBankInfos();
+    renderBankInfos();
+    renderIdentifier();
 }
 
 initApp();

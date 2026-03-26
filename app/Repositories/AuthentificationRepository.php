@@ -49,6 +49,7 @@ class AuthentificationRepository
             from adherents a
             join users u on u.id = a.id
             where a.id = ?";
+            
         try {
             $stm = $this->conn->prepare($sql);
             $stm->execute([$userId]);

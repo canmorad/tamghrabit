@@ -141,33 +141,33 @@
 								<h3 class="section-title">Pièces d'identité</h3>
 
 								<select class="identity-document-select" name="idType" id="idType" onchange="toggleIdUploads()" style="margin-bottom: 20px;">
-									<option value="cni" {{ identifiers.passport is empty ? 'selected' : '' }}>Carte Nationale</option>
-									<option value="passport" {{ identifiers.passport is not empty ? 'selected' : '' }}>Passeport</option>
+									<option value="cni">Carte Nationale</option>
+									<option value="passport">Passeport</option>
 								</select>
 
-								<div id="cni-wrapper" class="grid-row docs-grid" style="{{ identifiers.passport is not empty ? 'display: none;' : 'display: grid;' }}">
-									<div class="file-upload-box {{ identifiers.cniRecto ? 'has-file' : '' }}" style="{{ identifiers.cniRecto ? 'background-image: url(' ~ url('public/storage/identifiers/') ~ identifiers.cniRecto ~ '); background-size: cover; border-color: #C5F82A;' : '' }}">
+								<div id="cni-wrapper" class="grid-row docs-grid">
+									<div class="file-upload-box">
 										<input type="file" name="cniRecto" id="cni-recto-input" hidden>
 										<label for="cni-recto-input">
-											<i class="fa-solid {{ identifiers.cniRecto ? 'fa-circle-check' : 'fa-upload' }}"></i><br>
-											<span>{{ identifiers.cniRecto ?: 'Recto (Bout face)' }}</span>
+											<i class="fa-solid fa-upload"></i><br>
+											<span>Recto (Bout face)</span>
 										</label>
 									</div>
-									<div class="file-upload-box {{ identifiers.cniVerso ? 'has-file' : '' }}" style="{{ identifiers.cniVerso ? 'background-image: url(' ~ url('public/storage/identifiers/') ~ identifiers.cniVerso ~ '); background-size: cover; border-color: #C5F82A;' : '' }}">
+									<div class="file-upload-box">
 										<input type="file" name="cniVerso" id="cni-verso-input" hidden>
 										<label for="cni-verso-input">
-											<i class="fa-solid {{ identifiers.cniVerso ? 'fa-circle-check' : 'fa-upload' }}"></i><br>
-											<span>{{ identifiers.cniVerso ?: 'Verso (Dos)' }}</span>
+											<i class="fa-solid"></i><br>
+											<span>Verso (Dos)</span>
 										</label>
 									</div>
 								</div>
 
-								<div id="passport-wrapper" class="grid-row docs-grid" style="{{ identifiers.passport is empty ? 'display: none;' : 'display: grid;' }}">
-									<div class="file-upload-box full-box {{ identifiers.passport ? 'has-file' : '' }}" style="{{ identifiers.passport ? 'background-image: url(' ~ url('public/storage/identifiers/') ~ identifiers.passport ~ '); background-size: cover; border-color: #C5F82A;' : '' }}">
+								<div id="passport-wrapper" class="">
+									<div class="file-upload-box full-box">
 										<input type="file" name="passport" id="passport-input" hidden>
 										<label for="passport-input">
-											<i class="fa-solid {{ identifiers.passport ? 'fa-circle-check' : 'fa-upload' }}"></i><br>
-											<span>{{ identifiers.passport ?: 'Page principale du Passeport' }}</span>
+											<i class="fa-solid fa-upload"></i><br>
+											<span>Page principale du Passeport</span>
 										</label>
 									</div>
 								</div>
@@ -183,15 +183,15 @@
 								<h3 class="section-title">Informations Bancaires</h3>
 								<div class="form-group full" style="margin-bottom: 15px;">
 									<label>RIB (24 chiffres)</label>
-									<input type="text" name="rib" value="{{ bankInfos.rib }}" placeholder="000 000 000000000000000 00">
+									<input type="text" name="rib" value="" placeholder="000 000 000000000000000 00">
 								</div>
-								<div class="file-upload-box full-box {{ bankInfos.attestationRib ? 'has-file' : '' }}" style="{{ bankInfos.attestationRib ? 'background-image: url(' ~ url('public/storage/ribs/') ~ bankInfos.attestationRib ~ '); background-size: cover; border-color: #C5F82A;' : '' }}">
+								<div class="file-upload-box full-box">
 
 									<input type="file" name="attestationRib" id="rib-doc" hidden>
 
 									<label for="rib-doc">
-										<i class="fa-solid {{ bankInfos.attestationRib ? 'fa-file-circle-check' : 'fa-file-invoice-dollar' }}"></i><br>
-										<span>{{ bankInfos.attestationRib ?: 'Attestation de RIB' }}</span>
+										<i class="fa-solid fa-file-invoice-dollar"></i><br>
+										<span>Attestation de RIB</span>
 									</label>
 								</div>
 								<div class="form-footer">
@@ -229,126 +229,201 @@
 						<section id="add-org-view" class="tab-content">
 							<div class="org-header-flex" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
 								<h3 class="section-title">Nouvelle Organisation</h3>
-								<button class="btn-submit" onclick="switchTab(event, 'orgs')">Enregistrer</button>
+								<button class="btn-submit" onclick="document.getElementById('form-add-ong').submit()">Enregistrer</button>
 							</div>
-							<div class="grid-row">
-								<div class="form-group">
-									<label>Nom de l'ONG</label><input type="text" placeholder="Nom officiel"></div>
-								<div class="form-group">
-									<label>Adresse du siège</label><input type="text" placeholder="Ville, Quartier..."></div>
-							</div>
-							<div class="grid-row">
-								<div class="form-group full">
-									<label>RIB de l'organisation (24 chiffres)</label><input type="text" placeholder="RIB Bancaire"></div>
-							</div>
-							<div class="docs-upload-grid">
-								<div class="doc-box">
-									<label>Logo</label>
-									<div class="upload-square"><input type="file" id="o1" hidden><label for="o1">
-											<i class="fa-solid fa-upload"></i>
-										</label>
+
+							<form action="{{ url('organization/add') }}" method="POST" enctype="multipart/form-data" id="form-add-ong">
+								<div class="grid-row">
+									<div class="form-group">
+										<label>Nom de l'ONG</label>
+										<input type="text" name="nom" placeholder="Nom officiel" required>
+									</div>
+									<div class="form-group">
+										<label>Identifiant Fiscal (IF)</label>
+										<input type="text" name="identifiantFiscal" placeholder="N° IF (ex: 12345678)">
 									</div>
 								</div>
-								<div class="doc-box">
-									<label>Statuts</label>
-									<div class="upload-square"><input type="file" id="o2" hidden><label for="o2">
-											<i class="fa-solid fa-upload"></i>
-										</label>
+
+								<div class="grid-row">
+									<div class="form-group full">
+										<label>Adresse du siège</label>
+										<input type="text" name="adresse" placeholder="Ville, Quartier...">
 									</div>
 								</div>
-								<div class="doc-box">
-									<label>RIB Doc</label>
-									<div class="upload-square"><input type="file" id="o3" hidden><label for="o3">
-											<i class="fa-solid fa-upload"></i>
-										</label>
+
+								<div class="grid-row">
+									<div class="form-group full">
+										<label>RIB de l'organisation (24 chiffres)</label>
+										<input type="text" name="ribAssociation" placeholder="RIB Bancaire">
 									</div>
 								</div>
-								<div class="doc-box">
-									<label>CIN P.(R)</label>
-									<div class="upload-square"><input type="file" id="o4" hidden><label for="o4">
-											<i class="fa-solid fa-upload"></i>
-										</label>
+
+								<h4 style="margin: 20px 0 10px 0; color: #64748B; font-size: 14px;">Documents de vérification</h4>
+								<div class="docs-upload-grid">
+									<div class="doc-box">
+										<label>Récépissé de dépôt</label>
+										<div class="upload-square">
+											<input type="file" name="recepisse" id="01" hidden>
+											<label for="01">
+												<i class="fa-solid fa-file-contract"></i>
+											</label>
+										</div>
+									</div>
+
+									<div class="doc-box">
+										<label>PV d'élection</label>
+										<div class="upload-square">
+											<input type="file" name="pvElection" id="o_pv" hidden>
+											<label for="o_pv">
+												<i class="fa-solid fa-users-gear"></i>
+											</label>
+										</div>
+									</div>
+
+									<div class="doc-box">
+										<label>Statuts</label>
+										<div class="upload-square">
+											<input type="file" name="statuts" id="o2" hidden>
+											<label for="o2">
+												<i class="fa-solid fa-file-lines"></i>
+											</label>
+										</div>
+									</div>
+
+									<div class="doc-box">
+										<label>Attestation RIB</label>
+										<div class="upload-square">
+											<input type="file" name="attestationRib" id="o3" hidden>
+											<label for="o3">
+												<i class="fa-solid fa-building-columns"></i>
+											</label>
+										</div>
+									</div>
+
+									<div class="doc-box">
+										<label>CIN Président.(Recto)</label>
+										<div class="upload-square">
+											<input type="file" name="cniPresidentRecto" id="o4" hidden>
+											<label for="o4">
+												<i class="fa-solid fa-id-card"></i>
+											</label>
+										</div>
+									</div>
+
+									<div class="doc-box">
+										<label>CIN Président. (Verso)</label>
+										<div class="upload-square">
+											<input type="file" name="cniPresidentVerso" id="05" hidden>
+											<label for="05">
+												<i class="fa-solid fa-address-card"></i>
+											</label>
+										</div>
 									</div>
 								</div>
-								<div class="doc-box">
-									<label>CIN P.(V)</label>
-									<div class="upload-square"><input type="file" id="o5" hidden><label for="o5">
-											<i class="fa-solid fa-upload"></i>
-										</label>
-									</div>
-								</div>
-							</div>
+							</form>
 						</section>
 
 						<section id="edit-org-view" class="tab-content">
-							<div class="org-header-flex" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-								<div>
-									<h3 class="section-title">Modifier l'organisation</h3>
-									<span id="editing-org-name" style="color: #64748B; font-size: 13px;">Association Al Khair</span>
+							<form action="{{ url('organization/edit') }}" method="POST" enctype="multipart/form-data">
+								<div class="org-header-flex" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+									<div>
+										<h3 class="section-title">Modifier l'organisation</h3>
+										<span id="editing-org-name" style="color: #64748B; font-size: 13px;">Association Al Khair</span>
+									</div>
+									<div style="display: flex; gap: 10px;">
+										<button type="button" class="btn-submit outline" onclick="switchTab(event, 'orgs')">Annuler</button>
+										<button type="submit" class="btn-submit">Mettre à jour</button>
+									</div>
 								</div>
-								<div style="display: flex; gap: 10px;">
-									<button class="btn-submit outline" onclick="switchTab(event, 'orgs')">Annuler</button>
-									<button class="btn-submit" onclick="switchTab(event, 'orgs')">Enregistrer</button>
-								</div>
-							</div>
 
-							<div class="grid-row">
-								<div class="form-group">
-									<label>Nom de l'ONG</label>
-									<input type="text" value="Association Al Khair">
+								<div class="grid-row">
+									<div class="form-group">
+										<label>Nom de l'ONG</label>
+										<input type="text" name="nom" value="Association Al Khair">
+									</div>
+									<div class="form-group">
+										<label>Identifiant Fiscal (IF)</label>
+										<input type="text" name="identifiant_fiscal" value="87654321">
+									</div>
 								</div>
-								<div class="form-group">
-									<label>Adresse du siège</label>
-									<input type="text" value="Marrakech, Gueliz">
-								</div>
-							</div>
 
-							<div class="grid-row">
-								<div class="form-group full">
-									<label>RIB de l'organisation (24 chiffres)</label>
-									<input type="text" value="007 010 000012345678901 22">
+								<div class="grid-row">
+									<div class="form-group full">
+										<label>Adresse du siège</label>
+										<input type="text" name="adresse" placeholder="Ville, Quartier...">
+									</div>
 								</div>
-							</div>
 
-							<div class="docs-upload-grid">
-								<div class="doc-box">
-									<label>Logo</label>
-									<div class="upload-square has-file" style="background-image: url('path-to-logo.png'); background-size: cover;">
-										<input type="file" id="e1" hidden>
-										<label for="e1">
-											<i class="fa-solid fa-pen-to-square"></i>
-										</label>
+								<div class="grid-row">
+									<div class="form-group full">
+										<label>RIB de l'organisation (24 chiffres)</label>
+										<input type="text" name="rib_association" placeholder="RIB Bancaire">
 									</div>
 								</div>
-								<div class="doc-box">
-									<label>Statuts</label>
-									<div class="upload-square"><input type="file" id="e2" hidden><label for="e2">
-											<i class="fa-solid fa-upload"></i>
-										</label>
+
+								<h4 style="margin: 20px 0 10px 0; color: #64748B; font-size: 14px;">Documents de vérification</h4>
+								<div class="docs-upload-grid">
+									<div class="doc-box">
+										<label>Récépissé de dépôt</label>
+										<div class="upload-square">
+											<input type="file" name="recepisse" id="o_recepisse" hidden>
+											<label for="o_recepisse">
+												<i class="fa-solid fa-file-contract"></i>
+											</label>
+										</div>
+									</div>
+
+									<div class="doc-box">
+										<label>PV d'élection</label>
+										<div class="upload-square">
+											<input type="file" name="pv_election" id="o_pv" hidden>
+											<label for="o_pv">
+												<i class="fa-solid fa-users-gear"></i>
+											</label>
+										</div>
+									</div>
+
+									<div class="doc-box">
+										<label>Statuts</label>
+										<div class="upload-square">
+											<input type="file" name="statuts" id="o2" hidden>
+											<label for="o2">
+												<i class="fa-solid fa-file-lines"></i>
+											</label>
+										</div>
+									</div>
+
+									<div class="doc-box">
+										<label>Attestation RIB</label>
+										<div class="upload-square">
+											<input type="file" name="attestation_rib" id="o3" hidden>
+											<label for="o3">
+												<i class="fa-solid fa-building-columns"></i>
+											</label>
+										</div>
+									</div>
+
+									<div class="doc-box">
+										<label>CIN Président.(Recto)</label>
+										<div class="upload-square">
+											<input type="file" name="cni_president_recto" id="o4" hidden>
+											<label for="o4">
+												<i class="fa-solid fa-id-card"></i>
+											</label>
+										</div>
+									</div>
+
+									<div class="doc-box">
+										<label>CIN Président. (Verso)</label>
+										<div class="upload-square">
+											<input type="file" name="cni_president_verso" id="o_cni_v" hidden>
+											<label for="o_cni_v">
+												<i class="fa-solid fa-address-card"></i>
+											</label>
+										</div>
 									</div>
 								</div>
-								<div class="doc-box">
-									<label>RIB Doc</label>
-									<div class="upload-square"><input type="file" id="e3" hidden><label for="e3">
-											<i class="fa-solid fa-upload"></i>
-										</label>
-									</div>
-								</div>
-								<div class="doc-box">
-									<label>CIN P.(R)</label>
-									<div class="upload-square"><input type="file" id="e4" hidden><label for="e4">
-											<i class="fa-solid fa-upload"></i>
-										</label>
-									</div>
-								</div>
-								<div class="doc-box">
-									<label>CIN P.(V)</label>
-									<div class="upload-square"><input type="file" id="e5" hidden><label for="e5">
-											<i class="fa-solid fa-upload"></i>
-										</label>
-									</div>
-								</div>
-							</div>
+							</form>
 						</section>
 					</div>
 				</section>

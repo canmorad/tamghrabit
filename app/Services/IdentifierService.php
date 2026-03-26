@@ -16,9 +16,9 @@ class IdentifierService
         $this->identifierRepository = new IdentifierRepository($conn);
     }
 
-    public function getById($id)
+    public function getIdentifierByUserId($id)
     {
-        return $this->identifierRepository->findById($id);
+        return $this->identifierRepository->getIdentifierByUserId($id);
     }
 
     public function update($identifier)
@@ -26,7 +26,7 @@ class IdentifierService
         $utilisateur = $identifier->getAdherent();
         $dossierBase = dirname(__DIR__, 2) . "/public/storage/identifiers/";
 
-        $ancienDoc = $this->identifierRepository->findById($utilisateur->getId());
+        $ancienDoc = $this->identifierRepository->getIdentifierByUserId($utilisateur->getId());
 
         $files = [
             'cniRecto' => $identifier->getCniRecto(),

@@ -67,17 +67,39 @@ create table identifiers (
     cniRecto varchar(255),
     cniVerso varchar(255),
     passport varchar(255),
+    estVerifie boolean default false,
+    dateCreation timestamp default current_timestamp,
     dateModifier timestamp,
     constraint FK_adherent foreign key (id) references adherents (id)
 );
-
 
 create table ribs (
     id int primary key,
     rib varchar(50) not null,
     attestationRib varchar(255) not null,
+    estVerifie boolean default false,
+    dateCreation timestamp default current_timestamp,
     dateModifier timestamp,
     constraint FK_adherent foreign key (id) references adherents (id)
+);
+
+create table organisations (
+    id int primary key auto_increment,
+    idAdherent int not null,
+    nom varchar(150) not null,
+    identifiantFiscal varchar(50),
+    adresse text,
+    ribAssociation varchar(24),
+    recepisse varchar(255),
+    pvElection varchar(255),
+    statuts varchar(255),
+    attestationRib varchar(255),
+    cniPresidentRecto varchar(255),
+    cniPresidentVerso varchar(255),
+    estVerifie boolean default false,
+    dateCreation timestamp default current_timestamp,
+    dateModifier timestamp,
+    constraint FK_org_adherent foreign key (idAdherent) references adherents (id)
 );
 
 delimiter

@@ -13,7 +13,7 @@ class IdentifierRepository
         $this->conn = $conn;
     }
 
-    public function findById($id)
+    public function getIdentifierByUserId($id)
     {
         $requete = $this->conn->prepare("select * from identifiers where id = ?");
         $requete->execute([$id]);
@@ -35,8 +35,8 @@ class IdentifierRepository
 
     public function update($identifier)
     {
-        $sql = "insert into identifiers (id, cnirecto, cniverso, passport) 
-                values (:id, :cnirecto, :cniverso, :passport)
+        $sql = "insert into identifiers (id, cniRecto, cniVerso, passport) 
+                values (:id, :cniRecto, :cniVerso, :passport)
                 on duplicate key update 
                 cnirecto = values(cniRecto), 
                 cniverso = values(cniverso), 

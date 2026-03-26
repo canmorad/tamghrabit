@@ -25,8 +25,8 @@ class ProfileController extends Controller
     public function edit()
     {
         $user = Session::get("user");
-        $identifiers = $this->identifierService->getById($user->getId());
-        $bankInfos = $this->ribService->getById($user->getId());
+        $identifiers = $this->identifierService->getIdentifierByUserId($user->getId());
+        $bankInfos = $this->ribService->getRibByUserId($user->getId());
 
         $this->view('profile/edit', [
             "user" => $user,

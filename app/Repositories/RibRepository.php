@@ -13,7 +13,7 @@ class RibRepository
         $this->conn = $conn;
     }
 
-    public function findById($id)
+    public function getRibByUserId($id)
     {
         $requete = $this->conn->prepare("select * from ribs where id = ?");
         $requete->execute([$id]);

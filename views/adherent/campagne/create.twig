@@ -1,332 +1,212 @@
 <!DOCTYPE html>
 <html lang="fr">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tamghrabit - Plateforme de Dons</title>
-
-    <link rel="stylesheet" href="{{ url('public/css/dashboard.css') }}">
-    <link rel="stylesheet" href="{{ url('public/css/adherent/campagne/create.css') }}">
-    <link rel="stylesheet" href="{{ url('public/css/all.min.css') }}">
-</head>
-
-<body>
-
-<div class="main-wrapper">
-
-    {% include 'layouts/sidebar.twig' %}
-
-    <main>
-        <header>
-            <div class="search-bar">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" placeholder="Search campaign, donor and more...">
-            </div>
-
-            <div class="action-buttons">
-                <button class="icon-btn"><i class="fa-solid fa-moon"></i></button>
-                <button class="icon-btn"><i class="fa-solid fa-message"></i></button>
-                <button class="icon-btn"><i class="fa-solid fa-bell"></i></button>
-
-                <div class="profile-container">
-                    <img src="{{ url('public/images/profile-cv.png') }}" alt="Profile" class="avatar">
-
-                    <div class="user-info">
-                        <span class="nom">Morad Benaissa</span>
-                        <span class="email">moradbenaissa@gmail.com</span>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <section class="dashboard-body">
-
-            <div id="selection-container" class="form-card">
-
-                <div class="form-header">
-                    <h2><i class="fa-solid fa-layer-group"></i> Type de Campagne</h2>
-                    <p>Sélectionnez le type de projet que vous souhaitez lancer.</p>
-                </div>
-
-                <div class="type-grid">
-
-                    <div class="type-card" onclick="showForm('money')">
-                        <i class="fa-solid fa-hand-holding-dollar"></i>
-                        <h3>Solidarité Financière</h3>
-                        <p>Individuel : Santé, opération, puits...</p>
-                    </div>
-
-                    <div class="type-card" onclick="showForm('org')">
-                        <i class="fa-solid fa-building-ngo"></i>
-                        <h3>Organisation / ONG</h3>
-                        <p>Campagne officielle pour association.</p>
-                    </div>
-
-                    <div class="type-card" onclick="showForm('sponsorship')">
-                        <i class="fa-solid fa-user-graduate"></i>
-                        <h3>Parrainage</h3>
-                        <p>Étudiants, orphelins, veuves...</p>
-                    </div>
-
-                    <div class="type-card" onclick="showForm('service')">
-                        <i class="fa-solid fa-box-open"></i>
-                        <h3>Dons & Services</h3>
-                        <p>Vêtements, fournitures, expertise...</p>
-                    </div>
-
-                </div>
-            </div>
-
-
-            <div id="form-container-main" class="form-card" style="display:none;">
-
-                <button class="back-btn" onclick="goBack()">
-                    <i class="fa-solid fa-arrow-left"></i> Retour
-                </button>
-
-                <div class="form-header">
-                    <h2 id="form-title">
-                        <i class="fa-solid fa-plus-circle"></i> Ajouter une Campagne
-                    </h2>
-                    <p>Remplissez les informations pour lancer votre collecte.</p>
-                </div>
-
-
-                <div class="stepper">
-
-                    <div class="step active">
-                        <span class="step-icon">
-                            <i class="fa-solid fa-circle-info"></i>
-                        </span>
-                        <span class="step-label">Général</span>
-                    </div>
-
-                    <div class="step-line"></div>
-
-                    <div class="step">
-                        <span class="step-icon">
-                            <i class="fa-solid fa-file-invoice-dollar"></i>
-                        </span>
-                        <span class="step-label">Détails</span>
-                    </div>
-
-                    <div class="step-line"></div>
-
-                    <div class="step">
-                        <span class="step-icon">
-                            <i class="fa-solid fa-id-card"></i>
-                        </span>
-                        <span class="step-label">Documents</span>
-                    </div>
-
-                </div>
-
-
-                <form action="#" method="POST" enctype="multipart/form-data">
-
-                    <div id="section-org-info" style="display:none;">
-
-                        <div class="form-section">
-                            <h3 class="section-title">Informations de l'Organisation</h3>
-
-                            <div class="grid-row">
-
-                                <div class="form-group full">
-                                    <label>Nom de l'organisation</label>
-                                    <input type="text" placeholder="Nom officiel de l'association">
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Numéro d'agrément</label>
-                                    <input type="text">
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Fichier de Mandat (Procuration)</label>
-                                    <input type="file" class="input-file">
-                                </div>
-
-                            </div>
-                        </div>
-
-                    </div>
-
-
-                    <div class="form-section">
-
-                        <h3 class="section-title">Informations Générales</h3>
-
-                        <div class="grid-row">
-                            <div class="form-group full">
-                                <label>Titre de la campagne</label>
-                                <input type="text" placeholder="Ex: Construction d'une école...">
-                            </div>
-                        </div>
-
-                        <div class="grid-row">
-
-                            <div class="form-group">
-                                <label>Catégorie</label>
-
-                                <select>
-                                    <option>Éducation</option>
-                                    <option>Santé</option>
-                                    <option>Social</option>
-                                </select>
-
-                            </div>
-
-                            <div class="form-group">
-                                <label>Numéro de téléphone</label>
-                                <input type="tel" placeholder="+212 600-000000">
-                            </div>
-
-                        </div>
-
-                        <div class="form-group">
-                            <label>Description</label>
-                            <textarea rows="4" placeholder="Détails du projet..."></textarea>
-                        </div>
-
-                        <div class="grid-row">
-
-                            <div class="form-group">
-                                <label>Date de début</label>
-                                <input type="date">
-                            </div>
-
-                            <div class="form-group">
-                                <label>Date de fin</label>
-                                <input type="date">
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="form-section">
-
-                        <h3 class="section-title">Objectif & Image</h3>
-
-                        <div class="grid-row">
-
-                            <div class="form-group">
-                                <label>Montant Objectif (DH)</label>
-                                <input type="number">
-                            </div>
-
-                            <div class="form-group">
-                                <label>RIB (24 chiffres)</label>
-                                <input type="text">
-                            </div>
-
-                        </div>
-
-                        <div class="form-group">
-
-                            <label>Image de la campagne</label>
-
-                            <div class="file-upload">
-                                <input type="file" id="comp-img">
-
-                                <label for="comp-img">
-                                    <i class="fa-solid fa-cloud-arrow-up"></i>
-                                    Choisir une image
-                                </label>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="form-section">
-
-                        <h3 class="section-title">Documents Justificatifs</h3>
-
-                        <div class="grid-row">
-
-                            <div class="form-group">
-                                <label>Identité Face (CNI)</label>
-                                <input type="file">
-                            </div>
-
-                            <div class="form-group">
-                                <label>Identité Dos (CNI)</label>
-                                <input type="file">
-                            </div>
-
-                            <div class="form-group full" id="org-files" style="display:none;">
-                                <label>Statuts & PV de l'organisation (ZIP/PDF)</label>
-                                <input type="file">
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="form-footer">
-
-                        <button type="button" class="btn-cancel" onclick="goBack()">
-                            Annuler
-                        </button>
-
-                        <button type="submit" class="btn-submit">
-                            Lancer la campagne
-                        </button>
-
-                    </div>
-
-                </form>
-
-            </div>
-
-        </section>
-    </main>
-</div>
-
-
-<script>
-
-function showForm(type)
-{
-    document.getElementById('selection-container').style.display = 'none';
-    document.getElementById('form-container-main').style.display = 'block';
-
-    const orgSection = document.getElementById('section-org-info');
-    const orgFiles = document.getElementById('org-files');
-    const title = document.getElementById('form-title');
-
-    if(type === 'org')
-    {
-        orgSection.style.display = 'block';
-        orgFiles.style.display = 'block';
-
-        title.innerHTML =
-        '<i class="fa-solid fa-building-shield"></i> Campagne Organisation';
-    }
-    else
-    {
-        orgSection.style.display = 'none';
-        orgFiles.style.display = 'none';
-
-        title.innerHTML =
-        '<i class="fa-solid fa-plus-circle"></i> Ajouter une Campagne';
-    }
-
-    window.scrollTo(0,0);
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Tamghrabit - Plateforme de Dons</title>
+
+		<link rel="stylesheet" href="{{ url('public/css/dashboard.css') }}">
+		<link rel="stylesheet" href="{{ url('public/css/adherent/campagne/create.css') }}">
+		<link rel="stylesheet" href="{{ url('public/css/all.min.css') }}">
+	</head>
+
+	<body>
+
+		<div class="main-wrapper">
+
+			{% include 'layouts/sidebar.twig' %}
+
+			<main>
+				<header>
+					<div class="search-bar">
+						<i class="fa-solid fa-magnifying-glass"></i>
+						<input type="text" placeholder="Rechercher...">
+					</div>
+
+					<div class="action-buttons">
+						<button class="icon-btn">
+							<i class="fa-solid fa-moon"></i>
+						</button>
+						<button class="icon-btn">
+							<i class="fa-solid fa-message"></i>
+						</button>
+						<button class="icon-btn">
+							<i class="fa-solid fa-bell"></i>
+						</button>
+
+						<div class="profile-container">
+							<img src="{{ url('public/images/profile-cv.png') }}" alt="Profile" class="avatar">
+
+							<div class="user-info">
+								<span class="nom">Morad Benaissa</span>
+								<span class="email">moradbenaissa@gmail.com</span>
+							</div>
+						</div>
+					</div>
+				</header>
+
+				<section class="dashboard-body">
+
+					<div id="selection-container" class="form-card">
+						<div class="form-header">
+							<h2>
+								<i class="fa-solid fa-layer-group"></i>
+								Type de Campagne</h2>
+							<p>Sélectionnez le type de projet pour commencer le processus de vérification.</p>
+						</div>
+						<div class="type-grid">
+							<div class="type-card" onclick="showForm('money')">
+								<i class="fa-solid fa-hand-holding-dollar"></i>
+								<h3>Solidarité Financière</h3>
+								<p>Santé, opération, cas sociaux...</p>
+							</div>
+							<div class="type-card" onclick="showForm('org')">
+								<i class="fa-solid fa-building-ngo"></i>
+								<h3>Organisation / ONG</h3>
+								<p>Projets associatifs officiels.</p>
+							</div>
+							<div class="type-card" onclick="showForm('sponsorship')">
+								<i class="fa-solid fa-user-graduate"></i>
+								<h3>Parrainage</h3>
+								<p>Étudiants, orphelins, veuves...</p>
+							</div>
+							<div class="type-card" onclick="showForm('service')">
+								<i class="fa-solid fa-box-open"></i>
+								<h3>Dons & Services</h3>
+								<p>Matériel, expertise, logistique...</p>
+							</div>
+						</div>
+					</div>
+
+					<div id="form-container-main" class="form-card" style="display:none;">
+						<button class="back-btn" onclick="goBack()">
+							<i class="fa-solid fa-arrow-left"></i>
+							Retour</button>
+						<h2 id="form-title" style="margin-bottom: 25px;"></h2>
+
+						<div id="form-money" class="form-type" style="display:none;">
+							<form action="/campagne/store/money" method="POST" enctype="multipart/form-data">
+								{% include 'adherent/campagne/generalFields.twig' %}
+
+								<div class="form-section">
+									<h3 class="section-title">Détails de l'objectif</h3>
+									<div class="form-group">
+										<label>Montant total recherché (DH)</label>
+										<input type="number" name="target_amount" required placeholder="Ex: 25000">
+									</div>
+								</div>
+
+								<div class="form-section">
+									<h3 class="section-title">Documents Justificatifs (Obligatoire)</h3>
+									<div class="grid-row">
+										<div class="form-group full">
+											<label>Dossier Médical / Preuve du besoin (PDF/JPG)</label>
+											<input type="file" name="justificatif_besoin" required>
+											<small>Ex: Certificat médical, devis d'opération, attestation de précarité.</small>
+										</div>
+									</div>
+								</div>
+								<div class="form-footer">
+									<button type="submit" class="btn-submit">Lancer la campagne</button>
+								</div>
+							</form>
+						</div>
+
+						<div id="form-org" class="form-type" style="display:none;">
+							<form action="/campagne/store/org" method="POST" enctype="multipart/form-data">
+								{% include 'adherent/campagne/generalFields.twig' %}
+								<div class="form-section">
+									<h3 class="section-title">Détails Organisation</h3>
+									<div class="form-group full">
+										<label>Sélectionnez votre association vérifiée</label>
+										<select name="organization_id" required>
+											<option selected>Association Atlas</option>
+											<option>Fondation Maroc</option>
+										</select>
+									</div>
+								</div>
+								<div class="form-footer">
+									<button type="submit" class="btn-submit">Lancer la campagne ONG</button>
+								</div>
+							</form>
+						</div>
+
+						<div id="form-sponsorship" class="form-type" style="display:none;">
+							<form action="/campagne/store/sponsorship" method="POST" enctype="multipart/form-data">
+								{% include 'adherent/campagne/generalFields.twig' %}
+								<div class="form-section">
+									<h3 class="section-title">Paramètres & Preuves</h3>
+									<div class="grid-row">
+										<div class="form-group">
+											<label>Fréquence</label>
+											<select name="frequency">
+												<option value="monthly">Mensuel</option>
+												<option value="yearly">Annuel</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<label>Attestation de scolarité / Situation (Image/PDF)</label>
+											<input type="file" name="proof_status" required>
+										</div>
+									</div>
+								</div>
+								<div class="form-footer">
+									<button type="submit" class="btn-submit">Créer le parrainage</button>
+								</div>
+							</form>
+						</div>
+
+						<div id="form-service" class="form-type" style="display:none;">
+							<form action="/campagne/store/service" method="POST" enctype="multipart/form-data">
+								{% include 'adherent/campagne/generalFields.twig' %}
+								<div class="form-section">
+									<h3 class="section-title">Détails des besoins</h3>
+									<div class="form-group full">
+										<label>Type de don (Matériel/Expertise)</label>
+										<input type="text" name="item_name" placeholder="Ex: 50 fauteuils roulants">
+									</div>
+								</div>
+								<div class="form-footer">
+									<button type="submit" class="btn-submit">Publier l'annonce</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</section>
+			</main>
+		</div>
+
+
+		<script>
+
+			function showForm(type) {
+document.getElementById('selection-container').style.display = 'none';
+document.getElementById('form-container-main').style.display = 'block';
+
+document.querySelectorAll('.form-type').forEach(f => f.style.display = 'none');
+
+const targetForm = document.getElementById('form-' + type);
+if (targetForm) 
+targetForm.style.display = 'block';
+
+
+
+const titles = {
+'money': '<i class="fa-solid fa-hand-holding-dollar"></i> Solidarité Financière',
+'org': '<i class="fa-solid fa-building-ngo"></i> Campagne Organisation',
+'sponsorship': '<i class="fa-solid fa-user-graduate"></i> Programme de Parrainage',
+'service': '<i class="fa-solid fa-box-open"></i> Dons & Services'
+};
+document.getElementById('form-title').innerHTML = titles[type];
+window.scrollTo(0, 0);
 }
 
-function goBack()
-{
-    document.getElementById('form-container-main').style.display = 'none';
-    document.getElementById('selection-container').style.display = 'block';
+function goBack() {
+document.getElementById('form-container-main').style.display = 'none';
+document.getElementById('selection-container').style.display = 'block';
 }
+		</script>
 
-</script>
-
-</body>
+	</body>
 </html>

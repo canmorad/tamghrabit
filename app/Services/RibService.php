@@ -18,12 +18,7 @@ class RibService
 
     public function getRibByUserId($id)
     {
-        return $this->ribRepository->findById($id);
-    }
-
-    public function getById($id)
-    {
-        return $this->ribRepository->findById($id);
+        return $this->ribRepository->getRibByUserId($id);
     }
 
     public function update($rib)
@@ -31,7 +26,7 @@ class RibService
         $utilisateur = $rib->getAdherent();
         $dossierBase = dirname(__DIR__, 2) . "/public/storage/ribs/";
 
-        $ancienRib = $this->ribRepository->findById($utilisateur->getId());
+        $ancienRib = $this->ribRepository->getRibByUserId($utilisateur->getId());
         $fichier = $rib->getAttestationRib();
         $nomFichierFinal = $ancienRib ? $ancienRib->getAttestationRib() : null;
 
@@ -51,5 +46,6 @@ class RibService
         } catch (Exception $e) {
             throw $e;
         }
+
     }
 }

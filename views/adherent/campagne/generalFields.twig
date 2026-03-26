@@ -1,0 +1,72 @@
+<div class="form-section">
+
+	<h3 class="section-title">Informations Générales</h3>
+
+	<div class="info-profile-data">
+		<i class="fa-solid fa-circle-info"></i>
+		<span>Les fonds seront versés sur le
+			<strong>RIB</strong>
+			configuré dans votre profil.</span>
+	</div>
+
+	<div class="grid-row">
+		<div class="form-group full">
+			<label>Titre de la campagne</label>
+			<input type="text" placeholder="Ex: Construction d'une école...">
+		</div>
+	</div>
+
+	<div class="grid-row">
+
+		<div class="form-group">
+			<label>Catégorie</label>
+
+			<select>
+				<option>Éducation</option>
+				<option>Santé</option>
+				<option>Social</option>
+			</select>
+
+		</div>
+
+		<div class="form-group">
+			<label>Numéro de téléphone</label>
+			<input type="tel" placeholder="+212 600-000000">
+		</div>
+
+	</div>
+
+	<div class="grid-row">
+
+		<div class="form-group">
+			<label>Date de début</label>
+			<input type="date">
+		</div>
+
+		<div class="form-group">
+			<label>Date de fin</label>
+			<input type="date">
+		</div>
+
+	</div>
+
+	<div class="form-group">
+		<label>Description</label>
+		<textarea rows="4" placeholder="Détails du projet..."></textarea>
+	</div>
+
+	<div class="form-group">
+		<label>Image de la campagne</label>
+		<div class="file-upload">
+			<input type="file" name="campaign_image" id="comp-img" accept="image/*" required onchange="previewImage(event)">
+			<label for="comp-img">
+				<i class="fa-solid fa-cloud-arrow-up"></i>
+				Choisir une image
+			</label>
+		</div>
+		<div id="image-preview-container" style="display:none; margin-top: 10px;">
+			<img id="image-preview" src="#" alt="Aperçu" style="width: 100px; border-radius: 8px;">
+		</div>
+	</div>
+
+</div>

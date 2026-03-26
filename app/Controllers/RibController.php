@@ -21,6 +21,17 @@ class RibController extends Controller
         $this->ribService = new RibService(Connection::getInstance());
     }
 
+    public function index()
+    {
+        $user = Session::get("user");
+      
+        $rib = $this->ribService->getRibByUserId($user->getId());
+        echo json_encode([
+            "rib" => $rib->getRib() ? $rib->getRib() : '',
+            "attestationRib" => $rib->getAttestationRib() ? url("public/storage/ribs/".$rib->getAttestationRib()) : '' 
+        ]);
+    }
+
     public function update()
     {
         header('Content-Type: application/json');
@@ -33,7 +44,12 @@ class RibController extends Controller
 
         $validate = new Validator($data);
         $validate->field("rib", "RIB")->required();
-        $validate->field("attestationRib", "Attestation")->file_required();
+
+        $existingRib = $this->ribService->getRibByUserId($userSession->getId());
+
+        if (!$existingRib || !$existingRib->getAttestationRib()) {
+            $validate->field("attestationRib", "Attestation")->file_required();
+        }
 
         if (!$validate->isValid()) {
             echo json_encode(['type' => 'error', 'message' => $validate->errorMessages]);

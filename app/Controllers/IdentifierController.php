@@ -21,6 +21,18 @@ class IdentifierController extends Controller
         $this->identifierService = new IdentifierService(Connection::getInstance());
     }
 
+    public function index()
+    {
+        $user = Session::get("user");
+        $identifiers = $this->identifierService->getIdentifierByUserId($user->getId());
+
+        echo json_encode([
+            "cniRecto" => $identifiers->getCniRecto() ? url("public/storage/identifiers/" . $identifiers->getCniRecto()) : '',
+            "cniVerso" => $identifiers->getCniVerso() ? url("public/storage/identifiers/" . $identifiers->getCniVerso()) : '',
+            "passport" => $identifiers->getPassport() ? url("public/storage/identifiers/" . $identifiers->getPassport()) : '',
+        ]);
+    }
+
     public function update()
     {
         header('Content-Type: application/json');
