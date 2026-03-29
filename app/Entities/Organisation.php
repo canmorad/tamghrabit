@@ -18,9 +18,18 @@ class Organisation
     private $estVerifie;
     private $dateCreation;
 
-    public function __construct()
+    public function __construct($nom, $identifiantFiscal, $adresse, $ribAssociation, $recepisse, $pvElection, $statuts, $attestationRib, $cniPresidentRecto, $cniPresidentVerso)
     {
-        
+        $this->nom = $nom;
+        $this->identifiantFiscal = $identifiantFiscal;
+        $this->adresse = $adresse;
+        $this->ribAssociation = $ribAssociation;
+        $this->recepisse = $recepisse;
+        $this->pvElection = $pvElection;
+        $this->statuts = $statuts;
+        $this->attestationRib = $attestationRib;
+        $this->cniPresidentRecto = $cniPresidentRecto;
+        $this->cniPresidentVerso = $cniPresidentVerso;
     }
 
     public function getId()
@@ -32,13 +41,13 @@ class Organisation
         $this->id = $id;
     }
 
-    public function getIdAdherent()
+    public function getAdherent()
     {
         return $this->adherent;
     }
-    public function setIdAdherent($idAdherent)
+    public function setAdherent($adherent)
     {
-        $this->idAdherent = $idAdherent;
+        $this->adherent = $adherent;
     }
 
     public function getNom()

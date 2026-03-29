@@ -7,7 +7,7 @@
 		<title>Tamghrabit - Plateforme de Dons</title>
 
 		<link rel="stylesheet" href="{{ url('public/css/dashboard.css') }}">
-		<link rel="stylesheet" href="{{ url('public/css/adherent/campagne/create.css') }}">
+		<link rel="stylesheet" href="{{ url('public/css/campagne-create.css') }}">
 		<link rel="stylesheet" href="{{ url('public/css/all.min.css') }}">
 	</head>
 
@@ -56,22 +56,22 @@
 							<p>Sélectionnez le type de projet pour commencer le processus de vérification.</p>
 						</div>
 						<div class="type-grid">
-							<div class="type-card" onclick="showForm('money')">
+							<div class="type-card" onclick="showForm('argent')">
 								<i class="fa-solid fa-hand-holding-dollar"></i>
-								<h3>Solidarité Financière</h3>
+								<h3>Don d'Argent</h3>
 								<p>Santé, opération, cas sociaux...</p>
 							</div>
-							<div class="type-card" onclick="showForm('org')">
+							<div class="type-card" onclick="showForm('association')">
 								<i class="fa-solid fa-building-ngo"></i>
-								<h3>Organisation / ONG</h3>
+								<h3>Association / ONG</h3>
 								<p>Projets associatifs officiels.</p>
 							</div>
-							<div class="type-card" onclick="showForm('sponsorship')">
+							<div class="type-card" onclick="showForm('parrainage')">
 								<i class="fa-solid fa-user-graduate"></i>
 								<h3>Parrainage</h3>
 								<p>Étudiants, orphelins, veuves...</p>
 							</div>
-							<div class="type-card" onclick="showForm('service')">
+							<div class="type-card" onclick="showForm('dons')">
 								<i class="fa-solid fa-box-open"></i>
 								<h3>Dons & Services</h3>
 								<p>Matériel, expertise, logistique...</p>
@@ -82,13 +82,13 @@
 					<div id="form-container-main" class="form-card" style="display:none;">
 						<button class="back-btn" onclick="goBack()">
 							<i class="fa-solid fa-arrow-left"></i>
-							Retour</button>
+							Retour
+						</button>
 						<h2 id="form-title" style="margin-bottom: 25px;"></h2>
 
-						<div id="form-money" class="form-type" style="display:none;">
-							<form action="/campagne/store/money" method="POST" enctype="multipart/form-data">
-								{% include 'adherent/campagne/generalFields.twig' %}
-
+						<div id="form-argent" class="form-type" style="display:none;">
+							<form action="" method="POST" enctype="multipart/form-data">
+								{% include 'campagne/_generalFields.twig' %}
 								<div class="form-section">
 									<h3 class="section-title">Détails de l'objectif</h3>
 									<div class="form-group">
@@ -96,15 +96,11 @@
 										<input type="number" name="target_amount" required placeholder="Ex: 25000">
 									</div>
 								</div>
-
 								<div class="form-section">
-									<h3 class="section-title">Documents Justificatifs (Obligatoire)</h3>
-									<div class="grid-row">
-										<div class="form-group full">
-											<label>Dossier Médical / Preuve du besoin (PDF/JPG)</label>
-											<input type="file" name="justificatif_besoin" required>
-											<small>Ex: Certificat médical, devis d'opération, attestation de précarité.</small>
-										</div>
+									<h3 class="section-title">Documents Justificatifs</h3>
+									<div class="form-group full">
+										<label>Preuve du besoin (PDF/JPG)</label>
+										<input type="file" name="justificatif" required>
 									</div>
 								</div>
 								<div class="form-footer">
@@ -113,16 +109,16 @@
 							</form>
 						</div>
 
-						<div id="form-org" class="form-type" style="display:none;">
-							<form action="/campagne/store/org" method="POST" enctype="multipart/form-data">
-								{% include 'adherent/campagne/generalFields.twig' %}
+						<div id="form-association" class="form-type" style="display:none;">
+							<form action="/campagne/store/association" method="POST" enctype="multipart/form-data">
+								{% include 'campagne/_generalFields.twig' %}
 								<div class="form-section">
 									<h3 class="section-title">Détails Organisation</h3>
 									<div class="form-group full">
 										<label>Sélectionnez votre association vérifiée</label>
 										<select name="organization_id" required>
-											<option selected>Association Atlas</option>
-											<option>Fondation Maroc</option>
+											<option value="1">Association Atlas</option>
+											<option value="2">Fondation Maroc</option>
 										</select>
 									</div>
 								</div>
@@ -132,11 +128,11 @@
 							</form>
 						</div>
 
-						<div id="form-sponsorship" class="form-type" style="display:none;">
-							<form action="/campagne/store/sponsorship" method="POST" enctype="multipart/form-data">
-								{% include 'adherent/campagne/generalFields.twig' %}
+						<div id="form-parrainage" class="form-type" style="display:none;">
+							<form action="/campagne/store/parrainage" method="POST" enctype="multipart/form-data">
+								{% include 'campagne/_generalFields.twig' %}
 								<div class="form-section">
-									<h3 class="section-title">Paramètres & Preuves</h3>
+									<h3 class="section-title">Paramètres</h3>
 									<div class="grid-row">
 										<div class="form-group">
 											<label>Fréquence</label>
@@ -146,8 +142,8 @@
 											</select>
 										</div>
 										<div class="form-group">
-											<label>Attestation de scolarité / Situation (Image/PDF)</label>
-											<input type="file" name="proof_status" required>
+											<label>Justificatif de situation</label>
+											<input type="file" name="justificatif" required>
 										</div>
 									</div>
 								</div>
@@ -157,9 +153,9 @@
 							</form>
 						</div>
 
-						<div id="form-service" class="form-type" style="display:none;">
-							<form action="/campagne/store/service" method="POST" enctype="multipart/form-data">
-								{% include 'adherent/campagne/generalFields.twig' %}
+						<div id="form-dons" class="form-type" style="display:none;">
+							<form action="/campagne/store/dons" method="POST" enctype="multipart/form-data">
+								{% include 'campagne/_generalFields.twig' %}
 								<div class="form-section">
 									<h3 class="section-title">Détails des besoins</h3>
 									<div class="form-group full">
@@ -179,7 +175,6 @@
 
 
 		<script>
-
 			function showForm(type) {
 document.getElementById('selection-container').style.display = 'none';
 document.getElementById('form-container-main').style.display = 'block';
@@ -190,15 +185,14 @@ const targetForm = document.getElementById('form-' + type);
 if (targetForm) 
 targetForm.style.display = 'block';
 
-
-
 const titles = {
-'money': '<i class="fa-solid fa-hand-holding-dollar"></i> Solidarité Financière',
-'org': '<i class="fa-solid fa-building-ngo"></i> Campagne Organisation',
-'sponsorship': '<i class="fa-solid fa-user-graduate"></i> Programme de Parrainage',
-'service': '<i class="fa-solid fa-box-open"></i> Dons & Services'
+'argent': '<i class="fa-solid fa-hand-holding-dollar"></i> Campagne de Don d\'Argent',
+'association': '<i class="fa-solid fa-building-ngo"></i> Projet Association / ONG',
+'parrainage': '<i class="fa-solid fa-user-graduate"></i> Programme de Parrainage',
+'dons': '<i class="fa-solid fa-box-open"></i> Dons en Nature & Services'
 };
-document.getElementById('form-title').innerHTML = titles[type];
+
+document.getElementById('form-title').innerHTML = titles[type] || 'Nouvelle Campagne';
 window.scrollTo(0, 0);
 }
 
@@ -207,6 +201,5 @@ document.getElementById('form-container-main').style.display = 'none';
 document.getElementById('selection-container').style.display = 'block';
 }
 		</script>
-
 	</body>
 </html>

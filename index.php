@@ -33,10 +33,12 @@ $router->post("profile/update", ['App\Controllers\ProfileController', 'updatePro
 $router->post("profile/image/update", ['App\Controllers\ProfileController', 'updateImageProfile'])->name('profile.update.image');
 $router->post("identifier/update", ['App\Controllers\IdentifierController', 'update'])->name('identifier.update');
 $router->get("identifier/index", ['App\Controllers\IdentifierController', 'index']);
-
 $router->post("bank/update", ['App\Controllers\RibController', 'update'])->name('bank.update');
 $router->get("bank/index", ['App\Controllers\RibController', 'index']);
 
+$router->post("organisation/create", ['App\Controllers\OrganisationController', 'create']);
+$router->get("organisation/index", ['App\Controllers\OrganisationController', 'index']);
+$router->get("organisation/get", ['App\Controllers\OrganisationController', 'show']);
 
 $router->dispatch($method, $url);
 

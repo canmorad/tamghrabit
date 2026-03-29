@@ -3,22 +3,66 @@ namespace App\Controllers;
 
 use App\Core\Controller;
 use App\Helpers\Session;
-use App\Entities\Rib;
 use App\Core\Connection;
-use App\Services\RibService;
+use App\Services\OrganisationService;
 use App\Helpers\Validator;
+use App\Entities\Organisation;
 use Exception;
 
 Session::start();
 
 class OrganisationController extends Controller
 {
-    private $ribService;
+    private $orgService;
 
     public function __construct()
     {
         parent::__construct();
-        $this->ribService = new RibService(Connection::getInstance());
+        $this->orgService = new OrganisationService(Connection::getInstance());
+    }
+
+    public function index()
+    {
+        $user = Session::get('user');
+        $organisationsList = $this->orgService->getOrgByUserId($user->getId());
+
+        $orgs = [];
+
+        if ($organisationsList) {
+            foreach ($organisationsList as $row) {
+                $orgs[] = [
+                    "id" => $row["id"],
+                    "nom" => $row["nom"],
+                    "estVerifie" => $row["estVerifie"]
+                ];
+            }
+        }
+
+        echo json_encode([
+            "orgs" => $orgs
+        ]);
+    }
+
+    public function show()
+    {
+        $id = $_GET['id'] ;
+
+        $organisation = $this->orgService->getOrgById($id);
+
+        header('Content-Type: application/json');
+        echo json_encode([
+            'id' => $organisation['id'],
+            'nom' => $organisation['nom'],
+            'identifiantFiscal' => $organisation['identifiantFiscal'],
+            'adresse' => $organisation['adresse'],
+            'ribAssociation' => $organisation['ribAssociation'],
+            'recepisse' => $organisation['recepisse'] ? url("public/storage/organisations/" . $organisation['recepisse']) : '',
+            'pvElection' => $organisation['pvElection'] ? url("public/storage/organisations/" . $organisation['pvElection']) : '',
+            'statuts' => $organisation['statuts'] ? url("public/storage/organisations/" . $organisation['statuts']) : '',
+            'attestationRib' => $organisation['attestationRib'] ? url("public/storage/organisations/" . $organisation['attestationRib']) : '',
+            'cniPresidentRecto' => $organisation['cniPresidentRecto'] ? url("public/storage/organisations/" . $organisation['cniPresidentRecto']) : '',
+            'cniPresidentVerso' => $organisation['cniPresidentVerso'] ? url("public/storage/organisations/" . $organisation['cniPresidentVerso']) : '',
+        ]);
     }
 
     public function create()
@@ -26,7 +70,6 @@ class OrganisationController extends Controller
         $userSession = Session::get('user');
 
         $data = [
-            "idAdherent" => $userSession['id'],
             "nom" => $_POST['nom'] ?? '',
             "identifiantFiscal" => $_POST['identifiantFiscal'] ?? '',
             "adresse" => $_POST['adresse'] ?? '',
@@ -44,13 +87,41 @@ class OrganisationController extends Controller
         $validate->field("identifiantFiscal", "Identifiant Fiscal")->required();
         $validate->field("adresse", "Adresse")->required();
         $validate->field("ribAssociation", "RIB")->required();
-        $validate->field("recepisse", "Récépissé")->file_required();
-        $validate->field("pvElection", "PV d'élection")->file_required();
-        $validate->field("statuts", "Statuts")->file_required();
-        $validate->field("attestationRib", "Attestation RIB")->file_required();
-        $validate->field("cniPresidentRecto", "CIN Recto")->file_required();
-        $validate->field("cniPresidentVerso", "CIN Verso")->file_required();
 
+
+        if (!$validate->isValid()) {
+            echo json_encode([
+                "type" => "error",
+                "message" => $validate->errorMessages
+            ]);
+            exit;
+        }
+
+        try {
+            $org = new Organisation(
+                $data['nom'],
+                $data['identifiantFiscal'],
+                $data['adresse'],
+                $data['ribAssociation'],
+                $data['recepisse'],
+                $data['pvElection'],
+                $data['statuts'],
+                $data['attestationRib'],
+                $data['cniPresidentRecto'],
+                $data['cniPresidentVerso']
+            );
+
+            $org->setAdherent($userSession);
+
+            $this->orgService->create($org);
+            echo json_encode(['type' => 'success', 'message' => "Organisation enregistrées !"]);
+
+        } catch (Exception $e) {
+            echo json_encode([
+                "type" => "error",
+                "message" => $e->getMessage()
+            ]);
+        }
     }
 
     public function update()

@@ -14,22 +14,152 @@ function showAddOrg() {
     document.getElementById('add-org-view').classList.add('active');
 }
 
-function showEditOrg(orgName) {
-    document.querySelectorAll('.tab-content').forEach(tab => {
-        tab.classList.remove('active');
-    });
-
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.classList.remove('active');
-    });
+async function showEditOrg(orgId) {
+    document.querySelectorAll('.tab-content, .tab-btn').forEach(el => el.classList.remove('active'));
 
     const editView = document.getElementById('edit-org-view');
     editView.classList.add('active');
 
-    if (orgName) {
-        document.getElementById('editing-org-name').innerText = orgName;
-        const nameInput = document.getElementById('edit-org-input-name');
-        if (nameInput) nameInput.value = orgName;
+    try {
+        const res = await fetch(`/Tamghrabit/organisation/get?id=${orgId}`);
+        const org = await res.json();
+
+        editView.innerHTML = `
+            <form action="" method="POST" enctype="multipart/form-data" id="form-edit-org">
+                <input type="hidden" name="id" value="${orgId}">
+
+                <div class="org-header-flex" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <div>
+                        <h3 class="section-title">Modifier l'organisation</h3>
+                        <span style="color: #64748B; font-size: 13px;">${org.nom}</span>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button type="button" class="btn-submit outline" onclick="switchTab(null, 'orgs')">Annuler</button>
+                        <button type="submit" class="btn-submit">Mettre à jour</button>
+                    </div>
+                </div>
+
+                <div class="grid-row">
+                    <div class="form-group">
+                        <label>Nom de l'ONG</label>
+                        <input type="text" name="nom" value="${org.nom || ''}" placeholder="Nom officiel" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Identifiant Fiscal (IF)</label>
+                        <input type="text" name="identifiantFiscal" value="${org.identifiantFiscal || ''}" placeholder="N° IF (ex: 12345678)">
+                    </div>
+                </div>
+
+                <div class="grid-row">
+                    <div class="form-group full">
+                        <label>Adresse du siège</label>
+                        <input type="text" name="adresse" value="${org.adresse || ''}" placeholder="Ville, Quartier...">
+                    </div>
+                </div>
+
+                <div class="grid-row">
+                    <div class="form-group full">
+                        <label>RIB de l'organisation (24 chiffres)</label>
+                        <input type="text" name="ribAssociation" value="${org.ribAssociation || ''}" placeholder="RIB Bancaire">
+                    </div>
+                </div>
+
+                <h4 style="margin: 20px 0 10px 0; color: #64748B; font-size: 14px;">Documents de vérification</h4>
+                <div class="docs-upload-grid">
+                    ${renderDocBox('Récépissé de dépôt', 'recepisse', '01', 'fa-file-contract', org.recepisse)}
+                    ${renderDocBox("PV d'élection", 'pvElection', 'o_pv', 'fa-users-gear', org.pvElection)}
+                    ${renderDocBox('Statuts', 'statuts', 'o2', 'fa-file-lines', org.statuts)}
+                    ${renderDocBox('Attestation RIB', 'attestationRib', 'o3', 'fa-building-columns', org.attestationRib)}
+                    ${renderDocBox('CIN Président (Recto)', 'cniPresidentRecto', 'o4', 'fa-id-card', org.cniPresidentRecto)}
+                    ${renderDocBox('CIN Président (Verso)', 'cniPresidentVerso', 'o5', 'fa-address-card', org.cniPresidentVerso)}
+                </div>
+            </form>`;
+        renderFileUploads();
+
+    } catch (e) {
+        console.error("Erreur loading org data", e);
+        showAlert("Erreur lors du chargement des données", "error");
+    }
+}
+
+function renderDocBox(label, name, id, icon, file) {
+    const style = file ? `style="background-image: url('${file}'); overflow: hidden; background-size: cover; border-color: #C5F82A;"` : "";
+    const iconClass = file ? "fa-solid fa-file-circle-check" : `fa-solid ${icon}`;
+    const iconOpacity = file ? "style='opacity: 0.8; color: #C5F82A;'" : "";
+
+    return `
+        <div class="doc-box" >
+            <label>${label}</label>
+            <div class="upload-square" ${style}>
+                <input type="file" name="${name}" id="${id}" hidden>
+                <label for="${id}" style="cursor: pointer;">
+                    <i class="${iconClass}" ${iconOpacity}></i>
+                    <span>${file ? 'Modifier le fichier' : 'Télécharger'}</span>
+                </label>
+            </div>
+        </div>`;
+}
+
+function createOrg() {
+    const formAddOng = document.getElementById('form-add-ong');
+
+    formAddOng.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(formAddOng);
+        try {
+            const res = await fetch("/Tamghrabit/organisation/create", {
+                method: "POST",
+                body: formData
+            });
+
+            const data = await res.json;
+
+            showAlert(data.message, data.type);
+
+            switchTab(null, 'orgs')
+        } catch (e) {
+            showAlert("Erreur serveur", "error");
+            console.log(e)
+        }
+    });
+}
+
+async function renderOrgs() {
+    try {
+        const orgsContainer = document.getElementById('orgs-container');
+        const res = await fetch("/Tamghrabit/organisation/index");
+        const data = await res.json();
+
+        orgsContainer.innerHTML = "";
+
+        if (data.orgs) {
+            data.orgs.forEach(org => {
+                orgsContainer.innerHTML += `
+                <div class="org-card-item">
+                    <div class="org-info">
+                        <span class="org-name">${org.nom}</span><br>
+                        <span class="org-status">Statut : 
+                            <strong style="color: ${org.estVerifie ? '#C5F82A' : 'red'};">
+                                ${org.estVerifie ? 'Agréée' : 'En attente'}
+                            </strong>
+                        </span>
+                    </div>
+                    <div class="org-btns">
+                        <button class="icon-action-btn" onclick="showEditOrg('${org.id}')">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                        <button class="icon-action-btn delete">
+							<i class="fa-solid fa-trash"></i>
+						</button>
+                    </div>
+                </div>`;
+            });
+        } else {
+            orgsContainer.innerHTML = "<p>Aucune organisation trouvée pour le moment.</p>";
+        }
+    } catch (e) {
+        console.error("Erreur render orgs:", e);
     }
 }
 
@@ -71,7 +201,7 @@ async function renderIdentifier() {
             select.value = "cni"
         }
 
-        toggleIdUploads()
+        // toggleIdUploads()
 
         identifierForm.querySelectorAll("input").forEach(input => {
             const box = input.closest('.file-upload-box');
@@ -114,8 +244,7 @@ function updateIdentifier() {
                     body: formData
                 });
 
-                const data = await res.json();
-                console.log(data);
+                const data = await res.json(); w
 
                 showAlert(data.message, data.type);
 
@@ -144,7 +273,6 @@ async function renderBankInfos() {
 
         if (data.attestationRib) {
             const fileUrl = data.attestationRib;
-            console.log(fileUrl)
 
             box.style.backgroundImage = `url(${fileUrl})`;
             box.style.backgroundSize = "cover";
@@ -159,7 +287,6 @@ async function renderBankInfos() {
                 label.innerText = data.attestationRib;
             }
         }
-
     } catch (err) {
         console.error("Erreur render bank:", err);
     }
@@ -354,7 +481,7 @@ function renderFileUploads() {
                     icon.style.color = "#C5F82A";
                 }
 
-                if (label) label.innerText = file.name;
+                if (label) label.innerText = file.name.substring(0, 15) + "...";
 
             });
         }
@@ -460,8 +587,8 @@ function showAlert(message, type) {
 }
 
 function initApp() {
-    // renderCountries();
-    // renderPhones();
+    renderCountries();
+    renderPhones();
     renderFileUploads();
     renderImageProfile();
     updateProfile();
@@ -469,6 +596,8 @@ function initApp() {
     updateBankInfos();
     renderBankInfos();
     renderIdentifier();
+    createOrg();
+    renderOrgs();
 }
 
 initApp();

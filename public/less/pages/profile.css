@@ -251,15 +251,6 @@
   transition: 0.3s;
   position: relative;
 }
-#profile-main-container .docs-upload-grid .doc-box .upload-square label {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-}
 #profile-main-container .docs-upload-grid .doc-box .upload-square i {
   color: #C5F82A;
   font-size: 18px;

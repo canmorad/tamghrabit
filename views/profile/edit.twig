@@ -186,14 +186,13 @@
 									<input type="text" name="rib" value="" placeholder="000 000 000000000000000 00">
 								</div>
 								<div class="file-upload-box full-box">
-
 									<input type="file" name="attestationRib" id="rib-doc" hidden>
-
 									<label for="rib-doc">
 										<i class="fa-solid fa-file-invoice-dollar"></i><br>
 										<span>Attestation de RIB</span>
 									</label>
 								</div>
+
 								<div class="form-footer">
 									<button type="submit" class="btn-submit">Sauvegarder les infos bancaires</button>
 								</div>
@@ -205,34 +204,20 @@
 								<h3 class="section-title">Mes Organisations</h3>
 								<button class="btn-add-small" onclick="showAddOrg()">
 									<i class="fa-solid fa-plus"></i>
-									Ajouter une ONG</button>
+									Ajouter une ONG
+								</button>
 							</div>
-							<div class="org-card-item">
-								<div class="org-info">
-									<span class="org-name">Association Al Khair</span>
-									<br>
-									<span class="org-status">Statut :
-										<strong style="color: #C5F82A;">Agréée</strong>
-									</span>
-								</div>
-								<div class="org-btns">
-									<button class="icon-action-btn" onclick="showEditOrg('Association Al Khair')">
-										<i class="fa-solid fa-eye"></i>
-									</button>
-									<button class="icon-action-btn delete">
-										<i class="fa-solid fa-trash"></i>
-									</button>
-								</div>
-							</div>
+							<div id="orgs-container"></div>
 						</section>
 
 						<section id="add-org-view" class="tab-content">
-							<div class="org-header-flex" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-								<h3 class="section-title">Nouvelle Organisation</h3>
-								<button class="btn-submit" onclick="document.getElementById('form-add-ong').submit()">Enregistrer</button>
-							</div>
 
-							<form action="{{ url('organization/add') }}" method="POST" enctype="multipart/form-data" id="form-add-ong">
+							<form action="" method="POST" enctype="multipart/form-data" id="form-add-ong">
+								<div class="org-header-flex" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+									<h3 class="section-title">Nouvelle Organisation</h3>
+									<button type="submit" class="btn-submit">Enregistrer</button>
+								</div>
+
 								<div class="grid-row">
 									<div class="form-group">
 										<label>Nom de l'ONG</label>
@@ -266,6 +251,7 @@
 											<input type="file" name="recepisse" id="01" hidden>
 											<label for="01">
 												<i class="fa-solid fa-file-contract"></i>
+												<span>Récépissé de dépô</span>
 											</label>
 										</div>
 									</div>
@@ -276,6 +262,7 @@
 											<input type="file" name="pvElection" id="o_pv" hidden>
 											<label for="o_pv">
 												<i class="fa-solid fa-users-gear"></i>
+												<span>PV d'élection</span>
 											</label>
 										</div>
 									</div>
@@ -286,6 +273,7 @@
 											<input type="file" name="statuts" id="o2" hidden>
 											<label for="o2">
 												<i class="fa-solid fa-file-lines"></i>
+												<span>Statuts</span>
 											</label>
 										</div>
 									</div>
@@ -296,6 +284,7 @@
 											<input type="file" name="attestationRib" id="o3" hidden>
 											<label for="o3">
 												<i class="fa-solid fa-building-columns"></i>
+												<span>Attestation RIB</span>
 											</label>
 										</div>
 									</div>
@@ -306,6 +295,7 @@
 											<input type="file" name="cniPresidentRecto" id="o4" hidden>
 											<label for="o4">
 												<i class="fa-solid fa-id-card"></i>
+												<span>CIN Président</span>
 											</label>
 										</div>
 									</div>
@@ -316,6 +306,7 @@
 											<input type="file" name="cniPresidentVerso" id="05" hidden>
 											<label for="05">
 												<i class="fa-solid fa-address-card"></i>
+												<span>CIN Président</span>
 											</label>
 										</div>
 									</div>
@@ -324,7 +315,7 @@
 						</section>
 
 						<section id="edit-org-view" class="tab-content">
-							<form action="{{ url('organization/edit') }}" method="POST" enctype="multipart/form-data">
+							<form action="" method="POST" enctype="multipart/form-data" id="form-add-ong">
 								<div class="org-header-flex" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
 									<div>
 										<h3 class="section-title">Modifier l'organisation</h3>
@@ -339,11 +330,11 @@
 								<div class="grid-row">
 									<div class="form-group">
 										<label>Nom de l'ONG</label>
-										<input type="text" name="nom" value="Association Al Khair">
+										<input type="text" name="nom" placeholder="Nom officiel" required>
 									</div>
 									<div class="form-group">
 										<label>Identifiant Fiscal (IF)</label>
-										<input type="text" name="identifiant_fiscal" value="87654321">
+										<input type="text" name="identifiantFiscal" placeholder="N° IF (ex: 12345678)">
 									</div>
 								</div>
 
@@ -357,7 +348,7 @@
 								<div class="grid-row">
 									<div class="form-group full">
 										<label>RIB de l'organisation (24 chiffres)</label>
-										<input type="text" name="rib_association" placeholder="RIB Bancaire">
+										<input type="text" name="ribAssociation" placeholder="RIB Bancaire">
 									</div>
 								</div>
 
@@ -366,9 +357,10 @@
 									<div class="doc-box">
 										<label>Récépissé de dépôt</label>
 										<div class="upload-square">
-											<input type="file" name="recepisse" id="o_recepisse" hidden>
-											<label for="o_recepisse">
+											<input type="file" name="recepisse" id="01" hidden>
+											<label for="01">
 												<i class="fa-solid fa-file-contract"></i>
+												<span>Récépissé de dépô</span>
 											</label>
 										</div>
 									</div>
@@ -376,9 +368,10 @@
 									<div class="doc-box">
 										<label>PV d'élection</label>
 										<div class="upload-square">
-											<input type="file" name="pv_election" id="o_pv" hidden>
+											<input type="file" name="pvElection" id="o_pv" hidden>
 											<label for="o_pv">
 												<i class="fa-solid fa-users-gear"></i>
+												<span>PV d'élection</span>
 											</label>
 										</div>
 									</div>
@@ -389,6 +382,7 @@
 											<input type="file" name="statuts" id="o2" hidden>
 											<label for="o2">
 												<i class="fa-solid fa-file-lines"></i>
+												<span>Statuts</span>
 											</label>
 										</div>
 									</div>
@@ -396,9 +390,10 @@
 									<div class="doc-box">
 										<label>Attestation RIB</label>
 										<div class="upload-square">
-											<input type="file" name="attestation_rib" id="o3" hidden>
+											<input type="file" name="attestationRib" id="o3" hidden>
 											<label for="o3">
 												<i class="fa-solid fa-building-columns"></i>
+												<span>Attestation RIB</span>
 											</label>
 										</div>
 									</div>
@@ -406,9 +401,10 @@
 									<div class="doc-box">
 										<label>CIN Président.(Recto)</label>
 										<div class="upload-square">
-											<input type="file" name="cni_president_recto" id="o4" hidden>
+											<input type="file" name="cniPresidentRecto" id="o4" hidden>
 											<label for="o4">
 												<i class="fa-solid fa-id-card"></i>
+												<span>CIN Président</span>
 											</label>
 										</div>
 									</div>
@@ -416,9 +412,10 @@
 									<div class="doc-box">
 										<label>CIN Président. (Verso)</label>
 										<div class="upload-square">
-											<input type="file" name="cni_president_verso" id="o_cni_v" hidden>
-											<label for="o_cni_v">
+											<input type="file" name="cniPresidentVerso" id="05" hidden>
+											<label for="05">
 												<i class="fa-solid fa-address-card"></i>
+												<span>CIN Président</span>
 											</label>
 										</div>
 									</div>

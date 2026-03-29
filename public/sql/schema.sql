@@ -97,7 +97,7 @@ create table organisations (
     cniPresidentRecto varchar(255),
     cniPresidentVerso varchar(255),
     estVerifie boolean default false,
-    dateCreation timestamp default current_timestamp,
+    dateCreation timestamp default(now()),
     dateModifier timestamp,
     constraint FK_org_adherent foreign key (idAdherent) references adherents (id)
 );

@@ -7,14 +7,11 @@ class CampagneController extends Controller
 {
     public function create()
     {
-        return $this->view("adherent/campagne/create");
+        return $this->view("campagne/create");
     }
 
     public function store(){
-       Session::start();
+      
 
-       $data = [
-          
-       ];
     }
 }

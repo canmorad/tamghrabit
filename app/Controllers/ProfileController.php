@@ -3,8 +3,7 @@ namespace App\Controllers;
 use App\Core\Controller;
 use App\Helpers\Session;
 use App\Helpers\Validator;
-use App\Services\IdentifierService;
-use App\Services\RibService;
+use App\Services\OrganisationService;
 use App\Services\ProfileService;
 use App\Core\Connection;
 use Exception;
@@ -13,25 +12,21 @@ Session::start();
 class ProfileController extends Controller
 {
     private $profileServive;
-    private $identifierService;
-    private $ribService;
+    private $orgService;
     public function __construct()
     {
         parent::__construct();
-        $this->identifierService = new IdentifierService(Connection::getInstance());
-        $this->ribService = new RibService(Connection::getInstance());
+        $this->orgService = new OrganisationService(Connection::getInstance());
         $this->profileServive = new ProfileService(Connection::getInstance());
     }
     public function edit()
     {
         $user = Session::get("user");
-        $identifiers = $this->identifierService->getIdentifierByUserId($user->getId());
-        $bankInfos = $this->ribService->getRibByUserId($user->getId());
+        $Organisations = $this->orgService->getOrgByUserId($user->getId());
 
         $this->view('profile/edit', [
             "user" => $user,
-            "identifiers" => $identifiers,
-            "bankInfos" => $bankInfos
+            "organisations" => $Organisations
         ]);
     }
 
