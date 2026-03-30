@@ -1,0 +1,191 @@
+// out: ../../css/campagne-index.css
+
+@couleur-primaire: #C5F82A;
+@couleur-noire: #062121;
+@couleur-blanche: #FFFFFF;
+@couleur-gris-clair: #F8FAFC;
+@couleur-border: #E2E8F0;
+@text-muted: #64748B;
+
+.line-clamp(@lines) {
+    display: -webkit-box;
+    -webkit-line-clamp: @lines;
+    -webkit-box-orient: vertical;
+    line-clamp: @lines; 
+    overflow: hidden;
+}
+
+.dashboard-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 40px;
+    background-color: #F1F5F9;
+
+    &::-webkit-scrollbar { width: 6px; }
+    &::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 10px; }
+}
+
+.categories-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 30px;
+    overflow-x: auto;
+    padding-bottom: 5px;
+
+    .cat-pill {
+        padding: 10px 22px;
+        border-radius: 50px;
+        border: 1px solid @couleur-border;
+        background: @couleur-blanche;
+        color: @text-muted;
+        cursor: pointer;
+        font-weight: 500;
+        font-size: 14px;
+        transition: 0.3s;
+        white-space: nowrap;
+
+        &.active, &:hover {
+            background-color: @couleur-noire;
+            color: @couleur-primaire;
+            border-color: @couleur-noire;
+        }
+    }
+}
+
+.section-header {
+    margin-bottom: 35px;
+    h2 { font-size: 26px; font-weight: 700; color: @couleur-noire; margin-bottom: 8px; }
+    p { color: @text-muted; font-size: 15px; }
+}
+
+.campaigns-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 25px;
+}
+
+.campaign-card {
+    background: @couleur-blanche;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid @couleur-border;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    &:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+    }
+
+    .card-image {
+        position: relative;
+        height: 190px;
+        img { width: 100%; height: 100%; object-fit: cover; }
+        .badge-cat {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 5px 12px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 700;
+            color: @couleur-noire;
+        }
+    }
+
+    .card-content {
+        padding: 20px;
+
+        .org-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            font-size: 13px;
+            color: @text-muted;
+            .mini-logo { width: 22px; height: 22px; border-radius: 50%; }
+            i { color: #2563EB; font-size: 10px; }
+        }
+
+        .card-title {
+            font-size: 17px;
+            font-weight: 600;
+            color: @couleur-noire;
+            margin-bottom: 12px;
+            line-height: 1.4;
+            height: 48px;
+            .line-clamp(2);
+        }
+
+        .card-desc {
+            font-size: 14px;
+            color: @text-muted;
+            margin-bottom: 15px;
+            height: 40px;
+            .line-clamp(2);
+        }
+    }
+}
+
+.progress-container {
+    margin-bottom: 20px;
+    .progress-bar {
+        height: 7px;
+        background: #E2E8F0;
+        border-radius: 10px;
+        margin-bottom: 8px;
+        overflow: hidden;
+        .progress-fill { height: 100%; background: @couleur-primaire; }
+    }
+    .progress-stats {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        color: @text-muted;
+        strong { color: @couleur-noire; }
+    }
+}
+
+.info-tag, .item-needed {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.info-tag { background: #EEF2FF; color: #4F46E5; }
+.item-needed { background: #F0FDF4; color: #16A34A; }
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 15px;
+    border-top: 1px solid #F1F5F9;
+
+    .days-left, .status-tag, .type-tag {
+        font-size: 12px;
+        font-weight: 500;
+        color: @text-muted;
+    }
+
+    .status-tag { color: #EF4444; }
+
+    .btn-donate {
+        background-color: @couleur-noire;
+        color: @couleur-primaire;
+        border: none;
+        padding: 8px 18px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s;
+
+        &:hover { background-color: #1a2e2e; }
+    }
+}

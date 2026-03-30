@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Tamghrabit - Explorer les campagnes</title>
+		<link rel="stylesheet" href="{{ url('public/css/dashboard.css') }}">
+		<link rel="stylesheet" href="{{ url('public/css/campagne-index.css') }}">
+		<link rel="stylesheet" href="{{ url('public/css/all.min.css') }}">
+	</head>
+	<body>
+
+		<div class="main-wrapper">
+			{% include 'layouts/sidebar.twig' %}
+
+			<main>
+				<header>
+					<div class="search-bar">
+						<i class="fa-solid fa-magnifying-glass"></i>
+						<input type="text" placeholder="Rechercher une campagne...">
+					</div>
+
+					<div class="action-buttons">
+						<button class="icon-btn">
+							<i class="fa-solid fa-moon"></i>
+						</button>
+						<button class="icon-btn">
+							<i class="fa-solid fa-bell"></i>
+						</button>
+
+						<div class="profile-container">
+							<img src="{{ url('public/images/profile-cv.png') }}" class="avatar">
+							<div class="user-info">
+								<span class="nom">Morad Benaissa</span>
+								<span class="email">moradbenaissa@gmail.com</span>
+							</div>
+						</div>
+					</div>
+				</header>
+
+				<section class="dashboard-body">
+					<div class="categories-row">
+						<button class="cat-pill active">Tout</button>
+						<button class="cat-pill">Santé</button>
+						<button class="cat-pill">Éducation</button>
+						<button class="cat-pill">Social</button>
+						<button class="cat-pill">Nature</button>
+					</div>
+
+					<div class="section-header">
+						<h2>Explorer les campagnes</h2>
+						<p>Soutenez des projets vérifiés par notre communauté.</p>
+					</div>
+
+					<div class="campaigns-grid">
+
+						<div class="campaign-card type-money">
+							<div class="card-image">
+								<img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=500">
+								<span class="badge-cat">Argent</span>
+							</div>
+							<div class="card-content">
+								<div class="org-info">
+									<img src="{{ url('public/images/logo-placeholder.png') }}" class="mini-logo">
+									<span>Association Nour
+										<i class="fa-solid fa-circle-check"></i>
+									</span>
+								</div>
+								<h3 class="card-title">Aide pour chirurgie cardiaque infantile</h3>
+								<div class="progress-container">
+									<div class="progress-bar">
+										<div class="progress-fill" style="width: 65%;"></div>
+									</div>
+									<div class="progress-stats">
+										<span>
+											<strong>12 500 DH</strong>
+											/ 20 000 DH</span>
+										<span>65%</span>
+									</div>
+								</div>
+								<div class="card-footer">
+									<span class="days-left">
+										<i class="fa-regular fa-clock"></i>
+										12j restants</span>
+									<button class="btn-donate">Donner</button>
+								</div>
+							</div>
+						</div>
+
+						<div class="campaign-card type-parrainage">
+							<div class="card-image">
+								<img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=500">
+								<span class="badge-cat">Parrainage</span>
+							</div>
+							<div class="card-content">
+								<div class="org-info">
+									<img src="{{ url('public/images/logo-placeholder.png') }}" class="mini-logo">
+									<span>Fondation Espoir
+										<i class="fa-solid fa-circle-check"></i>
+									</span>
+								</div>
+								<h3 class="card-title">Parrainer la scolarité de Yassine</h3>
+								<div class="info-tag">
+									<i class="fa-solid fa-repeat"></i>
+									Engagement Mensuel</div>
+								<p class="card-desc">Soutien direct pour les fournitures et transport scolaire.</p>
+								<div class="card-footer">
+									<span class="status-tag">Besoin urgent</span>
+									<button class="btn-donate">Parrainer</button>
+								</div>
+							</div>
+						</div>
+
+						<div class="campaign-card type-dons">
+							<div class="card-image">
+								<img src="https://images.unsplash.com/photo-1594708767771-a7502209ff51?q=80&w=500">
+								<span class="badge-cat">Dons Nature</span>
+							</div>
+							<div class="card-content">
+								<div class="org-info">
+									<img src="{{ url('public/images/logo-placeholder.png') }}" class="mini-logo">
+									<span>Association Atlas
+										<i class="fa-solid fa-circle-check"></i>
+									</span>
+								</div>
+								<h3 class="card-title">Collecte de 50 fauteuils roulants</h3>
+								<div class="item-needed">
+									<i class="fa-solid fa-box-open"></i>
+									Objectif: 50 unités</div>
+								<p class="card-desc">Matériel pour handicapés en zone rurale isolée.</p>
+								<div class="card-footer">
+									<span class="type-tag">Dons & Services</span>
+									<button class="btn-donate">Contribuer</button>
+								</div>
+							</div>
+						</div>
+
+						<div class="campaign-card type-money">
+							<div class="card-image">
+								<img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=500">
+								<span class="badge-cat">Argent</span>
+							</div>
+							<div class="card-content">
+								<div class="org-info">
+									<img src="{{ url('public/images/logo-placeholder.png') }}" class="mini-logo">
+									<span>Association Nour
+										<i class="fa-solid fa-circle-check"></i>
+									</span>
+								</div>
+								<h3 class="card-title">Aide pour chirurgie cardiaque infantile</h3>
+								<div class="progress-container">
+									<div class="progress-bar">
+										<div class="progress-fill" style="width: 65%;"></div>
+									</div>
+									<div class="progress-stats">
+										<span>
+											<strong>12 500 DH</strong>
+											/ 20 000 DH</span>
+										<span>65%</span>
+									</div>
+								</div>
+								<div class="card-footer">
+									<span class="days-left">
+										<i class="fa-regular fa-clock"></i>
+										12j restants</span>
+									<button class="btn-donate">Donner</button>
+								</div>
+							</div>
+						</div>
+
+						<div class="campaign-card type-parrainage">
+							<div class="card-image">
+								<img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=500">
+								<span class="badge-cat">Parrainage</span>
+							</div>
+							<div class="card-content">
+								<div class="org-info">
+									<img src="{{ url('public/images/logo-placeholder.png') }}" class="mini-logo">
+									<span>Fondation Espoir
+										<i class="fa-solid fa-circle-check"></i>
+									</span>
+								</div>
+								<h3 class="card-title">Parrainer la scolarité de Yassine</h3>
+								<div class="info-tag">
+									<i class="fa-solid fa-repeat"></i>
+									Engagement Mensuel</div>
+								<p class="card-desc">Soutien direct pour les fournitures et transport scolaire.</p>
+								<div class="card-footer">
+									<span class="status-tag">Besoin urgent</span>
+									<button class="btn-donate">Parrainer</button>
+								</div>
+							</div>
+						</div>
+
+						<div class="campaign-card type-dons">
+							<div class="card-image">
+								<img src="https://images.unsplash.com/photo-1594708767771-a7502209ff51?q=80&w=500">
+								<span class="badge-cat">Dons Nature</span>
+							</div>
+							<div class="card-content">
+								<div class="org-info">
+									<img src="{{ url('public/images/logo-placeholder.png') }}" class="mini-logo">
+									<span>Association Atlas
+										<i class="fa-solid fa-circle-check"></i>
+									</span>
+								</div>
+								<h3 class="card-title">Collecte de 50 fauteuils roulants</h3>
+								<div class="item-needed">
+									<i class="fa-solid fa-box-open"></i>
+									Objectif: 50 unités</div>
+								<p class="card-desc">Matériel pour handicapés en zone rurale isolée.</p>
+								<div class="card-footer">
+									<span class="type-tag">Dons & Services</span>
+									<button class="btn-donate">Contribuer</button>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</section>
+			</main>
+		</div>
+
+		<script>
+			document.querySelectorAll('.cat-pill').forEach(pill => {
+pill.addEventListener('click', () => {
+document.querySelector('.cat-pill.active').classList.remove('active');
+pill.classList.add('active');
+});
+});
+		</script>
+
+	</body>
+</html>
