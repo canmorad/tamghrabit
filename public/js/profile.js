@@ -66,15 +66,16 @@ async function showEditOrg(orgId) {
 
                 <h4 style="margin: 20px 0 10px 0; color: #64748B; font-size: 14px;">Documents de vérification</h4>
                 <div class="docs-upload-grid">
-                    ${renderDocBox('Récépissé de dépôt', 'recepisse', '01', 'fa-file-contract', org.recepisse)}
-                    ${renderDocBox("PV d'élection", 'pvElection', 'o_pv', 'fa-users-gear', org.pvElection)}
-                    ${renderDocBox('Statuts', 'statuts', 'o2', 'fa-file-lines', org.statuts)}
-                    ${renderDocBox('Attestation RIB', 'attestationRib', 'o3', 'fa-building-columns', org.attestationRib)}
-                    ${renderDocBox('CIN Président (Recto)', 'cniPresidentRecto', 'o4', 'fa-id-card', org.cniPresidentRecto)}
-                    ${renderDocBox('CIN Président (Verso)', 'cniPresidentVerso', 'o5', 'fa-address-card', org.cniPresidentVerso)}
+                    ${renderDocBox('Récépissé de dépôt', 'recepisse', 'edit_01', 'fa-file-contract', org.recepisse)}
+                    ${renderDocBox("PV d'élection", 'pvElection', 'edit_o_pv', 'fa-users-gear', org.pvElection)}
+                    ${renderDocBox('Statuts', 'statuts', 'edit_o2', 'fa-file-lines', org.statuts)}
+                    ${renderDocBox('Attestation RIB', 'attestationRib', 'edit_o3', 'fa-building-columns', org.attestationRib)}
+                    ${renderDocBox('CIN Président (Recto)', 'cniPresidentRecto', 'edit_o4', 'fa-id-card', org.cniPresidentRecto)}
+                    ${renderDocBox('CIN Président (Verso)', 'cniPresidentVerso', 'edit_o5', 'fa-address-card', org.cniPresidentVerso)}
                 </div>
             </form>`;
         renderFileUploads();
+        updateOrg();
 
     } catch (e) {
         console.error("Erreur loading org data", e);
@@ -94,10 +95,38 @@ function renderDocBox(label, name, id, icon, file) {
                 <input type="file" name="${name}" id="${id}" hidden>
                 <label for="${id}" style="cursor: pointer;">
                     <i class="${iconClass}" ${iconOpacity}></i>
-                    <span>${file ? 'Modifier le fichier' : 'Télécharger'}</span>
+                    <span>${file.split('/').pop()}</span>
                 </label>
             </div>
         </div>`;
+}
+
+function updateOrg() {
+    const formEditOng = document.getElementById('form-edit-org');
+    if (!formEditOng) return;
+
+    formEditOng.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(formEditOng);
+        try {
+            const res = await fetch("/Tamghrabit/organisation/update", {
+                method: "POST",
+                body: formData
+            });
+
+            const data = await res.json();
+
+            showAlert(data.message, data.type);
+            if (data.type === 'success') {
+                switchTab(null, 'orgs');
+                renderOrgs();
+            }
+        } catch (e) {
+            showAlert("Erreur serveur", "error");
+            console.error(e);
+        }
+    });
 }
 
 function createOrg() {
@@ -108,7 +137,7 @@ function createOrg() {
 
         const formData = new FormData(formAddOng);
         try {
-            const res = await fetch("/Tamghrabit/organisation/create", {
+            const res = await fetch("/Tamghrabit/organisation/store", {
                 method: "POST",
                 body: formData
             });
@@ -117,7 +146,10 @@ function createOrg() {
 
             showAlert(data.message, data.type);
 
-            switchTab(null, 'orgs')
+            if (data.type === 'success') {
+                switchTab(null, 'orgs');
+                renderOrgs();
+            }
         } catch (e) {
             showAlert("Erreur serveur", "error");
             console.log(e)
@@ -481,7 +513,7 @@ function renderFileUploads() {
                     icon.style.color = "#C5F82A";
                 }
 
-                if (label) label.innerText = file.name.substring(0, 15) + "...";
+                if (label) label.innerText = file.name.split('/').pop();
 
             });
         }
@@ -524,7 +556,7 @@ function renduFileUploads() {
                     }
                 }
 
-                if (label) label.innerText = file.name.substring(0, 15) + "...";
+                if (label) label.innerText = file.name.split('/').pop();
 
                 removeBtn.addEventListener('click', function (e) {
                     e.preventDefault();

@@ -45,7 +45,7 @@ class OrganisationController extends Controller
 
     public function show()
     {
-        $id = $_GET['id'] ;
+        $id = $_GET['id'];
 
         $organisation = $this->orgService->getOrgById($id);
 
@@ -65,9 +65,18 @@ class OrganisationController extends Controller
         ]);
     }
 
-    public function create()
+    public function update()
+    {
+        $this->handleSave($_POST['id']);
+    }
+    public function store()
+    {
+        $this->handleSave();
+    }
+    private function handleSave($id = null)
     {
         $userSession = Session::get('user');
+        $ancienOrg = $id ? $this->orgService->getOrgById($id) : null;
 
         $data = [
             "nom" => $_POST['nom'] ?? '',
@@ -83,17 +92,20 @@ class OrganisationController extends Controller
         ];
 
         $validate = new Validator($data);
-        $validate->field("nom", "Nom de l'ONG")->required();
-        $validate->field("identifiantFiscal", "Identifiant Fiscal")->required();
-        $validate->field("adresse", "Adresse")->required();
-        $validate->field("ribAssociation", "RIB")->required();
+        $validate->field("nom", "Nom")->required();
 
+        $fileFields = ['recepisse', 'pvElection', 'statuts', 'attestationRib', 'cniPresidentRecto', 'cniPresidentVerso'];
+
+        foreach ($fileFields as $field) {
+            $filesData = $_FILES[$field] ?? null;
+
+            if ((!$ancienOrg || empty($ancienOrg[$field])) && (!$filesData || empty($filesData['tmp_name']))) {
+                $validate->field($field, $field)->file_required();
+            }
+        }
 
         if (!$validate->isValid()) {
-            echo json_encode([
-                "type" => "error",
-                "message" => $validate->errorMessages
-            ]);
+            echo json_encode(["type" => "error", "message" => $validate->errorMessages]);
             exit;
         }
 
@@ -110,22 +122,15 @@ class OrganisationController extends Controller
                 $data['cniPresidentRecto'],
                 $data['cniPresidentVerso']
             );
-
             $org->setAdherent($userSession);
 
-            $this->orgService->create($org);
-            echo json_encode(['type' => 'success', 'message' => "Organisation enregistrées !"]);
+            $this->orgService->save($org, $id);
+
+            $msg = $id ? "Organisation mise à jour !" : "Organisation enregistrée !";
+            echo json_encode(['type' => 'success', 'message' => $msg]);
 
         } catch (Exception $e) {
-            echo json_encode([
-                "type" => "error",
-                "message" => $e->getMessage()
-            ]);
+            echo json_encode(["type" => "error", "message" => $e->getMessage()]);
         }
-    }
-
-    public function update()
-    {
-
     }
 }

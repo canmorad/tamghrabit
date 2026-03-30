@@ -34,10 +34,12 @@ class OrganisationService
         return $data;
     }
 
-    public function create($org)
+    public function save(Organisation $org, $id = null)
     {
         $utilisateur = $org->getAdherent();
         $dossierBase = dirname(__DIR__, 2) . "/public/storage/organisations/";
+
+        $oldData = $id ? $this->getOrgById($id) : null;
 
         $fileFields = [
             'recepisse' => 'Recepisse',
@@ -54,24 +56,36 @@ class OrganisationService
             foreach ($fileFields as $key => $method) {
                 $getter = "get" . $method;
                 $setter = "set" . $method;
-                $file = $org->$getter();
+                $file = $org->$getter(); 
 
-                $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-                $nomFichier = "{$key}_{$utilisateur->getId()}_" . time() . ".{$extension}";
+                if (isset($file['name']) && !empty($file['name'])) {
+                    $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+                    $nomFichier = "{$key}_{$utilisateur->getId()}_" . time() . ".{$extension}";
+                    $this->uploadFile($file, $dossierBase . $nomFichier);
+                    $org->$setter($nomFichier);
+                }
 
-                $this->uploadFile($file, $dossierBase . $nomFichier);
-
-                $org->$setter($nomFichier);
+                elseif ($oldData && isset($oldData[$key])) {
+                    $org->$setter($oldData[$key]);
+                }
+                
+                else {
+                    $org->$setter(null);
+                }
             }
 
-            $this->orgRepository->create($org);
+            if ($id) {
+                $this->orgRepository->update($org, $id);
+            } else {
+                $this->orgRepository->store($org);
+            }
 
             $this->orgRepository->commit();
+            return true;
 
-        } catch (\PDOException $e) {
+        } catch (\Exception $e) {
             $this->orgRepository->rollBack();
-
-            throw new \Exception("Une erreur est survenue lors de l'enregistrement de l'organisation. Veuillez réessayer.");
+            throw $e;
         }
     }
 }

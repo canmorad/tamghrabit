@@ -31,7 +31,7 @@ $router->get("register", ['App\Controllers\Auth\RegisteredUserController', 'crea
 $router->post("register", ['App\Controllers\Auth\RegisteredUserController', 'store'])->name('register.store');
 
 $router->get("campagne/create", ['App\Controllers\CampagneController', 'create'])->name('campagne.create');
-$router->get("explorer", ['App\Controllers\CampagneController', 'index']);
+$router->get("explorer", ['App\Controllers\CampagneController', 'index'])->name('explorer');
 
 $router->get("profile/edit", ['App\Controllers\ProfileController', 'edit'])->name('profile.edit');
 $router->post("profile/update", ['App\Controllers\ProfileController', 'updateProfile'])->name('profile.update');
@@ -43,7 +43,8 @@ $router->get("identifier/index", ['App\Controllers\IdentifierController', 'index
 $router->post("bank/update", ['App\Controllers\RibController', 'update'])->name('bank.update');
 $router->get("bank/index", ['App\Controllers\RibController', 'index']);
 
-$router->post("organisation/create", ['App\Controllers\OrganisationController', 'create']);
+$router->post("organisation/store", ['App\Controllers\OrganisationController', 'store']);
+$router->post("organisation/update", ['App\Controllers\OrganisationController', 'update']);
 $router->get("organisation/index", ['App\Controllers\OrganisationController', 'index']);
 $router->get("organisation/get", ['App\Controllers\OrganisationController', 'show']);
 

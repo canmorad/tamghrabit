@@ -26,7 +26,8 @@ class ProfileController extends Controller
 
         $this->view('profile/edit', [
             "user" => $user,
-            "organisations" => $Organisations
+            "organisations" => $Organisations,
+            'current_uri' => 'edit_profile'
         ]);
     }
 

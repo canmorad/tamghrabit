@@ -43,7 +43,7 @@ class OrganisationRepository
         return $stm->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function create(Organisation $org)
+    public function store(Organisation $org)
     {
         $sql = "insert into organisations (
                     idAdherent, nom, identifiantFiscal, adresse, ribAssociation, 
@@ -65,6 +65,32 @@ class OrganisationRepository
             $org->getAttestationRib(),
             $org->getCniPresidentRecto(),
             $org->getCniPresidentVerso(),
+        ]);
+    }
+
+    public function update(Organisation $org, $id)
+    {
+        $sql = "update organisations set 
+            nom = ?, identifiantFiscal = ?, adresse = ?, ribAssociation = ?, 
+            recepisse = ?, pvElection = ?, statuts = ?, attestationRib = ?, 
+            cniPresidentRecto = ?, cniPresidentVerso = ?
+            where id = ? and idAdherent = ?";
+
+        $stm = $this->conn->prepare($sql);
+
+        return $stm->execute([
+            $org->getNom(),
+            $org->getIdentifiantFiscal(),
+            $org->getAdresse(),
+            $org->getRibAssociation(),
+            $org->getRecepisse(),
+            $org->getPvElection(),
+            $org->getStatuts(),
+            $org->getAttestationRib(),
+            $org->getCniPresidentRecto(),
+            $org->getCniPresidentVerso(),
+            $id,
+            $org->getAdherent()->getId() 
         ]);
     }
 }
