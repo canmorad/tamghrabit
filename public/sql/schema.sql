@@ -35,31 +35,84 @@ create table adherents (
     constraint CK_sexe check (sexe in ('homme', 'femme'))
 );
 
-drop table adherents;
-
-drop table users;
-
 create table categories (
-    int primary key auto_increment,
-    nom varchar(100) not null,
+    id int primary key auto_increment,
+    nom varchar(100) not null
 );
 
-create table compagne (
+create table organisations (
     id int primary key auto_increment,
-    idAdherent int,
-    idCategorie int,
+    idadherent int not null,
+    nom varchar(150) not null,
+    identifiantfiscal varchar(50),
+    adresse text,
+    ribassociation varchar(24),
+    recepisse varchar(255),
+    pvelection varchar(255),
+    statuts varchar(255),
+    attestationrib varchar(255),
+    cnipresidentrecto varchar(255),
+    cnipresidentverso varchar(255),
+    estverifie boolean default false,
+    datecreation timestamp default current_timestamp,
+    datemodifier timestamp on update current_timestamp,
+    constraint fk_org_adherent foreign key (idadherent) references adherents (id)
+);
+
+create table campagnes (
+    id int primary key auto_increment,
+    idAdherent int not null,
+    idCategorie int not null,
     titre varchar(100) not null,
     description text not null,
-    imageCampagne varchar(255) not null,
-    objectifMontant decimal(10, 2) not null check (objectifMontant > 0),
-    montantCollecte decimal(10, 2) default 0,
+    image varchar(255) not null,
     telephone varchar(50) not null,
-    dateDebut date not null,
-    dateFin date not null,
-    CNIFace varchar(255) not null,
-    CNIDos varchar(255) not null,
-    constraint FK_adherent foreign key (idAdherent) references adherents (id),
-    constraint FK_categorie foreign key (idCategorie) references categories (id),
+    datedebut date not null,
+    datefin date not null,
+    justificatif varchar(255),
+    status enum(
+        'en_attente',
+        'approuvee',
+        'rejetee',
+        'terminee'
+    ) default 'en_attente',
+    datecreation timestamp default current_timestamp,
+    datemodifier timestamp on update current_timestamp,
+    datesupprimer timestamp default null,
+    constraint fk_campagne_adherent foreign key (idAdherent) references adherents (id),
+    constraint fk_campagne_categorie foreign key (idCategorie) references categories (id)
+);
+
+create table campagnesFinancieres (
+    id int primary key,
+    objectifMontant decimal(12, 2) not null check (objectifMontant > 0),
+    montantCollecte decimal(12, 2) default 0.00,
+    constraint fk_fin_campagne foreign key (id) references campagnes (id) 
+);
+
+create table CampagnesArgent (
+    id int primary key,
+    constraint fk_argent_fin foreign key (id) references campagnesFinancieres (id) 
+);
+
+create table campagnesParrainage (
+    id int primary key,
+    frequence enum('mensuel', 'annuel') not null,
+    constraint fk_parrainage_fin foreign key (id) references campagnesFinancieres (id) 
+);
+
+create table campagnesAssociation (
+    id int primary key,
+    idOrganisation int not null,
+    constraint fk_assoc_fin foreign key (id) references campagnesFinancieres (id),
+    constraint fk_assoc_org foreign key (idOrganisation) references organisations (id)
+);
+
+create table campagnesNature (
+    id int primary key,
+    typeDon enum('materiel', 'expertise'),
+    nomArticle varchar(255),
+    constraint fk_nature_campagne foreign key (id) references campagnes (id)
 );
 
 create table identifiers (
@@ -81,25 +134,6 @@ create table ribs (
     dateCreation timestamp default current_timestamp,
     dateModifier timestamp,
     constraint FK_adherent foreign key (id) references adherents (id)
-);
-
-create table organisations (
-    id int primary key auto_increment,
-    idAdherent int not null,
-    nom varchar(150) not null,
-    identifiantFiscal varchar(50),
-    adresse text,
-    ribAssociation varchar(24),
-    recepisse varchar(255),
-    pvElection varchar(255),
-    statuts varchar(255),
-    attestationRib varchar(255),
-    cniPresidentRecto varchar(255),
-    cniPresidentVerso varchar(255),
-    estVerifie boolean default false,
-    dateCreation timestamp default(now()),
-    dateModifier timestamp,
-    constraint FK_org_adherent foreign key (idAdherent) references adherents (id)
 );
 
 delimiter

@@ -169,6 +169,11 @@ class Validator
         return $this;
     }
 
+    public function set($key, $value)
+    {
+        $this->data[$key] = $value;
+    }
+
     public function isValid()
     {
         return count($this->errorMessages) === 0;

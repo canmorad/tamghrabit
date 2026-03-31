@@ -48,5 +48,10 @@ $router->post("organisation/update", ['App\Controllers\OrganisationController', 
 $router->get("organisation/index", ['App\Controllers\OrganisationController', 'index']);
 $router->get("organisation/get", ['App\Controllers\OrganisationController', 'show']);
 
+$router->post("campagne/store/argent", ['App\Controllers\CampagneController', 'store']);
+$router->post("campagne/store/argent", ['App\Controllers\CampagneController', 'store']);
+$router->post("campagne/store/argent", ['App\Controllers\CampagneController', 'store']);
+$router->post("campagne/store/argent", ['App\Controllers\CampagneController', 'store']);
+
 $router->dispatch($method, $url);
 

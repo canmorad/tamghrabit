@@ -35,7 +35,7 @@ class RibService
                 if ($nomFichierFinal) {
                     $this->deleteFile($dossierBase . $nomFichierFinal);
                 }
-                
+
                 $extension = strtolower(pathinfo($fichier['name'], PATHINFO_EXTENSION));
                 $nomFichierFinal = "rib_" . $utilisateur->getId() . "_" . time() . "." . $extension;
                 $this->uploadFile($fichier, $dossierBase . $nomFichierFinal);
@@ -47,6 +47,5 @@ class RibService
         } catch (Exception $e) {
             throw $e;
         }
-
     }
 }
