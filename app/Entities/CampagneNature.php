@@ -7,9 +7,9 @@ class CampagneNature extends Campagne
     private $typeDon;
     private $nomArticle;
 
-    public function __construct($titre, $description, $image, $telephone, $dateDebut, $dateFin, $categorie, $adherent, $justificatif, $typeDon, $nomArticle)
+    public function __construct($titre, $description, $image, $telephone, $dateDebut, $dateFin, $categorie, $adherent, $justificatif, $type, $typeDon, $nomArticle)
     {
-        parent::__construct($titre, $description, $image, $telephone, $dateDebut, $dateFin, $categorie, $adherent, $justificatif);
+        parent::__construct($titre, $description, $image, $telephone, $dateDebut, $dateFin, $categorie, $adherent, $justificatif, $type);
         $this->typeDon = $typeDon;
         $this->nomArticle = $nomArticle;
     }

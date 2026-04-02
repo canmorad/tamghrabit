@@ -59,4 +59,42 @@ class CampagneService
             throw $e;
         }
     }
+
+    public function getAllCampagnes()
+    {
+        $campagnes = $this->campagneRepo->findAll();
+
+        foreach ($campagnes as &$c) {
+            if (in_array($c['type'], ['argent', 'parrainage', 'associationassociation'])) {
+                $c['percentage'] = ($c['objectifMontant'] > 0) ? round(($c['montantCollecte'] / $c['objectifMontant']) * 100) : 0;
+            }
+
+            $dateFin = new \DateTime($c['datefin']);
+            $now = new \DateTime();
+            $c['days_left'] = ($dateFin > $now) ? $now->diff($dateFin)->days : 0;
+        }
+
+        return $campagnes;
+    }
+
+    public function getCampagneById($id)
+    {
+        $c = $this->campagneRepo->findById($id);
+
+        if (!$c)
+            return null;
+
+        if (isset($c['objectifMontant']) && $c['objectifMontant'] > 0) {
+            $c['percentage'] = round(($c['montantCollecte'] / $c['objectifMontant']) * 100);
+        } else {
+            $c['percentage'] = 0;
+        }
+
+        $dateFin = new \DateTime($c['datefin']);
+        $now = new \DateTime();
+        $interval = $now->diff($dateFin);
+        $c['days_left'] = ($dateFin > $now) ? $interval->days : 0;
+
+        return $c;
+    }
 }

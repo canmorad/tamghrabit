@@ -32,6 +32,9 @@ $router->post("register", ['App\Controllers\Auth\RegisteredUserController', 'sto
 
 $router->get("campagne/create", ['App\Controllers\CampagneController', 'create'])->name('campagne.create');
 $router->get("explorer", ['App\Controllers\CampagneController', 'index'])->name('explorer');
+$router->get("campagnes", ['App\Controllers\CampagneController', 'mesCampagnes']);
+$router->get("campagne/show", ['App\Controllers\CampagneController', 'show']);
+
 
 $router->get("profile/edit", ['App\Controllers\ProfileController', 'edit'])->name('profile.edit');
 $router->post("profile/update", ['App\Controllers\ProfileController', 'updateProfile'])->name('profile.update');
@@ -52,6 +55,8 @@ $router->post("campagne/store/argent", ['App\Controllers\CampagneController', 's
 $router->post("campagne/store/argent", ['App\Controllers\CampagneController', 'store']);
 $router->post("campagne/store/argent", ['App\Controllers\CampagneController', 'store']);
 $router->post("campagne/store/argent", ['App\Controllers\CampagneController', 'store']);
+
+$router->get("chat", ['App\Controllers\ChatController', 'index']);
 
 $router->dispatch($method, $url);
 

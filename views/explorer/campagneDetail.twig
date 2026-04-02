@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ c.titre }} | Tamghrabit</title>
+    <link rel="stylesheet" href="{{ url('public/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ url('public/css/campagne-detail.css') }}">
+    <link rel="stylesheet" href="{{ url('public/css/footer.css') }}">
+</head>
+<body>
+    <div class="page-wrapper">
+        <header class="main-header">
+            <div class="container">
+                <a href="{{ url('campagne/index') }}" class="back-link">
+                    <i class="fa-solid fa-arrow-left"></i> Retour aux campagnes
+                </a>
+            </div>
+        </header>
+
+        <div class="container campagne-detail-container">
+            <main class="main-content">
+                <div class="badge-category">{{ c.categorie_nom }}</div>
+                <h1>{{ c.titre }}</h1>
+                
+                <div class="main-image-wrapper">
+                    <img src="{{ url('public/storage/campagnes/' ~ c.image) }}" alt="{{ c.titre }}">
+                </div>
+
+                <div class="content-body">
+                    <div class="author-info">
+                        <div class="avatar-sm">
+                            <i class="fa-solid fa-building-ngo"></i>
+                        </div>
+                        <div class="author-text">
+                            <p>Organisée par <strong>{{ c.organisation_nom ?: 'Donateur vérifié' }}</strong></p>
+                            <span><i class="fa-solid fa-check-circle"></i> Vérifié</span>
+                        </div>
+                    </div>
+
+                    <div class="description-section">
+                        <h3>L'histoire de cette campagne</h3>
+                        <p>{{ c.description | nl2br }}</p>
+                    </div>
+                </div>
+            </main>
+
+            <aside class="donation-sidebar">
+                <div class="sticky-card">
+                    {% if c.type != 'nature' %}
+                    <div class="progress-section">
+                        <div class="progress-header">
+                            <span class="percentage">{{ c.percentage }}%</span>
+                            <span class="days"><i class="fa-regular fa-clock"></i> {{ c.days_left }}j restants</span>
+                        </div>
+                        <div class="bar-container">
+                            <div class="bar-fill" style="width: {{ c.percentage }}%;"></div>
+                        </div>
+                        <div class="stats">
+                            <span class="current">{{ c.montantCollecte | number_format(0, '.', ' ') }} DH</span>
+                            <span class="goal">sur {{ c.objectifMontant | number_format(0, '.', ' ') }} DH</span>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="nature-info">
+                        <strong>Besoin en :</strong> {{ c.nomArticle }} ({{ c.typeDon }})
+                    </div>
+                    {% endif %}
+
+                    <div class="action-buttons">
+                        <button class="btn-primary-lg">Je soutiens</button>
+                        
+                        <button class="btn-message-outline" onclick="toggleChat()">
+                            <i class="fa-regular fa-comment-dots"></i> Contacter l'organisateur
+                        </button>
+                        
+                        <button class="btn-secondary-lg"><i class="fa-solid fa-share-nodes"></i> Partager</button>
+                    </div>
+
+                    <div class="trust-footer">
+                        <i class="fa-solid fa-shield-halved"></i> Don sécurisé
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <div id="chatModal" class="chat-modal">
+        <div class="chat-window">
+            <div class="chat-header">
+                <div class="user-meta">
+                    <img src="{{ url('public/images/profile-cv.png') }}" alt="User" class="chat-avatar">
+                    <div class="user-status">
+                        <strong>{{ c.organisation_nom ?: 'Organisateur' }}</strong>
+                        <span>En ligne</span>
+                    </div>
+                </div>
+                <button class="close-chat" onclick="toggleChat()">&times;</button>
+            </div>
+
+            <div class="chat-body" id="chatBody">
+                <div class="message received">
+                    Bonjour ! Comment puis-je vous aider concernant la campagne "{{ c.titre }}" ?
+                    <span class="meta">10:00 AM</span>
+                </div>
+                <div class="message sent">
+                    C'est possible d'avoir plus de détails sur l'utilisation des fonds ?
+                    <span class="meta">Read 10:05 AM</span>
+                </div>
+            </div>
+
+            <div class="chat-footer">
+                <textarea placeholder="Write your reply..." id="chatInput"></textarea>
+                <button class="send-btn" onclick="sendMessage()">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    {% include 'layouts/footer.twig' %}
+
+    <script>
+        function toggleChat() {
+            const modal = document.getElementById('chatModal');
+            if (modal.style.display === 'flex') {
+                modal.style.display = 'none';
+            } else {
+                modal.style.display = 'flex';
+                scrollBottom();
+            }
+        }
+
+        function scrollBottom() {
+            const chatBody = document.getElementById('chatBody');
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const chatBody = document.getElementById('chatBody');
+            
+            if (input.value.trim() !== "") {
+                const msgDiv = document.createElement('div');
+                msgDiv.className = 'message sent';
+                msgDiv.innerHTML = input.value + '<span class="meta">Just now</span>';
+                chatBody.appendChild(msgDiv);
+                input.value = "";
+                scrollBottom();
+            }
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('chatModal');
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>

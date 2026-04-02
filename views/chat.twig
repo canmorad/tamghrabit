@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tamghrabit - Messagerie</title>
+    <link rel="stylesheet" href="{{ url('public/css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url('public/css/chat.css') }}">
+    <link rel="stylesheet" href="{{ url('public/css/all.min.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="main-wrapper">
+        {% include 'layouts/sidebar.twig' %}
+
+        <main>
+            <header>
+                <div class="search-bar">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Rechercher une discussion...">
+                </div>
+
+                <div class="action-buttons">
+                    <button class="icon-btn"><i class="fa-solid fa-moon"></i></button>
+                    <button class="icon-btn"><i class="fa-solid fa-bell"></i></button>
+                    
+                    <div class="profile-container">
+                        <img src="{{url('public/images/profile-cv.png')}}" alt="Profile" class="avatar">
+                        <div class="user-info">
+                            <span class="nom">Morad Benaissa</span>
+                            <span class="email">moradbenaissa@gmail.com</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="dashboard-body chat-page-wrapper">
+                <div class="messaging-card">
+                    <aside class="chat-sidebar">
+                        <div class="chat-sidebar-header">
+                            <h2>Messages</h2>
+                            <button class="new-msg-btn"><i class="fa-solid fa-pen-to-square"></i></button>
+                        </div>
+
+                        <div class="chat-list">
+                            <div class="chat-item active">
+                                <div class="avatar-wrapper online">
+                                    <img src="{{url('public/images/profile-cv.png')}}" alt="">
+                                </div>
+                                <div class="chat-item-info">
+                                    <div class="chat-item-top">
+                                        <strong>Zakaria Lafhiel</strong>
+                                        <span class="time">16:44</span>
+                                    </div>
+                                    <p class="preview text-truncate">Vous: C'est marche, à demain !</p>
+                                </div>
+                            </div>
+
+                            <div class="chat-item unread">
+                                <div class="avatar-wrapper">
+                                    <img src="{{url('public/images/profile-cv.png')}}" alt="">
+                                </div>
+                                <div class="chat-item-info">
+                                    <div class="chat-item-top">
+                                        <strong>Maryam EL AISSAOUI</strong>
+                                        <span class="time">Hier</span>
+                                    </div>
+                                    <p class="preview">Merci pour votre don...</p>
+                                </div>
+                                <span class="unread-dot"></span>
+                            </div>
+                        </div>
+                    </aside>
+
+                    <section class="chat-view">
+                        <div class="chat-view-header">
+                            <div class="current-user">
+                                <img src="{{url('public/images/profile-cv.png')}}" class="avatar-sm">
+                                <div>
+                                    <h4>Zakaria Lafhiel</h4>
+                                    <span class="status">En ligne</span>
+                                </div>
+                            </div>
+                            <div class="view-actions">
+                                <i class="fa-solid fa-phone"></i>
+                                <i class="fa-solid fa-video"></i>
+                                <i class="fa-solid fa-circle-info"></i>
+                            </div>
+                        </div>
+
+                        <div class="chat-messages-area" id="scrollArea">
+                            <div class="message incoming">
+                                <div class="bubble">Bonjour Morad, comment se passe le projet ?</div>
+                                <span class="m-time">10:12</span>
+                            </div>
+
+                            <div class="message outgoing">
+                                <div class="bubble">Ça avance super bien ! Je t'envoie les détails.</div>
+                                <span class="m-time">10:15 <i class="fa-solid fa-check-double"></i></span>
+                            </div>
+                        </div>
+
+                        <div class="chat-input-wrapper">
+                            <div class="input-container">
+                                <button class="tool-btn"><i class="fa-solid fa-plus"></i></button>
+                                <textarea placeholder="Écrivez votre message..." id="messageInput"></textarea>
+                                <button class="emoji-btn"><i class="fa-regular fa-face-smile"></i></button>
+                                <button class="send-btn" id="sendBtn" disabled>
+                                    <i class="fa-solid fa-paper-plane"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const textarea = document.getElementById('messageInput');
+            const sendBtn = document.getElementById('sendBtn');
+            const chatItems = document.querySelectorAll('.chat-item');
+
+            textarea.addEventListener('input', function() {
+                if (this.value.trim().length > 0) {
+                    sendBtn.disabled = false;
+                    sendBtn.classList.add('active');
+                } else {
+                    sendBtn.disabled = true;
+                    sendBtn.classList.remove('active');
+                }
+            });
+
+            chatItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    document.querySelector('.chat-item.active').classList.remove('active');
+                    item.classList.add('active');
+                });
+            });
+
+            const scrollArea = document.getElementById('scrollArea');
+            scrollArea.scrollTop = scrollArea.scrollHeight;
+        });
+    </script>
+</body>
+</html>

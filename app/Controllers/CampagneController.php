@@ -26,7 +26,38 @@ class CampagneController extends Controller
 
     public function index()
     {
-        return $this->view("explorer/campagnes");
+        $campagnes = $this->campagneService->getAllCampagnes();
+        return $this->view("explorer/campagnes", [
+            'campagnes' => $campagnes
+        ]);
+    }
+
+    public function show()
+    {
+        $id = $_GET['id'] ?? null;
+
+        if (!$id) {
+            http_response_code(404);
+            echo "Route non trouvée";
+            exit;
+        }
+
+        $campagne = $this->campagneService->getCampagneById($id);
+
+        if (!$campagne) {
+            http_response_code(404);
+            echo "Route non trouvée";
+            exit;
+        }
+
+        return $this->view("explorer/campagneDetail", [
+            'c' => $campagne
+        ]);
+    }
+
+    public function mesCampagnes()
+    {
+        return $this->view("mesCampagnes");
     }
 
     public function create()
@@ -107,15 +138,15 @@ class CampagneController extends Controller
         $campagne = null;
 
         if ($type === 'parrainage') {
-            $campagne = new CampagneParrainage($data['titre'], $data['description'], $data['image'], $data['telephone'], $data['dateDebut'], $data['dateFin'], $categorie, $adherent, $data['justificatif'], $data['objectifMontant'], $data['frequence']);
+            $campagne = new CampagneParrainage($data['titre'], $data['description'], $data['image'], $data['telephone'], $data['dateDebut'], $data['dateFin'], $categorie, $adherent, $data['justificatif'], $type, $data['objectifMontant'], $data['frequence']);
         } elseif ($type === 'association') {
             $organisation = new Organisation('', '', '', '', '', '', '', '', '', '');
             $organisation->setId($data['idOrganisation']);
-            $campagne = new CampagneAssociation($data['titre'], $data['description'], $data['image'], $data['telephone'], $data['dateDebut'], $data['dateFin'], $categorie, $adherent, $data['justificatif'], $data['objectifMontant'], $organisation);
+            $campagne = new CampagneAssociation($data['titre'], $data['description'], $data['image'], $data['telephone'], $data['dateDebut'], $data['dateFin'], $categorie, $adherent, $data['justificatif'], $type, $data['objectifMontant'], $organisation);
         } elseif ($type === 'argent') {
-            $campagne = new CampagneArgent($data['titre'], $data['description'], $data['image'], $data['telephone'], $data['dateDebut'], $data['dateFin'], $categorie, $adherent, $data['justificatif'], $data['objectifMontant']);
+            $campagne = new CampagneArgent($data['titre'], $data['description'], $data['image'], $data['telephone'], $data['dateDebut'], $data['dateFin'], $categorie, $adherent, $data['justificatif'], $type, $data['objectifMontant']);
         } elseif ($type === 'nature') {
-            $campagne = new CampagneNature($data['titre'], $data['description'], $data['image'], $data['telephone'], $data['dateDebut'], $data['dateFin'], $categorie, $adherent, $data['justificatif'], $data['typeDon'], $data['nomArticle']);
+            $campagne = new CampagneNature($data['titre'], $data['description'], $data['image'], $data['telephone'], $data['dateDebut'], $data['dateFin'], $categorie, $adherent, $data['justificatif'], $type, $data['typeDon'], $data['nomArticle']);
         }
 
         try {

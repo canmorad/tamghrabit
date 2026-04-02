@@ -8,9 +8,9 @@ abstract class CampagneFinanciere extends Campagne
     protected $objectifMontant;
     protected $montantCollecte;
 
-    public function __construct($titre, $description, $image, $telephone, $dateDebut, $dateFin, $categorie, $adherent, $justificatif, $objectifMontant)
+    public function __construct($titre, $description, $image, $telephone, $dateDebut, $dateFin, $categorie, $adherent, $justificatif,$type, $objectifMontant)
     {
-        parent::__construct($titre, $description, $image, $telephone, $dateDebut, $dateFin, $categorie, $adherent, $justificatif);
+        parent::__construct($titre, $description, $image, $telephone, $dateDebut, $dateFin, $categorie, $adherent, $justificatif, $type);
 
         $this->objectifMontant = $objectifMontant;
     }

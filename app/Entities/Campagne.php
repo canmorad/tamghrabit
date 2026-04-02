@@ -13,13 +13,14 @@ abstract class Campagne
     protected $telephone;
     protected $dateDebut;
     protected $dateFin;
+    protected $type;
     protected $justificatif;
     protected $status;
     protected $dateCreation;
     protected $dateModifier;
     protected $dateSupprimer;
 
-    public function __construct($titre, $description, $image, $telephone, $dateDebut, $dateFin, $categorie, $adherent, $justificatif)
+    public function __construct($titre, $description, $image, $telephone, $dateDebut, $dateFin, $categorie, $adherent, $justificatif, $type)
     {
         $this->titre = $titre;
         $this->description = $description;
@@ -30,6 +31,7 @@ abstract class Campagne
         $this->categorie = $categorie;
         $this->adherent = $adherent;
         $this->justificatif = $justificatif;
+        $this->type = $type;
     }
 
     public function getId()
@@ -39,6 +41,15 @@ abstract class Campagne
     public function setId($id)
     {
         $this->id = $id;
+    }
+
+    public function getType()
+    {
+        return $this->type;
+    }
+    public function setType($type)
+    {
+        $this->id = $type;
     }
 
     public function getAdherent()

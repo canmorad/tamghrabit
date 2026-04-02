@@ -17,7 +17,7 @@
 				<header>
 					<div class="search-bar">
 						<i class="fa-solid fa-magnifying-glass"></i>
-						<input type="text" placeholder="Rechercher une campagne...">
+						<input type="text" placeholder="Rechercher...">
 					</div>
 
 					<div class="action-buttons">
@@ -25,11 +25,14 @@
 							<i class="fa-solid fa-moon"></i>
 						</button>
 						<button class="icon-btn">
+							<i class="fa-solid fa-message"></i>
+						</button>
+						<button class="icon-btn">
 							<i class="fa-solid fa-bell"></i>
 						</button>
 
 						<div class="profile-container">
-							<img src="{{ url('public/images/profile-cv.png') }}" class="avatar">
+							<img src="{{ url('public/images/profile-cv.png') }}" alt="Profile" class="avatar">
 							<div class="user-info">
 								<span class="nom">Morad Benaissa</span>
 								<span class="email">moradbenaissa@gmail.com</span>
@@ -54,167 +57,84 @@
 
 					<div class="campaigns-grid">
 
-						<div class="campaign-card type-money">
-							<div class="card-image">
-								<img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=500">
-								<span class="badge-cat">Argent</span>
-							</div>
-							<div class="card-content">
-								<div class="org-info">
-									<img src="{{ url('public/images/logo-placeholder.png') }}" class="mini-logo">
-									<span>Association Nour
-										<i class="fa-solid fa-circle-check"></i>
-									</span>
+						{% for c in campagnes %}
+							{# تنظيف الـ Type من أي خطأ مطبعي في الداتابيز #}
+							{% set type = (c.type == 'associationassociation') ? 'association' : c.type %}
+
+							<div class="campaign-card type-{{ type }}">
+								<div class="card-image">
+									<img src="{{ url('public/storage/campagnes/' ~ c.image) }}" alt="{{ c.titre }}">
+									<span class="badge-cat">{{ type | capitalize }}</span>
 								</div>
-								<h3 class="card-title">Aide pour chirurgie cardiaque infantile</h3>
-								<div class="progress-container">
-									<div class="progress-bar">
-										<div class="progress-fill" style="width: 65%;"></div>
-									</div>
-									<div class="progress-stats">
+
+								<div class="card-content">
+									<div class="org-info">
+										<img src="{{ url('public/images/logo-placeholder.png') }}" class="mini-logo">
 										<span>
-											<strong>12 500 DH</strong>
-											/ 20 000 DH</span>
-										<span>65%</span>
+											{{ c.organisation_nom ?: 'Donateur Privé' }}
+											<i class="fa-solid fa-circle-check" style="color: #2563EB;"></i>
+										</span>
+									</div>
+
+									<h3 class="card-title">{{ c.titre }}</h3>
+
+									{# 1. الجزء الخاص بالحملات المالية (Argent, Parrainage, Association) #}
+									{% if type in ['argent', 'parrainage', 'association'] %}
+										<div class="progress-container">
+											<div class="progress-bar">
+												<div class="progress-fill" style="width: {{ c.percentage }}%;"></div>
+											</div>
+											<div class="progress-stats">
+												<span>
+													<strong>{{ c.montantCollecte | number_format(0, '.', ' ') }}
+														DH</strong>
+													/
+													{{ c.objectifMontant | number_format(0, '.', ' ') }}
+													DH</span>
+												<span>{{ c.percentage }}%</span>
+											</div>
+										</div>
+									{% endif %}
+
+									{# 2. الجزء الخاص بحملات الـ Nature #}
+									{% if type == 'nature' %}
+										<div class="item-needed">
+											<i class="fa-solid fa-box-open"></i>
+											Objectif:
+											{{ c.nomArticle }}
+										</div>
+										<p class="card-desc">{{ c.description | slice(0, 80) }}...</p>
+									{% endif %}
+
+									{# 3. التاغات الخاصة بالـ Parrainage فقط #}
+									{% if type == 'parrainage' %}
+										<div class="tags-row">
+											<span class="tag tag-blue">
+												<i class="fa-solid fa-repeat"></i>
+												{{ c.frequence | capitalize }}</span>
+										</div>
+									{% endif %}
+
+									<div class="card-footer">
+										<span class="footer-info">
+											<i class="fa-regular fa-clock"></i>
+											{{ c.days_left }}j restants
+										</span>
+										<a href="{{ url('campagne/show') }}?id={{ c.id }}" class="btn-primary">
+											{% if type == 'parrainage' %}
+												Parrainer
+											{% elseif type == 'nature' %}
+												Contribuer
+											{% else %}
+												Donner
+											{% endif %}
+										</a>
 									</div>
 								</div>
-								<div class="card-footer">
-									<span class="days-left">
-										<i class="fa-regular fa-clock"></i>
-										12j restants</span>
-									<button class="btn-donate">Donner</button>
-								</div>
 							</div>
-						</div>
-
-						<div class="campaign-card type-parrainage">
-							<div class="card-image">
-								<img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=500">
-								<span class="badge-cat">Parrainage</span>
-							</div>
-							<div class="card-content">
-								<div class="org-info">
-									<img src="{{ url('public/images/logo-placeholder.png') }}" class="mini-logo">
-									<span>Fondation Espoir
-										<i class="fa-solid fa-circle-check"></i>
-									</span>
-								</div>
-								<h3 class="card-title">Parrainer la scolarité de Yassine</h3>
-								<div class="info-tag">
-									<i class="fa-solid fa-repeat"></i>
-									Engagement Mensuel</div>
-								<p class="card-desc">Soutien direct pour les fournitures et transport scolaire.</p>
-								<div class="card-footer">
-									<span class="status-tag">Besoin urgent</span>
-									<button class="btn-donate">Parrainer</button>
-								</div>
-							</div>
-						</div>
-
-						<div class="campaign-card type-dons">
-							<div class="card-image">
-								<img src="https://images.unsplash.com/photo-1594708767771-a7502209ff51?q=80&w=500">
-								<span class="badge-cat">Dons Nature</span>
-							</div>
-							<div class="card-content">
-								<div class="org-info">
-									<img src="{{ url('public/images/logo-placeholder.png') }}" class="mini-logo">
-									<span>Association Atlas
-										<i class="fa-solid fa-circle-check"></i>
-									</span>
-								</div>
-								<h3 class="card-title">Collecte de 50 fauteuils roulants</h3>
-								<div class="item-needed">
-									<i class="fa-solid fa-box-open"></i>
-									Objectif: 50 unités</div>
-								<p class="card-desc">Matériel pour handicapés en zone rurale isolée.</p>
-								<div class="card-footer">
-									<span class="type-tag">Dons & Services</span>
-									<button class="btn-donate">Contribuer</button>
-								</div>
-							</div>
-						</div>
-
-						<div class="campaign-card type-money">
-							<div class="card-image">
-								<img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=500">
-								<span class="badge-cat">Argent</span>
-							</div>
-							<div class="card-content">
-								<div class="org-info">
-									<img src="{{ url('public/images/logo-placeholder.png') }}" class="mini-logo">
-									<span>Association Nour
-										<i class="fa-solid fa-circle-check"></i>
-									</span>
-								</div>
-								<h3 class="card-title">Aide pour chirurgie cardiaque infantile</h3>
-								<div class="progress-container">
-									<div class="progress-bar">
-										<div class="progress-fill" style="width: 65%;"></div>
-									</div>
-									<div class="progress-stats">
-										<span>
-											<strong>12 500 DH</strong>
-											/ 20 000 DH</span>
-										<span>65%</span>
-									</div>
-								</div>
-								<div class="card-footer">
-									<span class="days-left">
-										<i class="fa-regular fa-clock"></i>
-										12j restants</span>
-									<button class="btn-donate">Donner</button>
-								</div>
-							</div>
-						</div>
-
-						<div class="campaign-card type-parrainage">
-							<div class="card-image">
-								<img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=500">
-								<span class="badge-cat">Parrainage</span>
-							</div>
-							<div class="card-content">
-								<div class="org-info">
-									<img src="{{ url('public/images/logo-placeholder.png') }}" class="mini-logo">
-									<span>Fondation Espoir
-										<i class="fa-solid fa-circle-check"></i>
-									</span>
-								</div>
-								<h3 class="card-title">Parrainer la scolarité de Yassine</h3>
-								<div class="info-tag">
-									<i class="fa-solid fa-repeat"></i>
-									Engagement Mensuel</div>
-								<p class="card-desc">Soutien direct pour les fournitures et transport scolaire.</p>
-								<div class="card-footer">
-									<span class="status-tag">Besoin urgent</span>
-									<button class="btn-donate">Parrainer</button>
-								</div>
-							</div>
-						</div>
-
-						<div class="campaign-card type-dons">
-							<div class="card-image">
-								<img src="https://images.unsplash.com/photo-1594708767771-a7502209ff51?q=80&w=500">
-								<span class="badge-cat">Dons Nature</span>
-							</div>
-							<div class="card-content">
-								<div class="org-info">
-									<img src="{{ url('public/images/logo-placeholder.png') }}" class="mini-logo">
-									<span>Association Atlas
-										<i class="fa-solid fa-circle-check"></i>
-									</span>
-								</div>
-								<h3 class="card-title">Collecte de 50 fauteuils roulants</h3>
-								<div class="item-needed">
-									<i class="fa-solid fa-box-open"></i>
-									Objectif: 50 unités</div>
-								<p class="card-desc">Matériel pour handicapés en zone rurale isolée.</p>
-								<div class="card-footer">
-									<span class="type-tag">Dons & Services</span>
-									<button class="btn-donate">Contribuer</button>
-								</div>
-							</div>
-						</div>
+						{% else %}
+							<p>Aucune campagne disponible pour le moment.</p>
+						{% endfor %}
 
 					</div>
 				</section>
@@ -222,13 +142,13 @@
 		</div>
 
 		<script>
-			document.querySelectorAll('.cat-pill').forEach(pill => {
+			// Tab switching logic (UI Only)
+document.querySelectorAll('.cat-pill').forEach(pill => {
 pill.addEventListener('click', () => {
 document.querySelector('.cat-pill.active').classList.remove('active');
 pill.classList.add('active');
 });
 });
 		</script>
-
 	</body>
 </html>

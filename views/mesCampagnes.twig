@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tamghrabit | Mes Campagnes</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url('public/css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url('public/css/mes-campagnes.css') }}">
+</head>
+<body>
+
+    <div class="main-wrapper">
+        {% include 'layouts/sidebar.twig' %}
+
+        <main class="main-content">
+            <header>
+                <div class="search-bar">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Rechercher...">
+                </div>
+
+                <div class="action-buttons">
+                    <button class="icon-btn"><i class="fa-solid fa-moon"></i></button>
+                    <button class="icon-btn"><i class="fa-solid fa-message"></i></button>
+                    <button class="icon-btn"><i class="fa-solid fa-bell"></i></button>
+
+                    <div class="profile-container">
+                        <img src="{{ url('public/images/profile-cv.png') }}" alt="Profile" class="avatar">
+                        <div class="user-info">
+                            <span class="nom">Morad Benaissa</span>
+                            <span class="email">moradbenaissa@gmail.com</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <section class="dashboard-body">
+                <div class="page-intro">
+                    <div class="intro-text">
+                        <h1>Mes Campagnes <span>(04)</span></h1>
+                        <p>Gérez vos collectes et suivez l'impact de vos actions en temps réel.</p>
+                    </div>
+                    <button class="btn-create-main">
+                        <i class="fa-solid fa-plus"></i> Lancer une campagne
+                    </button>
+                </div>
+
+                <div class="filters-container">
+                    <div class="tabs-group">
+                        <button class="filter-tab active">Toutes</button>
+                        <button class="filter-tab">En cours</button>
+                        <button class="filter-tab">En attente</button>
+                        <button class="filter-tab">Terminées</button>
+                    </div>
+                    <div class="layout-toggle">
+                        <button class="active"><i class="fa-solid fa-grid-2"></i></button>
+                        <button><i class="fa-solid fa-list-ul"></i></button>
+                    </div>
+                </div>
+
+                <div class="campaigns-grid">
+                    <div class="premium-card">
+                        <div class="card-media">
+                            <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=500">
+                            <div class="media-overlay">
+                                <span class="tag-category">Santé</span>
+                                <span class="status-indicator approved"><i class="fa-solid fa-check"></i></span>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-top">
+                                <span class="type-label"><i class="fa-solid fa-wallet"></i> Argent</span>
+                                <span class="timestamp">01 Mars</span>
+                            </div>
+                            <h3 class="card-title">Aide pour chirurgie cardiaque infantile</h3>
+                            <div class="funding-tracker">
+                                <div class="tracker-info">
+                                    <span class="current">12 500 DH</span>
+                                    <span class="target">Cible: 20k DH</span>
+                                </div>
+                                <div class="custom-progress">
+                                    <div class="progress-bar" style="width: 65%;">
+                                        <div class="shimmer-effect"></div>
+                                    </div>
+                                </div>
+                                <div class="tracker-footer">
+                                    <span class="donors-count"><i class="fa-solid fa-users"></i> 42 Donateurs</span>
+                                    <span class="percent-label">65%</span>
+                                </div>
+                            </div>
+                            <div class="card-footer-actions">
+                                <button class="btn-manage">Gérer l'initiative</button>
+                                <div class="iconic-actions">
+                                    <button class="btn-mini"><i class="fa-solid fa-chart-simple"></i></button>
+                                    <button class="btn-mini delete"><i class="fa-solid fa-trash-can"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="premium-card">
+                        <div class="card-media">
+                            <img src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?q=80&w=500">
+                            <div class="media-overlay">
+                                <span class="tag-category">Éducation</span>
+                                <span class="status-indicator pending"><i class="fa-solid fa-clock"></i></span>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-top">
+                                <span class="type-label"><i class="fa-solid fa-repeat"></i> Mensuel</span>
+                                <span class="timestamp">15 Mars</span>
+                            </div>
+                            <h3 class="card-title">Parrainer la scolarité de Yassine</h3>
+                            <div class="funding-tracker">
+                                <div class="tracker-info">
+                                    <span class="current">300 DH</span>
+                                    <span class="target">Objectif: 1000 DH</span>
+                                </div>
+                                <div class="custom-progress"> // out: ../../css/footer.css  // out: ../../css/sidbar.css 
+                                    <div class="progress-bar" style="width: 30%;"></div>
+                                </div>
+                                <div class="tracker-footer">
+                                    <span class="donors-count"><i class="fa-solid fa-calendar-check"></i> 1 Parrain</span>
+                                    <span class="percent-label">30%</span>
+                                </div>
+                            </div>
+                            <div class="card-footer-actions">
+                                <button class="btn-manage">Gérer l'initiative</button>
+                                <div class="iconic-actions">
+                                    <button class="btn-mini delete"><i class="fa-solid fa-trash-can"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+</body>
+</html>

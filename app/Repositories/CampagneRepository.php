@@ -24,7 +24,7 @@ class CampagneRepository
 
     public function storeBase($campagne)
     {
-        $sql = "insert into campagnes (idadherent, idcategorie, titre, description, image, telephone, datedebut, datefin, justificatif) 
+        $sql = "insert into campagnes (idadherent, idcategorie, titre, description, image, telephone, datedebut, datefin, justificatif, type) 
                 values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stm = $this->conn->prepare($sql);
         $stm->execute([
@@ -36,7 +36,8 @@ class CampagneRepository
             $campagne->getTelephone(),
             $campagne->getDateDebut(),
             $campagne->getDateFin(),
-            $campagne->getJustificatif()
+            $campagne->getJustificatif(),
+            $campagne->getType()
         ]);
         return $this->conn->lastInsertId();
     }
@@ -84,5 +85,49 @@ class CampagneRepository
             $campagne->getTypeDon(),
             $campagne->getNomArticle()
         ]);
+    }
+
+    public function findById($id)
+    {
+        $sql = "SELECT c.*, cat.nom as categorie_nom, 
+            cf.objectifMontant, cf.montantCollecte,
+            cp.frequence,
+            ca.idOrganisation, org.nom as organisation_nom,
+            cn.typeDon, cn.nomArticle
+            FROM campagnes c
+            JOIN categories cat ON c.idCategorie = cat.id
+            LEFT JOIN campagnesFinancieres cf ON c.id = cf.id
+            LEFT JOIN campagnesParrainage cp ON cf.id = cp.id
+            LEFT JOIN campagnesAssociation ca ON cf.id = ca.id
+            LEFT JOIN campagnesNature cn ON c.id = cn.id
+            LEFT JOIN organisations org ON ca.idOrganisation = org.id
+            WHERE c.id = ? AND c.datesupprimer IS NULL";
+
+        $stm = $this->conn->prepare($sql);
+        $stm->execute([$id]);
+        return $stm->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    public function findAll()
+    {
+        $sql = "SELECT c.*, cat.nom as categorie_nom, 
+            cf.objectifMontant, cf.montantCollecte,
+            cp.frequence,
+            ca.idOrganisation, org.nom as organisation_nom,
+            cn.typeDon, cn.nomArticle
+            FROM campagnes c
+            JOIN categories cat ON c.idCategorie = cat.id
+            LEFT JOIN campagnesFinancieres cf ON c.id = cf.id
+            LEFT JOIN campagnesParrainage cp ON cf.id = cp.id
+            LEFT JOIN campagnesAssociation ca ON cf.id = ca.id
+            LEFT JOIN campagnesNature cn ON c.id = cn.id
+            LEFT JOIN organisations org ON ca.idOrganisation = org.id
+            WHERE c.datesupprimer IS NULL 
+            AND c.status = 'approuvee'
+            ORDER BY c.datecreation DESC";
+
+        $stm = $this->conn->prepare($sql);
+        $stm->execute();
+        return $stm->fetchAll(\PDO::FETCH_ASSOC);
     }
 }

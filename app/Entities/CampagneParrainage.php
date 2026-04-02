@@ -6,9 +6,9 @@ class CampagneParrainage extends CampagneFinanciere
 {
     private $frequence;
 
-    public function __construct($titre, $description, $image, $telephone, $dateDebut, $dateFin, $categorie, $adherent, $justificatif, $objectifMontant, $frequence)
+    public function __construct($titre, $description, $image, $telephone, $dateDebut, $dateFin, $categorie, $adherent, $justificatif, $type, $objectifMontant, $frequence)
     {
-        parent::__construct($titre, $description, $image, $telephone, $dateDebut, $dateFin, $categorie, $adherent,$justificatif, $objectifMontant);
+        parent::__construct($titre, $description, $image, $telephone, $dateDebut, $dateFin, $categorie, $adherent,$justificatif,$type, $objectifMontant);
         $this->frequence = $frequence;
     }
 
