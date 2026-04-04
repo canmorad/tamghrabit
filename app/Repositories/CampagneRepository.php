@@ -93,7 +93,7 @@ class CampagneRepository
             cf.objectifMontant, cf.montantCollecte,
             cp.frequence,
             ca.idOrganisation, org.nom as organisation_nom,
-            cn.typeDon, cn.nomArticle
+            cn.typeDon, cn.nomArticle, u.nom as nomDestinataire, u.prenom as prenomDestinataire, u.imageProfile
             FROM campagnes c
             JOIN categories cat ON c.idCategorie = cat.id
             LEFT JOIN campagnesFinancieres cf ON c.id = cf.id
@@ -101,6 +101,7 @@ class CampagneRepository
             LEFT JOIN campagnesAssociation ca ON cf.id = ca.id
             LEFT JOIN campagnesNature cn ON c.id = cn.id
             LEFT JOIN organisations org ON ca.idOrganisation = org.id
+            LEFT JOIN users u on c.idAdherent = u.id
             WHERE c.id = ? AND c.datesupprimer IS NULL";
 
         $stm = $this->conn->prepare($sql);

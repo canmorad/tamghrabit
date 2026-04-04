@@ -52,11 +52,12 @@ $router->get("organisation/index", ['App\Controllers\OrganisationController', 'i
 $router->get("organisation/get", ['App\Controllers\OrganisationController', 'show']);
 
 $router->post("campagne/store/argent", ['App\Controllers\CampagneController', 'store']);
-$router->post("campagne/store/argent", ['App\Controllers\CampagneController', 'store']);
-$router->post("campagne/store/argent", ['App\Controllers\CampagneController', 'store']);
-$router->post("campagne/store/argent", ['App\Controllers\CampagneController', 'store']);
 
-$router->get("chat", ['App\Controllers\ChatController', 'index']);
+$router->get("messages/getOrCreate", ['App\Controllers\MessageController', 'getOrCreate']);
+$router->get("messages/history", ['App\Controllers\MessageController', 'getHistory']);
+$router->post("message/send", ['App\Controllers\MessageController', 'send']);
+$router->get("chat", ['App\Controllers\MessageController', 'index']);
+$router->get("conversation/delete", ['App\Controllers\MessageController', 'delete']);
 
 $router->dispatch($method, $url);
 

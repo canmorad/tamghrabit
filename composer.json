@@ -5,6 +5,7 @@
         }
     },
     "require": {
-        "twig/twig": "^3.23"
+        "twig/twig": "^3.23",
+        "cboden/ratchet": "^0.4.4"
     }
 }
