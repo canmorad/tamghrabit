@@ -1,2 +1,10 @@
 <?php
-print_r(dirname(__DIR__,2));
+
+$lastRegistedRoute = [
+    'method' => "post",
+    'uri' => "admin"
+];
+
+$lastRegistedRoute[]
+
+print_r($routes);

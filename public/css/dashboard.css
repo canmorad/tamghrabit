@@ -26,10 +26,28 @@ aside {
   flex-direction: column;
   gap: 25px;
   z-index: 10;
+  height: 100vh;
+  overflow-y: auto;
+  position: sticky;
+  top: 0;
+}
+aside::-webkit-scrollbar {
+  width: 4px;
+}
+aside::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 10px;
+}
+aside:hover::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
 }
 aside .logo img {
   height: 50px;
   margin-bottom: 5px;
+  flex-shrink: 0;
+}
+aside nav {
+  flex-shrink: 0;
 }
 aside nav .menu-title {
   font-size: 11px;

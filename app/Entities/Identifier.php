@@ -9,6 +9,7 @@ class Identifier
     private $cniVerso;
     private $passport;
     private $dateModifier;
+    private $status;
     private $adherent;
 
     public function __construct($cniRecto = null, $cniVerso = null, $passport = null)
@@ -16,6 +17,16 @@ class Identifier
         $this->cniRecto = $cniRecto;
         $this->cniVerso = $cniVerso;
         $this->passport = $passport;
+    }
+
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    }
+
+    public function getStatus()
+    {
+        return $this->status;
     }
 
     public function getId()

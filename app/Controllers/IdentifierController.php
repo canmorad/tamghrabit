@@ -21,10 +21,49 @@ class IdentifierController extends Controller
         $this->identifierService = new IdentifierService(Connection::getInstance());
     }
 
-    public function index()
+    public function pending()
+    {
+        $identifiers = $this->identifierService->getPendingRequests();
+        return $this->view('admin/verifierIdentites', ['identifiers' => $identifiers]);
+    }
+
+    public function verify()
+    {
+        header('Content-Type: application/json');
+
+        $userId = $_POST['userId'] ?? null;
+        $action = $_POST['action'] ?? null;
+        $reason = $_POST['reason'] ?? 'Aucun motif spécifié';
+
+        if (!$userId || !$action) {
+            echo json_encode(['type' => 'error', 'message' => 'Données manquantes']);
+            exit;
+        }
+
+        try {
+            $result = $this->identifierService->verify($userId, $action, $reason);
+            if ($result) {
+                echo json_encode(['type' => 'success', 'message' => 'Action effectuée et e-mail envoyé avec succès.']);
+            } else {
+                throw new Exception("Erreur lors de la mise à jour");
+            }
+        } catch (Exception $e) {
+            echo json_encode(['type' => 'error', 'message' => $e->getMessage()]);
+        }
+    }
+    public function show()
     {
         $user = Session::get("user");
         $identifiers = $this->identifierService->getIdentifierByUserId($user->getId());
+
+        if (!$identifiers) {
+            echo json_encode([
+                "cniRecto" => '',
+                "cniVerso" => '',
+                "passport" => '',
+            ]);
+            return;
+        }
 
         echo json_encode([
             "cniRecto" => $identifiers->getCniRecto() ? url("public/storage/identifiers/" . $identifiers->getCniRecto()) : '',

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Tamghrabit - Vérification d'Identité</title>
+		<link rel="stylesheet" href="{{ url('public/css/dashboard.css') }}">
+		<link rel="stylesheet" href="{{ url('public/css/identites-admin.css') }}">
+		<link rel="stylesheet" href="{{ url('public/css/all.min.css') }}">
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+	</head>
+	<body>
+		<div class="main-wrapper">
+			{% include 'layouts/sidebar.twig' %}
+
+			<main>
+				<header>
+					<div class="search-bar">
+						<i class="fa-solid fa-magnifying-glass"></i>
+						<input type="text" placeholder="Rechercher un utilisateur...">
+					</div>
+					<div class="profile-container">
+						<img src="{{ currentUser.imageProfile ? url('public/storage/profiles/' ~ currentUser.imageProfile) : url('public/images/default-profile.png') }}" class="avatar">
+						<div class="user-info">
+							<span class="nom">{{ currentUser.prenom }}
+								{{ currentUser.nom }}</span>
+							<span class="email">{{ currentUser.email }}</span>
+						</div>
+					</div>
+				</header>
+
+				<div class="dashboard-body">
+					<div class="verify-container">
+						<div class="table-header">
+							<h2>Vérification d'Identité</h2>
+							<p class="subtitle">Examinez les pièces jointes pour valider l'adhérent.</p>
+						</div>
+
+						<table>
+							<thead>
+								<tr>
+									<th>Utilisateur</th>
+									<th>Date d'envoi</th>
+									<th>Documents</th>
+									<th class="text-right">Action</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for iden in identifiers %}
+									<tr>
+										<td>
+											<div class="user-cell">
+												<img src="{{ iden.imageProfile ? url('public/storage/profiles/' ~ iden.imageProfile) : url('public/images/default-profile.png') }}">
+												<div class="info">
+													<span class="name">{{ iden.prenom }}
+														{{ iden.nom }}</span>
+													<span class="email">{{ iden.email }}</span>
+												</div>
+											</div>
+										</td>
+										<td>{{ iden.dateModifier|date("d M Y") }}</td>
+										<td>
+											{% set docs = [] %}
+											{% if iden.cniRecto %}
+												{% set docs = docs|merge([url('public/storage/identifiers/' ~ iden.cniRecto)]) %}
+											{% endif %}
+											{% if iden.cniVerso %}
+												{% set docs = docs|merge([url('public/storage/identifiers/' ~ iden.cniVerso)]) %}
+											{% endif %}
+											{% if iden.passport %}
+												{% set docs = docs|merge([url('public/storage/identifiers/' ~ iden.passport)]) %}
+											{% endif %}
+
+											<button class="view-btn" onclick="openVerifyModal('{{ iden.prenom }} {{ iden.nom }}', {{ docs|json_encode }}, '{{ iden.id }}')">
+												<i class="fa-solid fa-images"></i>
+												Voir les documents
+											</button>
+										</td>
+										<td class="actions-cell">
+											<button class="btn-quick-approve" onclick="handleAction('approve', '{{ iden.id }}')">
+												<i class="fa-solid fa-check"></i>
+											</button>
+										</td>
+									</tr>
+								{% else %}
+									<tr>
+										<td colspan="4" style="text-align: center; padding: 50px; color: #64748B;">
+											<i class="fa-solid fa-user-slash" style="font-size: 24px; display: block; margin-bottom: 10px;"></i>
+											Aucun utilisateur à vérifier
+										</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</main>
+		</div>
+
+		<div id="verifyModal" class="modal">
+			<div class="modal-content">
+				<div class="modal-header">
+					<div>
+						<h3 id="m-userName">Vérification</h3>
+						<span class="status-badge">En attente</span>
+					</div>
+					<span class="close" onclick="closeModal()">&times;</span>
+				</div>
+				<div class="modal-body">
+					<div id="imageGallery" class="document-grid"></div>
+					<div class="rejection-area">
+						<label>
+							<i class="fa-solid fa-envelope-open-text"></i>
+							Motif du refus :</label>
+						<textarea id="rejectionMessage" placeholder="Expliquez pourquoi le document est rejeté..."></textarea>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button class="btn-secondary" onclick="closeModal()">Fermer</button>
+					<button class="btn-danger" onclick="handleAction('reject')">Refuser</button>
+					<button class="btn-success" onclick="handleAction('approve')">Approuver</button>
+				</div>
+			</div>
+		</div>
+
+		<div id="imagePreviewModal" class="image-viewer-modal">
+			<span class="close-viewer" onclick="closeImageViewer()">&times;</span>
+			<div class="viewer-wrapper">
+				<img id="fullImage" class="viewer-content">
+			</div>
+			<div class="viewer-controls">
+				<button onclick="zoomImage(0.2)">
+					<i class="fa-solid fa-plus"></i>
+				</button>
+				<button onclick="zoomImage(-0.2)">
+					<i class="fa-solid fa-minus"></i>
+				</button>
+				<button onclick="resetZoom()">
+					<i class="fa-solid fa-rotate-left"></i>
+				</button>
+			</div>
+		</div>
+
+		<script>
+			let currentUserId = null;
+let currentZoom = 1;
+
+function openVerifyModal(userName, images, userId) {
+currentUserId = userId;
+const modal = document.getElementById('verifyModal');
+const gallery = document.getElementById('imageGallery');
+document.getElementById('m-userName').innerText = "Dossier : " + userName;
+gallery.innerHTML = '';
+images.forEach((src, i) => {
+const div = document.createElement('div');
+div.className = 'doc-item';
+div.innerHTML = `<img src="${src}" onclick="previewImage('${src}')"><span>Doc #${
+i + 1
+}</span>`;
+gallery.appendChild(div);
+});
+modal.style.display = "block";
+}
+
+function closeModal() {
+document.getElementById('verifyModal').style.display = "none";
+}
+
+function previewImage(src) {
+const viewer = document.getElementById('imagePreviewModal');
+const fullImg = document.getElementById('fullImage');
+fullImg.src = src;
+viewer.style.display = "flex";
+resetZoom();
+}
+
+function closeImageViewer() {
+document.getElementById('imagePreviewModal').style.display = "none";
+}
+
+function zoomImage(step) {
+currentZoom += step;
+if (currentZoom < 0.5) 
+currentZoom = 0.5;
+
+
+const fullImg = document.getElementById('fullImage');
+const wrapper = document.querySelector('.viewer-wrapper');
+fullImg.style.transform = `scale(${currentZoom})`;
+wrapper.style.overflow = currentZoom > 1 ? "auto" : "hidden";
+}
+
+function resetZoom() {
+currentZoom = 1;
+const fullImg = document.getElementById('fullImage');
+const wrapper = document.querySelector('.viewer-wrapper');
+fullImg.style.transform = "scale(1)";
+wrapper.style.overflow = "hidden";
+}
+
+async function handleAction(type, quickId = null) {
+const userId = quickId || currentUserId;
+const message = document.getElementById('rejectionMessage').value;
+
+if (type === 'reject' && ! message) {
+alert("Veuillez saisir le motif du refus.");
+return;
+}
+
+const formData = new FormData();
+formData.append('userId', userId);
+formData.append('action', type);
+formData.append('reason', message);
+
+try {
+const response = await fetch('/Tamghrabit/admin/identities/verify', {
+method: 'POST',
+body: formData
+});
+
+const data = await response.json();
+
+if (data.type === 'success') {
+alert(data.message);
+location.reload();
+} else {
+alert("Erreur: " + data.message);
+}
+} catch (error) {
+console.error("Erreur lors de la requête:", error);
+alert("Une erreur de connexion est survenue.");
+}
+}
+
+window.onclick = function (e) {
+if (e.target.className === 'modal') 
+closeModal();
+
+
+if (e.target.id === 'imagePreviewModal') 
+closeImageViewer();
+
+
+};
+		</script>
+	</body>
+</html>

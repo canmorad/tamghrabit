@@ -142,7 +142,7 @@ function createOrg() {
                 body: formData
             });
 
-            const data = await res.json;
+            const data = await res.json();
 
             showAlert(data.message, data.type);
 
@@ -165,15 +165,26 @@ async function renderOrgs() {
 
         orgsContainer.innerHTML = "";
 
-        if (data.orgs) {
+        if (data.orgs && data.orgs.length > 0) {
             data.orgs.forEach(org => {
+                let statusText = 'En attente';
+                let statusColor = '#EAB308'; 
+
+                if (org.status === 'approuvee') {
+                    statusText = 'Agréée';
+                    statusColor = '#C5F82A'; //
+                } else if (org.status === 'refusee') {
+                    statusText = 'Refusée';
+                    statusColor = '#EF4444';
+                }
+
                 orgsContainer.innerHTML += `
                 <div class="org-card-item">
                     <div class="org-info">
                         <span class="org-name">${org.nom}</span><br>
                         <span class="org-status">Statut : 
-                            <strong style="color: ${org.estVerifie ? '#C5F82A' : 'red'};">
-                                ${org.estVerifie ? 'Agréée' : 'En attente'}
+                            <strong style="color: ${statusColor};">
+                                ${statusText}
                             </strong>
                         </span>
                     </div>
@@ -181,17 +192,22 @@ async function renderOrgs() {
                         <button class="icon-action-btn" onclick="showEditOrg('${org.id}')">
                             <i class="fa-solid fa-eye"></i>
                         </button>
-                        <button class="icon-action-btn delete">
-							<i class="fa-solid fa-trash"></i>
-						</button>
+                        <button class="icon-action-btn delete" onclick="deleteOrg('${org.id}')">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
                     </div>
                 </div>`;
             });
         } else {
-            orgsContainer.innerHTML = "<p>Aucune organisation trouvée pour le moment.</p>";
+            orgsContainer.innerHTML = `
+                <div style="text-align: center; padding: 20px; color: #64748B;">
+                    <i class="fa-solid fa-folder-open" style="font-size: 24px; margin-bottom: 10px; display: block;"></i>
+                    Aucune organisation trouvée.
+                </div>`;
         }
     } catch (e) {
         console.error("Erreur render orgs:", e);
+        document.getElementById('orgs-container').innerHTML = "<p>Erreur lors du chargement des données.</p>";
     }
 }
 
@@ -224,16 +240,16 @@ async function renderIdentifier() {
     if (!identifierForm) return;
 
     try {
-        const res = await fetch("/Tamghrabit/identifier/index");
+        const res = await fetch("/Tamghrabit/identifier/show");
         const data = await res.json();
 
         if (data.passport) {
             select.value = "passport"
-        } else {
+        } else if(data.passport) {
             select.value = "cni"
         }
 
-        // toggleIdUploads()
+        toggleIdUploads()
 
         identifierForm.querySelectorAll("input").forEach(input => {
             const box = input.closest('.file-upload-box');
@@ -276,7 +292,8 @@ function updateIdentifier() {
                     body: formData
                 });
 
-                const data = await res.json(); w
+                const data = await res.json(); 
+                console.log(data)
 
                 showAlert(data.message, data.type);
 

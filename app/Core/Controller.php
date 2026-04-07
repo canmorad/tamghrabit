@@ -14,6 +14,10 @@ class Controller
         $loader = new FilesystemLoader(__DIR__ . '/../../views');
         $this->twig = new Environment($loader);
 
+        Session::start();
+
+        $this->twig->addGlobal('currentUser', Session::get('user'));
+
         $this->twig->addFunction(new TwigFunction('url', 'url'));
         $this->twig->addFunction(new TwigFunction('route', 'route'));
         $this->twig->addFunction(new TwigFunction('basePath', 'basePath'));
@@ -32,5 +36,5 @@ class Controller
     {
         echo $this->twig->render($template . ".twig", $data);
     }
-    
+
 }

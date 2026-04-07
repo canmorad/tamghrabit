@@ -17,6 +17,7 @@ class Organisation
     private $cniPresidentVerso;
     private $estVerifie;
     private $dateCreation;
+    private $status;
 
     public function __construct($nom, $identifiantFiscal, $adresse, $ribAssociation, $recepisse, $pvElection, $statuts, $attestationRib, $cniPresidentRecto, $cniPresidentVerso)
     {
@@ -30,6 +31,16 @@ class Organisation
         $this->attestationRib = $attestationRib;
         $this->cniPresidentRecto = $cniPresidentRecto;
         $this->cniPresidentVerso = $cniPresidentVerso;
+    }
+
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    }
+
+    public function getStatus()
+    {
+        return $this->status;
     }
 
     public function getId()

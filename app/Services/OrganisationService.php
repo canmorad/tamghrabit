@@ -16,6 +16,18 @@ class OrganisationService
         $this->orgRepository = new OrganisationRepository($conn);
     }
 
+    public function validateOrganisation($orgId, $action, $reason = null)
+    {
+        $status = ($action === 'approve') ? 'approuvee' : 'refuse';
+
+        return $this->orgRepository->updateStatus($orgId, $status, $reason);
+    }
+
+    public function getPendingOrganisations()
+    {
+        return $this->orgRepository->getAllPendingWithUsers();
+    }
+
     public function getOrgByUserId($id)
     {
         $data = $this->orgRepository->getOrgByUserId($id);
@@ -56,20 +68,16 @@ class OrganisationService
             foreach ($fileFields as $key => $method) {
                 $getter = "get" . $method;
                 $setter = "set" . $method;
-                $file = $org->$getter(); 
+                $file = $org->$getter();
 
                 if (isset($file['name']) && !empty($file['name'])) {
                     $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
                     $nomFichier = "{$key}_{$utilisateur->getId()}_" . time() . ".{$extension}";
                     $this->uploadFile($file, $dossierBase . $nomFichier);
                     $org->$setter($nomFichier);
-                }
-
-                elseif ($oldData && isset($oldData[$key])) {
+                } elseif ($oldData && isset($oldData[$key])) {
                     $org->$setter($oldData[$key]);
-                }
-                
-                else {
+                } else {
                     $org->$setter(null);
                 }
             }

@@ -67,26 +67,30 @@ create table categories (
     nom varchar(100) not null
 );
 
-
-
 create table organisations (
     id int primary key auto_increment,
-    idadherent int not null,
+    idAdherent int not null,
     nom varchar(150) not null,
-    identifiantfiscal varchar(50),
+    identifiantFiscal varchar(50),
     adresse text,
-    ribassociation varchar(24),
+    ribAssociation varchar(24),
     recepisse varchar(255),
-    pvelection varchar(255),
+    pvElection varchar(255),
     statuts varchar(255),
-    attestationrib varchar(255),
-    cnipresidentrecto varchar(255),
-    cnipresidentverso varchar(255),
-    estverifie boolean default false,
-    datecreation timestamp default current_timestamp,
-    datemodifier timestamp on update current_timestamp,
-    constraint fk_org_adherent foreign key (idadherent) references adherents (id)
+    attestationRib varchar(255),
+    cniPresidentRecto varchar(255),
+    cniPresidentVerso varchar(255),
+    status enum(
+        'en_attente',
+        'approuvee',
+        'refuse'
+    ) default 'en_attente',
+    dateCreation timestamp default current_timestamp,
+    dateModifier timestamp on update current_timestamp,
+    constraint fk_org_adherent foreign key (idAdherent) references adherents (id)
 );
+
+drop table organisations;
 
 create table campagnes (
     id int primary key auto_increment,
@@ -103,7 +107,7 @@ create table campagnes (
         'parrainage',
         'nature',
         'argent',
-        'associationassociation'
+        'association'
     ),
     status enum(
         'en_attente',
@@ -155,7 +159,11 @@ create table identifiers (
     cniRecto varchar(255),
     cniVerso varchar(255),
     passport varchar(255),
-    estVerifie boolean default false,
+    status enum(
+        'en_attente',
+        'approuvee',
+        'refuse'
+    ) default 'en_attente',
     dateCreation timestamp default current_timestamp,
     dateModifier timestamp,
     constraint FK_adherent foreign key (id) references adherents (id)
@@ -165,11 +173,35 @@ create table ribs (
     id int primary key,
     rib varchar(50) not null,
     attestationRib varchar(255) not null,
-    estVerifie boolean default false,
+    status enum(
+        'en_attente',
+        'approuvee',
+        'refuse'
+    ) default 'en_attente',
     dateCreation timestamp default current_timestamp,
     dateModifier timestamp,
     constraint FK_adherent foreign key (id) references adherents (id)
 );
+
+drop table ribs;
+
+drop table identifiers;
+
+insert into
+    users (
+        nom,
+        prenom,
+        email,
+        password,
+        idRole
+    )
+values (
+        'Benaissa',
+        'Morad',
+        'admin@tamghrabit.com',
+        '$2y$10$fJfTE2isWREd2bYnCQGVcOCNXXUH4yyLoDCk2qShGf3lNCAG68VKa',
+        1
+    );
 
 delimiter
 

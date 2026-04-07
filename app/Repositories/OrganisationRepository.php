@@ -26,9 +26,30 @@ class OrganisationRepository
         return $this->conn->rollBack();
     }
 
+    // داخل ملف OrganisationRepository.php
+
+    public function updateStatus($orgId, $status, $reason = null)
+    {
+        $sql = "UPDATE organisations SET status = ?, rejection_reason = ? WHERE id = ?";
+        $stmt = $this->conn->prepare($sql);
+        return $stmt->execute([$status, $reason, $orgId]);
+    }
+
+    public function getAllPendingWithUsers()
+    {
+        $sql = "SELECT o.*, u.nom as last_name, u.prenom, u.email 
+            FROM organisations o 
+            JOIN users u ON o.idAdherent = u.id 
+            WHERE o.status = 'en_attente' 
+            ORDER BY o.dateCreation DESC";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function getOrgByUserId($id)
     {
-        $sql = "select id, nom, estVerifie from organisations where idAdherent = ?";
+        $sql = "select id, nom, status from organisations where idAdherent = ?";
         $stm = $this->conn->prepare($sql);
         $stm->execute([$id]);
 
@@ -90,7 +111,7 @@ class OrganisationRepository
             $org->getCniPresidentRecto(),
             $org->getCniPresidentVerso(),
             $id,
-            $org->getAdherent()->getId() 
+            $org->getAdherent()->getId()
         ]);
     }
 }

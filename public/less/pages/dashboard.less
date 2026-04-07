@@ -1,7 +1,9 @@
+// out: ../../css/dashboard.css
+
 @couleur-primaire: #C5F82A;
 @couleur-noire: #062121;
 @couleur-blanche: #FFFFFF;
-@couleur-gris-fonce: #1a2e2e;
+@couleur-gris-fonce: #1a2e2e; 
 @couleur-gris-clair: #F8FAFC;
 @couleur-border: #E2E8F0;
 @police-principale: 'Inter', sans-serif;
@@ -37,13 +39,32 @@ aside {
     flex-direction: column;
     gap: 25px;
     z-index: 10;
+    height: 100vh;
+    overflow-y: auto;
+    position: sticky;
+    top: 0;
+
+    &::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: transparent;
+        border-radius: 10px;
+    }
+
+    &:hover::-webkit-scrollbar-thumb {
+        background: #CBD5E1;
+    }
 
     .logo img {
         height: 50px;
         margin-bottom: 5px;
+        flex-shrink: 0
     }
 
     nav {
+        flex-shrink: 0;
         .menu-title {
             font-size: 11px;
             color: #94A3B8;

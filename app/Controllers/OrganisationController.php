@@ -21,6 +21,40 @@ class OrganisationController extends Controller
         $this->orgService = new OrganisationService(Connection::getInstance());
     }
 
+    public function pending()
+    {
+        $organisations = $this->orgService->getPendingOrganisations();
+        return $this->view('admin/verifierOrg', [
+            'organisations' => $organisations
+        ]);
+    }
+
+    public function verifyAction()
+    {
+        header('Content-Type: application/json');
+
+        $orgId = $_POST['orgId'] ?? null;
+        $action = $_POST['action'] ?? null; 
+        $reason = $_POST['reason'] ?? null;
+
+        if (!$orgId || !$action) {
+            echo json_encode(['type' => 'error', 'message' => 'Données incomplètes']);
+            return;
+        }
+
+        try {
+            $result = $this->orgService->validateOrganisation($orgId, $action, $reason);
+
+            if ($result) {
+                echo json_encode(['type' => 'success', 'message' => 'Action effectuée avec succès']);
+            } else {
+                echo json_encode(['type' => 'error', 'message' => 'Erreur lors de la mise à jour']);
+            }
+        } catch (Exception $e) {
+            echo json_encode(['type' => 'error', 'message' => $e->getMessage()]);
+        }
+    }
+
     public function index()
     {
         $user = Session::get('user');
@@ -33,7 +67,7 @@ class OrganisationController extends Controller
                 $orgs[] = [
                     "id" => $row["id"],
                     "nom" => $row["nom"],
-                    "estVerifie" => $row["estVerifie"]
+                    "status" => $row["status"]
                 ];
             }
         }

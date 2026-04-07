@@ -41,8 +41,8 @@ $router->post("profile/update", ['App\Controllers\ProfileController', 'updatePro
 $router->post("profile/image/update", ['App\Controllers\ProfileController', 'updateImageProfile'])->name('profile.update.image');
 
 $router->post("identifier/update", ['App\Controllers\IdentifierController', 'update'])->name('identifier.update');
+$router->get("identifier/show", ['App\Controllers\IdentifierController', 'show']);
 
-$router->get("identifier/index", ['App\Controllers\IdentifierController', 'index']);
 $router->post("bank/update", ['App\Controllers\RibController', 'update'])->name('bank.update');
 $router->get("bank/index", ['App\Controllers\RibController', 'index']);
 
@@ -58,6 +58,21 @@ $router->get("messages/history", ['App\Controllers\MessageController', 'getHisto
 $router->post("message/send", ['App\Controllers\MessageController', 'send']);
 $router->get("chat", ['App\Controllers\MessageController', 'index']);
 $router->get("conversation/delete", ['App\Controllers\MessageController', 'delete']);
+
+$router->get("admin/users", ['App\Controllers\Auth\AuthenticatedSessionController', 'index'])->name('admin.users');
+
+$router->get("admin/identities/pending", ['App\Controllers\IdentifierController', 'pending'])->name('admin.identities.pending');
+
+$router->get("admin/organisation/pending", ['App\Controllers\OrganisationController', 'pending']);
+
+
+$router->post("admin/identities/verify", ['App\Controllers\IdentifierController', 'verify'])
+    ->name('admin.identities.verify');
+    
+
+// $router->get("user/identity/details", ['App\Controllers\IdentifierController', 'show'])->name('identity.show');
+
+// $router->post("user/identity/update", ['App\Controllers\IdentifierController', 'update'])->name('identity.update');
 
 $router->dispatch($method, $url);
 

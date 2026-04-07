@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Tamghrabit - Vérification des Organisations</title>
+		<link rel="stylesheet" href="{{ url('public/css/dashboard.css') }}">
+		<link rel="stylesheet" href="{{ url('public/css/organisation-admin.css') }}">
+		<link rel="stylesheet" href="{{ url('public/css/all.min.css') }}">
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+	</head>
+	<body>
+		<div class="main-wrapper">
+			{% include 'layouts/sidebar.twig' %}
+
+			<main>
+				<header>
+					<div class="search-bar">
+						<i class="fa-solid fa-magnifying-glass"></i>
+						<input type="text" placeholder="Rechercher une organisation...">
+					</div>
+					<div class="profile-container">
+						<img src="{{ currentUser.imageProfile ? url('public/storage/profiles/' ~ currentUser.imageProfile) : url('public/images/default-profile.png') }}" class="avatar">
+						<div class="user-info">
+							<span class="nom">{{ currentUser.prenom }}
+								{{ currentUser.nom }}</span>
+							<span class="email">{{ currentUser.email }}</span>
+						</div>
+					</div>
+				</header>
+
+				<div class="dashboard-body">
+					<div class="verify-container">
+						<div class="table-header">
+							<h2>Vérification des Organisations</h2>
+							<p class="subtitle">Examinez les documents juridiques pour valider l'association.</p>
+						</div>
+
+						<table>
+							<thead>
+								<tr>
+									<th>Organisation / Président</th>
+									<th>Date d'envoi</th>
+									<th>Dossier</th>
+									<th class="text-right">Action</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for org in organisations %}
+									<tr>
+										<td>
+											<div class="user-cell">
+												<div class="org-icon">
+													<i class="fa-solid fa-building-flag"></i>
+												</div>
+												<div class="info">
+													<span class="name">{{ org.nom }}</span>
+													<span class="email">Président:
+														{{ org.prenom }}
+														{{ org.last_name }}</span>
+												</div>
+											</div>
+										</td>
+										<td>{{ org.dateCreation|date("d M Y") }}</td>
+										<td>
+											{% set docs = [] %}
+											{% if org.recepisse %}
+												{% set docs = docs|merge([{'url': url('public/storage/organisations/' ~ org.recepisse), 'label': 'Récépissé'}]) %}
+											{% endif %}
+											{% if org.pvElection %}
+												{% set docs = docs|merge([{'url': url('public/storage/organisations/' ~ org.pvElection), 'label': 'PV d\'élection'}]) %}{% endif %}
+                                        {% if org.statuts %}{% set docs = docs|merge([{'url': url('public/storage/organisations/' ~ org.statuts), 'label': 'Statuts'}]) %}{% endif %}
+                                        {% if org.attestationRib %}{% set docs = docs|merge([{'url': url('public/storage/organisations/' ~ org.attestationRib), 'label': 'RIB'}]) %}{% endif %}
+                                        
+                                        <button class="view-btn" onclick="openVerifyModal('{{ org.nom|e('js') }}', {{ docs|json_encode }}, '{{ org.id }}')">
+                                            <i class="fa-solid fa-folder-open"></i> Voir le dossier
+                                        </button>
+                                    </td>
+                                    <td class="actions-cell">
+                                        <button class="btn-quick-approve" onclick="handleAction('approve', '{{ org.id }}')" title="Approuver">
+                                            <i class="fa-solid fa-check"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="4" style="text-align: center; padding: 50px; color: #64748B;">
+                                        <i class="fa-solid fa-building-circle-exclamation" style="font-size: 24px; display: block; margin-bottom: 10px;"></i>
+                                        Aucune organisation en attente
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="verifyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h3 id="m-orgName">Chargement...</h3>
+                    <span class="status-badge">Dossier de vérification</span>
+                </div>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="imageGallery" class="document-grid"></div>
+                <div class="rejection-area">
+                    <label><i class="fa-solid fa-comment-dots"></i> Note ou Motif du refus :</label>
+                    <textarea id="rejectionMessage" placeholder="Précisez les documents manquants ou non conformes..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeModal()">Fermer</button>
+                <button class="btn-danger" onclick="handleAction('reject')">Refuser</button>
+                <button class="btn-success" onclick="handleAction('approve')">Approuver l'organisation</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="imagePreviewModal" class="image-viewer-modal">
+        <span class="close-viewer" onclick="closeImageViewer()">&times;</span>
+        <div class="viewer-wrapper">
+            <img id="fullImage" class="viewer-content">
+        </div>
+        <div class="viewer-controls">
+            <button onclick="zoomImage(0.2)"><i class="fa-solid fa-plus"></i></button>
+            <button onclick="zoomImage(-0.2)"><i class="fa-solid fa-minus"></i></button>
+            <button onclick="resetZoom()"><i class="fa-solid fa-rotate-left"></i></button>
+        </div>
+    </div>
+
+    <script>
+        let currentOrgId = null;
+        let currentZoom = 1;
+
+        function openVerifyModal(orgName, docs, orgId) {
+            currentOrgId = orgId;
+            const modal = document.getElementById('verifyModal');
+            const gallery = document.getElementById('imageGallery');
+            document.getElementById('m-orgName').innerText = "Organisation : " + orgName;
+            gallery.innerHTML = '';
+            
+            docs.forEach((doc) => {
+                const div = document.createElement('div');
+                div.className = 'doc-item';
+                div.innerHTML = `
+                    <img src="${doc.url}" onclick="previewImage('${doc.url}')">
+                    <span>${doc.label}</span>
+                `;
+                gallery.appendChild(div);
+            });
+            modal.style.display = "block";
+        }
+
+        function closeModal() { document.getElementById('verifyModal').style.display = "none"; }
+
+        function previewImage(src) {
+            const viewer = document.getElementById('imagePreviewModal');
+            document.getElementById('fullImage').src = src;
+            viewer.style.display = "flex";
+            resetZoom();
+        }
+
+        function closeImageViewer() { document.getElementById('imagePreviewModal').style.display = "none"; }
+
+        function zoomImage(step) {
+            currentZoom += step;
+            if (currentZoom < 0.5) currentZoom = 0.5;
+            document.getElementById('fullImage').style.transform = `scale(${currentZoom})`;
+        }
+
+        function resetZoom() {
+            currentZoom = 1;
+            document.getElementById('fullImage').style.transform = "scale(1)";
+        }
+
+        async function handleAction(type, quickId = null) {
+            const orgId = quickId || currentOrgId;
+            const message = document.getElementById('rejectionMessage').value;
+
+            if (type === 'reject' && !message) {
+                alert("Veuillez saisir un motif pour le refus.");
+                return;
+            }
+
+            if(!confirm("Voulez-vous vraiment confirmer cette action ?")) return;
+
+            const formData = new FormData();
+            formData.append('orgId', orgId);
+            formData.append('action', type);
+            formData.append('reason', message);
+
+            try {
+                const response = await fetch('/Tamghrabit/admin/organisations/verify', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+                if (data.type === 'success') {
+                    location.reload();
+                } else {
+                    alert("Erreur: " + data.message);
+                }
+            } catch (error) {
+                alert("Erreur de connexion.");
+            }
+        }
+
+        window.onclick = (e) => {
+            if (e.target.className === 'modal') closeModal();
+            if (e.target.id === 'imagePreviewModal') closeImageViewer();
+        };
+    </script>
+</body>
+</html>

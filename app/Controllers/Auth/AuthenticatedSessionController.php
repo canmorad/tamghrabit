@@ -17,6 +17,10 @@ class AuthenticatedSessionController extends Controller
         parent::__construct();
         $this->authService = new AuthentificationService(Connection::getInstance());
     }
+
+    public function index(){
+        return $this->view('admin/users');
+    }
     public function create()
     {
         return $this->view('auth/login');
@@ -66,7 +70,7 @@ class AuthenticatedSessionController extends Controller
                 }
 
                 if ($foundUser->getRole()->getNom() === "admin") {
-                    header("Location: accueil");
+                    header("Location: admin/users");
                     exit;
                 }
 

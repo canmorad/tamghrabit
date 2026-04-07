@@ -1,0 +1,149 @@
+// out: ../../css/users-admin.css
+
+@couleur-primaire: #C5F82A;
+@couleur-noire: #062121;
+@couleur-blanche: #FFFFFF;
+@police-principale: 'Inter', sans-serif;
+@couleur-grise-bordure: #f1f5f9;
+@couleur-grise-fond: #f8fafc;
+@couleur-texte-muet: #64748b;
+
+.users-container {
+    background: @couleur-blanche;
+    border-radius: 12px;
+    border: 1px solid @couleur-grise-bordure;
+    margin: 24px;
+    font-family: @police-principale;
+
+    .table-header {
+        padding: 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        h2 { 
+            font-size: 18px; 
+            font-weight: 600; 
+            color: @couleur-noire; 
+            margin: 0; 
+        }
+
+        .controls {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+
+            .search-box {
+                position: relative;
+                i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: @couleur-texte-muet; font-size: 14px; }
+                input {
+                    padding: 8px 12px 8px 35px;
+                    border: 1px solid @couleur-grise-bordure;
+                    border-radius: 8px;
+                    background: @couleur-grise-fond;
+                    font-size: 14px;
+                    width: 250px;
+                    outline: none;
+                    &:focus { border-color: @couleur-noire; }
+                }
+            }
+
+            .filter-select {
+                font-size: 14px;
+                color: @couleur-texte-muet;
+                select {
+                    border: none;
+                    font-weight: 600;
+                    color: @couleur-noire;
+                    background: transparent;
+                    cursor: pointer;
+                    outline: none;
+                }
+            }
+        }
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+
+        thead {
+            border-top: 1px solid @couleur-grise-bordure;
+            border-bottom: 1px solid @couleur-grise-bordure;
+            th {
+                padding: 12px 24px;
+                text-align: left;
+                font-size: 12px;
+                text-transform: uppercase;
+                color: @couleur-texte-muet;
+                font-weight: 500;
+                letter-spacing: 0.5px;
+            }
+        }
+
+        tbody tr {
+            border-bottom: 1px solid @couleur-grise-bordure;
+            transition: background 0.2s;
+            &:hover { background: #fafafa; }
+            &:last-child { border-bottom: none; }
+
+            td { padding: 16px 24px; font-size: 14px; color: @couleur-noire; }
+        }
+    }
+}
+
+.user-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
+    .name-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-weight: 500;
+        .verify-badge { color: #3b82f6; font-size: 14px; }
+    }
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    font-size: 13px;
+    &::before {
+        content: '';
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+    }
+    &.verifie { color: @couleur-noire; &::before { background: #10b981; } }
+    &.en_attente { color: @couleur-noire; &::before { background: #f59e0b; } }
+    &.block { color: @couleur-noire; &::before { background: #ef4444; } }
+}
+
+.table-footer {
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid @couleur-grise-bordure;
+    font-size: 14px;
+    color: @couleur-texte-muet;
+
+    .pagination {
+        display: flex;
+        gap: 4px;
+        button {
+            padding: 6px 12px;
+            border: 1px solid transparent;
+            background: transparent;
+            border-radius: 6px;
+            cursor: pointer;
+            color: @couleur-texte-muet;
+            &.active { background: @couleur-primaire; color: @couleur-noire; font-weight: 600; }
+            &:hover:not(.active) { background: @couleur-grise-fond; }
+        }
+    }
+}
