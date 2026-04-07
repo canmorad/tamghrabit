@@ -7,6 +7,15 @@ class Router
     private $routes = [];
     private $namedRoutes = [];
     private $lastRegistedRoute = null;
+    private $tempMiddlewares = [];
+    private $groupMiddleware = [];
+
+    protected $middlewareMap = [
+        'auth' => \App\Middleware\AuthMiddleware::class,
+        'guest' => \App\Middleware\GuestMiddleware::class,
+        'admin' => \App\Middleware\AdminMiddleware::class,
+        'adherent' => \App\Middleware\AdherentMiddleware::class,
+    ];
 
     public static function getRouter()
     {
@@ -45,6 +54,7 @@ class Router
         $this->routes[$method][$uri] = [
             'controller' => $action[0],
             'method' => $action[1],
+            'middleware' => $this->groupMiddleware
         ];
 
         $this->lastRegistedRoute = [
@@ -73,18 +83,57 @@ class Router
         return $this->namedRoutes[$name];
     }
 
+    public function group($callback)
+    {
+
+        $previousGroupMiddleware = $this->groupMiddleware;
+        $this->groupMiddleware = array_merge($this->groupMiddleware, $this->tempMiddlewares);
+        $this->tempMiddlewares = []; 
+
+        $callback($this);
+
+        $this->groupMiddleware = $previousGroupMiddleware;
+    }
+
+    public function middleware($keys)
+    {
+        $keys = is_array($keys) ? $keys : [$keys];
+
+        if ($this->lastRegistedRoute === null || !empty($this->tempMiddlewares)) {
+            $this->tempMiddlewares = $keys;
+        } else {
+            $method = $this->lastRegistedRoute["method"];
+            $uri = $this->lastRegistedRoute["uri"];
+            foreach ($keys as $key) {
+                if (!in_array($key, $this->routes[$method][$uri]['middleware'])) {
+                    $this->routes[$method][$uri]['middleware'][] = $key;
+                }
+            }
+        }
+        return $this;
+    }
+
     public function dispatch($method, $uri)
     {
         if (!isset($this->routes[$method])) {
             $this->abort("Méthode HTTP non supportée", 405);
         }
 
-        if (!isset($this->routes[$method][$uri])) {
+        $route = $this->routes[$method][$uri];
+
+        if (!$route) {
             $this->abort("Route non trouvée", 404);
         }
 
-        $controller = $this->routes[$method][$uri]['controller'];
-        $function = $this->routes[$method][$uri]['method'];
+        if (!empty($route['middleware'])) {
+            foreach ($route['middleware'] as $key) {
+                $middlewareClass = $this->middlewareMap[$key];
+                (new $middlewareClass())->handle();
+            }
+        }
+
+        $controller = $route['controller'];
+        $function = $route['method'];
 
         if (!class_exists($controller)) {
             $this->abort("Controller {$controller} introuvable", 500);
