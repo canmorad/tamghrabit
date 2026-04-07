@@ -35,6 +35,7 @@ $router->get("explorer", ['App\Controllers\CampagneController', 'index'])->name(
 $router->get("campagnes", ['App\Controllers\CampagneController', 'mesCampagnes']);
 $router->get("campagne/show", ['App\Controllers\CampagneController', 'show']);
 
+$router->get("admin/profile", ['App\Controllers\ProfileController', 'adminProfile']);
 
 $router->get("profile/edit", ['App\Controllers\ProfileController', 'edit'])->name('profile.edit');
 $router->post("profile/update", ['App\Controllers\ProfileController', 'updateProfile'])->name('profile.update');
@@ -64,11 +65,13 @@ $router->get("admin/users", ['App\Controllers\Auth\AuthenticatedSessionControlle
 $router->get("admin/identities/pending", ['App\Controllers\IdentifierController', 'pending'])->name('admin.identities.pending');
 
 $router->get("admin/organisation/pending", ['App\Controllers\OrganisationController', 'pending']);
-
+$router->get("admin/ribs/pending", ['App\Controllers\RibController', 'pending']);
 
 $router->post("admin/identities/verify", ['App\Controllers\IdentifierController', 'verify'])
     ->name('admin.identities.verify');
-    
+
+
+$router->get("admin/dashboard", ['App\Controllers\AdminController', 'dashboard']);
 
 // $router->get("user/identity/details", ['App\Controllers\IdentifierController', 'show'])->name('identity.show');
 

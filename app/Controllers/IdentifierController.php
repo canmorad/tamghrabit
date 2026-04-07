@@ -24,7 +24,10 @@ class IdentifierController extends Controller
     public function pending()
     {
         $identifiers = $this->identifierService->getPendingRequests();
-        return $this->view('admin/verifierIdentites', ['identifiers' => $identifiers]);
+        return $this->view('admin/verifierIdentites', [
+            'identifiers' => $identifiers,
+            'current_uri' => 'admin_verify_ids'
+        ]);
     }
 
     public function verify()

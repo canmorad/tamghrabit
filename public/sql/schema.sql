@@ -21,6 +21,20 @@ create table users (
     constraint FK_role foreign key (idRole) references roles (id)
 );
 
+create table adherents (
+    id int primary key,
+    sexe varchar(10) not null,
+    dateNaissance date,
+    adresse varchar(255),
+    ville varchar(100),
+    telephoneCode varchar(5),
+    telephone varchar(20),
+    pays varchar(50),
+    estVerifie boolean default false,
+    constraint FK_user foreign key (id) references users (id),
+    constraint CK_sexe check (sexe in ('homme', 'femme'))
+);
+
 create table conversations (
     id int primary key auto_increment,
     datecreation timestamp default(now())
@@ -46,20 +60,6 @@ create table messages (
     dateCreation timestamp default current_timestamp,
     constraint fk_message_conv foreign key (idConversation) references conversationUsers (id) on delete cascade,
     constraint fk_message_user foreign key (idExpediteur) references users (id)
-);
-
-create table adherents (
-    id int primary key,
-    sexe varchar(10) not null,
-    dateNaissance date,
-    adresse varchar(255),
-    ville varchar(100),
-    telephoneCode varchar(5),
-    telephone varchar(20),
-    pays varchar(50),
-    estVerifie boolean default false,
-    constraint FK_user foreign key (id) references users (id),
-    constraint CK_sexe check (sexe in ('homme', 'femme'))
 );
 
 create table categories (

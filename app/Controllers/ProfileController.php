@@ -31,6 +31,13 @@ class ProfileController extends Controller
         ]);
     }
 
+    public function adminProfile()
+    {
+        $this->view('admin/adminProfile',[
+            'current_uri' => 'edit_profile'
+        ]);
+    }
+
     public function updateProfile()
     {
         header('Content-Type: application/json');
@@ -99,6 +106,7 @@ class ProfileController extends Controller
             ->file_required()
             ->is_image()
             ->file_size(2 * 1024 * 1024);
+
         if (!$validate->isValid()) {
             echo json_encode(['type' => 'error', 'message' => $validate->errorMessages['imageProfile']]);
             exit;

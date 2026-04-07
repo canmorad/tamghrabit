@@ -21,14 +21,48 @@ class RibController extends Controller
         $this->ribService = new RibService(Connection::getInstance());
     }
 
+    public function pending()
+    {
+        $ribs = $this->ribService->getPendingRequests();
+        return $this->view('admin/verifierRibs', [
+            'ribs' => $ribs,
+            'current_uri' => 'admin_verify_ribs'
+            ]);
+    }
+
+    public function verify()
+    {
+        header('Content-Type: application/json');
+
+        $userId = $_POST['id'] ?? null; 
+        $action = $_POST['status'] === 'approuvee' ? 'approve' : 'refuse';
+        $reason = $_POST['reason'] ?? 'Aucun motif spécifié';
+
+        if (!$userId || !$action) {
+            echo json_encode(['type' => 'error', 'message' => 'Données manquantes']);
+            exit;
+        }
+
+        try {
+            $result = $this->ribService->verify($userId, $action, $reason);
+            if ($result) {
+                echo json_encode(['success' => true, 'message' => 'RIB mis à jour et e-mail envoyé.']);
+            } else {
+                throw new Exception("Erreur lors de la mise à jour du RIB");
+            }
+        } catch (Exception $e) {
+            echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+        }
+    }
+
     public function index()
     {
         $user = Session::get("user");
-      
+
         $rib = $this->ribService->getRibByUserId($user->getId());
         echo json_encode([
             "rib" => $rib->getRib() ? $rib->getRib() : '',
-            "attestationRib" => $rib->getAttestationRib() ? url("public/storage/ribs/".$rib->getAttestationRib()) : '' 
+            "attestationRib" => $rib->getAttestationRib() ? url("public/storage/ribs/" . $rib->getAttestationRib()) : ''
         ]);
     }
 

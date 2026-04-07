@@ -25,7 +25,8 @@ class OrganisationController extends Controller
     {
         $organisations = $this->orgService->getPendingOrganisations();
         return $this->view('admin/verifierOrg', [
-            'organisations' => $organisations
+            'organisations' => $organisations,
+            'current_uri' => 'admin_verify_orgs'
         ]);
     }
 
@@ -34,7 +35,7 @@ class OrganisationController extends Controller
         header('Content-Type: application/json');
 
         $orgId = $_POST['orgId'] ?? null;
-        $action = $_POST['action'] ?? null; 
+        $action = $_POST['action'] ?? null;
         $reason = $_POST['reason'] ?? null;
 
         if (!$orgId || !$action) {

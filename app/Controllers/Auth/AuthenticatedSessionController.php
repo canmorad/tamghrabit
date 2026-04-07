@@ -19,7 +19,9 @@ class AuthenticatedSessionController extends Controller
     }
 
     public function index(){
-        return $this->view('admin/users');
+        return $this->view('admin/users',[
+            'current_uri' => 'admin_users'
+        ]);
     }
     public function create()
     {

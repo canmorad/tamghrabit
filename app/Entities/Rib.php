@@ -7,6 +7,7 @@ class Rib
     private $rib;
     private $attestationRib;
     private $dateModifier;
+    private $status;
     private $adherent;
 
     public function __construct($rib = null, $attestationRib = null)
@@ -18,6 +19,16 @@ class Rib
     public function getId()
     {
         return $this->id;
+    }
+
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    }
+
+    public function getStatus()
+    {
+        return $this->status;
     }
     public function getRib()
     {

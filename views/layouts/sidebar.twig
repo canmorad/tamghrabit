@@ -1,3 +1,4 @@
+{# --- SECTION ADHERENT --- #}
 {% if currentUser and currentUser.role.nom|upper == 'ADHERENT' %}
 	<aside>
 		<div class="logo">
@@ -7,15 +8,15 @@
 		<nav>
 			<p class="menu-title">MENU PRINCIPAL</p>
 			<div class="menu-group">
-				<a href="" class="menu-item">
+				<a href="{{ url(route('adherent.dashboard')) }}" class="menu-item {{ current_uri == 'dashboard' ? 'active' : '' }}">
 					<i class="fa-solid fa-house"></i>
 					Dashboard
 				</a>
-				<a href="{{ url(route('explorer')) }}" class="menu-item {{ current_uri == 'create_campagne' ? 'active' : '' }}">
+				<a href="{{ url(route('explorer')) }}" class="menu-item {{ current_uri == 'explorer' ? 'active' : '' }}">
 					<i class="fa-solid fa-magnifying-glass"></i>
 					Explorer
 				</a>
-				<a href="{{ url(route('campagne.create')) }}" class="menu-item">
+				<a href="{{ url(route('campagne.create')) }}" class="menu-item {{ current_uri == 'create_campagne' ? 'active' : '' }}">
 					<i class="fa-solid fa-plus-circle"></i>
 					Créer une Campagne
 				</a>
@@ -25,15 +26,15 @@
 		<nav>
 			<p class="menu-title">MON ACTIVITÉ</p>
 			<div class="menu-group">
-				<a href="" class="menu-item">
+				<a href="/campagnes" class="menu-item {{ current_uri == 'mes_campagnes' ? 'active' : '' }}">
 					<i class="fa-solid fa-bullhorn"></i>
 					Mes Campagnes
 				</a>
-				<a href="" class="menu-item">
+				<a href="" class="menu-item {{ current_uri == 'mes_dons' ? 'active' : '' }}">
 					<i class="fa-solid fa-hand-holding-dollar"></i>
 					Mes Dons
 				</a>
-				<a href="" class="menu-item">
+				<a href="" class="menu-item {{ current_uri == 'zakat' ? 'active' : '' }}">
 					<i class="fa-solid fa-calculator"></i>
 					Calculateur Zakat
 				</a>
@@ -47,7 +48,7 @@
 					<i class="fa-solid fa-address-book"></i>
 					Mon Profil
 				</a>
-				<a href="" class="menu-item">
+				<a href="" class="menu-item {{ current_uri == 'settings' ? 'active' : '' }}">
 					<i class="fa-solid fa-gear"></i>
 					Paramètres
 				</a>
@@ -55,7 +56,7 @@
 					<i class="fa-solid fa-circle-question"></i>
 					Aide / Support
 				</a>
-				<a href="" class="menu-item logout">
+				<a href="/logout" class="menu-item logout">
 					<i class="fa-solid fa-right-from-bracket"></i>
 					Déconnexion
 				</a>
@@ -64,6 +65,7 @@
 	</aside>
 {% endif %}
 
+{# --- SECTION ADMIN --- #}
 {% if currentUser and currentUser.role.nom|upper == 'ADMIN' %}
 	<aside>
 		<div class="logo">
@@ -73,7 +75,7 @@
 		<nav class="admin-nav">
 			<p class="menu-title">TABLEAU DE BORD</p>
 			<div class="menu-group">
-				<a href="/admin/dashboard" class="menu-item">
+				<a href="{{url('/admin/dashboard')}}" class="menu-item {{ current_uri == 'admin_dash' ? 'active' : '' }}">
 					<i class="fa-solid fa-gauge"></i>
 					Vue d'ensemble
 				</a>
@@ -83,15 +85,15 @@
 		<nav class="admin-nav">
 			<p class="menu-title">GESTION UTILISATEURS</p>
 			<div class="menu-group">
-				<a href="/admin/users" class="menu-item">
+				<a href="{{url('/admin/users')}}" class="menu-item {{ current_uri == 'admin_users' ? 'active' : '' }}">
 					<i class="fa-solid fa-users"></i>
 					Tous les utilisateurs
 				</a>
-				<a href="/admin/verify-identity" class="menu-item">
+				<a href="{{url('/admin/identities/pending')}}" class="menu-item {{ current_uri == 'admin_verify_ids' ? 'active' : '' }}">
 					<i class="fa-solid fa-user-check"></i>
 					Vérifier Identités
 				</a>
-				<a href="/admin/verify-ribs" class="menu-item">
+				<a href="{{url('/admin/ribs/pending')}}" class="menu-item {{ current_uri == 'admin_verify_ribs' ? 'active' : '' }}">
 					<i class="fa-solid fa-bank"></i>
 					Vérifier RIBs
 				</a>
@@ -101,15 +103,15 @@
 		<nav class="admin-nav">
 			<p class="menu-title">MODÉRATION CAMPAGNES</p>
 			<div class="menu-group">
-				<a href="/admin/campagnes/pending" class="menu-item">
+				<a href="/admin/campagnes/pending" class="menu-item {{ current_uri == 'admin_pending_camp' ? 'active' : '' }}">
 					<i class="fa-solid fa-hourglass-half"></i>
 					En attente
 				</a>
-				<a href="/admin/campagnes/active" class="menu-item">
+				<a href="/admin/campagnes/active" class="menu-item {{ current_uri == 'admin_active_camp' ? 'active' : '' }}">
 					<i class="fa-solid fa-bullhorn"></i>
 					Campagnes actives
 				</a>
-				<a href="/admin/categories" class="menu-item">
+				<a href="/admin/categories" class="menu-item {{ current_uri == 'admin_categories' ? 'active' : '' }}">
 					<i class="fa-solid fa-tags"></i>
 					Catégories
 				</a>
@@ -119,7 +121,7 @@
 		<nav class="admin-nav">
 			<p class="menu-title">ORGANISATIONS</p>
 			<div class="menu-group">
-				<a href="/admin/organisations" class="menu-item">
+				<a href="{{ url('/admin/organisation/pending') }}" class="menu-item {{ current_uri == 'admin_verify_orgs' ? 'active' : '' }}">
 					<i class="fa-solid fa-building-ngo"></i>
 					Valider Associations
 				</a>
@@ -129,7 +131,7 @@
 		<nav>
 			<p class="menu-title">COMPTE & SUPPORT</p>
 			<div class="menu-group">
-				<a href="{" class="menu-item ">
+				<a href="{{ url('admin/profile') }}" class="menu-item {{ current_uri == 'edit_profile' ? 'active' : '' }}">
 					<i class="fa-solid fa-address-book"></i>
 					Mon Profil
 				</a>
@@ -137,11 +139,7 @@
 					<i class="fa-solid fa-gear"></i>
 					Paramètres
 				</a>
-				<a href="" class="menu-item">
-					<i class="fa-solid fa-circle-question"></i>
-					Aide / Support
-				</a>
-				<a href="" class="menu-item logout">
+				<a href="/logout" class="menu-item logout">
 					<i class="fa-solid fa-right-from-bracket"></i>
 					Déconnexion
 				</a>
