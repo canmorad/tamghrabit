@@ -1,23 +1,117 @@
 <?php
 namespace App\Controllers;
 use App\Core\Controller;
+use App\Entities\User;
 use App\Helpers\Session;
 use App\Helpers\Validator;
 use App\Services\OrganisationService;
 use App\Services\ProfileService;
 use App\Core\Connection;
-use Exception;
 
 Session::start();
 class ProfileController extends Controller
 {
-    private $profileServive;
+    private $profileService;
     private $orgService;
     public function __construct()
     {
         parent::__construct();
         $this->orgService = new OrganisationService(Connection::getInstance());
-        $this->profileServive = new ProfileService(Connection::getInstance());
+        $this->profileService = new ProfileService(Connection::getInstance());
+    }
+
+    public function demanderMiseAjourEmail()
+    {
+        header('Content-Type: application/json');
+        $user = Session::get('user');
+
+        $nouveauEmail = $_POST['nouveauEmail'] ?? '';
+        $motDePasse = $_POST['motDePasse'] ?? '';
+
+        $validate = new Validator([
+            'nouveauEmail' => $nouveauEmail,
+            'password' => $motDePasse
+        ]);
+
+        $validate->field('nouveauEmail', 'nouvelle email')->required()->email();
+        $validate->field('password', 'mot de passe')->required();
+
+        if (!$validate->isValid()) {
+            echo json_encode(['type' => 'error', 'message' => $validate->errorMessages]);
+            exit;
+        }
+
+        try {
+            $this->profileService->preparerMiseAjourEmail($user, $nouveauEmail, $motDePasse);
+
+            echo json_encode(['type' => 'success', 'step' => 'otp', 'message' => "Un code a été envoyé à $nouveauEmail"]);
+        } catch (\Exception $e) {
+            echo json_encode(['type' => 'error', 'message' => $e->getMessage()]);
+        }
+    }
+
+    public function confirmerMiseAjourEmail()
+    {
+        header('Content-Type: application/json');
+        $codeSaisi = $_POST['codeOtp'] ?? '';
+
+        try {
+            $resultat = $this->profileService->finaliserMiseAjourEmail($codeSaisi);
+
+            if ($resultat) {
+                $user = Session::get('user');
+                $tempData = $_SESSION['modification_email_temp'];
+                $user->setEmail($tempData['nouveauEmail']);
+                Session::set('user', $user);
+
+                unset($_SESSION['modification_email_temp']);
+
+                echo json_encode(['type' => 'success', 'message' => "Email mis à jour avec succès !"]);
+            }
+        } catch (\Exception $e) {
+            echo json_encode(['type' => 'error', 'message' => $e->getMessage()]);
+        }
+    }
+
+    public function updatePassword()
+    {
+        header('Content-Type: application/json');
+
+        $data = [
+            'ancienPassword' => $_POST['ancienPassword'] ?? '',
+            'nouvellePassword' => $_POST['nouvellePassword'] ?? '',
+            'confirmPassword' => $_POST['confirmPassword'] ?? '',
+        ];
+
+        $validate = new Validator($data);
+        $validate->field('ancienPassword', 'Ancien mot de passe')->required();
+        $validate->field('nouvellePassword', 'Mot de passe')->required()->min_len(8);
+        $validate->field('confirmPassword', 'confirmer mot de passe')->required()->equals($data['nouvellePassword']);
+
+        if (!$validate->isValid()) {
+            echo json_encode([
+                'type' => 'error',
+                'message' => $validate->errorMessages
+            ]);
+            exit;
+        }
+
+        try {
+            $user = Session::get('user');
+
+            $this->profileService->updatePassword($user, $data['ancienPassword'], $data['nouvellePassword']);
+
+            echo json_encode([
+                'type' => 'success',
+                'message' => 'Mot de passe mis à jour avec succès'
+            ]);
+        } catch (\Exception $e) {
+            echo json_encode([
+                'type' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
+        exit;
     }
     public function edit()
     {
@@ -31,15 +125,16 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function settings(){
-        return $this->view('profile/settings',[
+    public function settings()
+    {
+        return $this->view('profile/settings', [
             'current_uri' => 'settings'
         ]);
     }
 
     public function adminProfile()
     {
-        $this->view('admin/adminProfile',[
+        $this->view('admin/adminProfile', [
             'current_uri' => 'edit_profile'
         ]);
     }
@@ -85,7 +180,7 @@ class ProfileController extends Controller
             $userSession->setVille($data['ville'] ?? '');
             $userSession->setAdresse($data['adresse'] ?? '');
 
-            $this->profileServive->updateProfile($userSession);
+            $this->profileService->updateProfile($userSession);
             Session::set("user", $userSession);
 
             echo json_encode([
@@ -93,7 +188,7 @@ class ProfileController extends Controller
                 'message' => 'Profil mis à jour avec succès'
             ]);
 
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             echo json_encode([
                 'type' => 'error',
                 'message' => $e->getMessage(),
@@ -119,13 +214,13 @@ class ProfileController extends Controller
         }
 
         try {
-            $nomFichierUnique = $this->profileServive->updateImageProfile($userSession, $file);
+            $nomFichierUnique = $this->profileService->updateImageProfile($userSession, $file);
             $userSession->setImageProfile($nomFichierUnique);
             Session::set("user", $userSession);
 
             echo json_encode(['type' => 'success', 'message' => "Photo mise à jour !"]);
 
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             echo json_encode(['type' => 'error', 'message' => $e->getMessage()]);
         }
     }

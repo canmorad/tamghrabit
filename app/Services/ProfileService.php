@@ -3,21 +3,119 @@ namespace App\Services;
 
 use App\Repositories\ProfileRepository;
 use App\Traits\FileHandler;
-use Exception;
+use App\Traits\DatabaseTransaction;
+use App\Services\EmailService;
 
 class ProfileService
 {
     use FileHandler;
+    use DatabaseTransaction;
+
     private $profileRepository;
+    private $emailService;
+    private $conn;
 
     public function __construct($conn)
     {
         $this->profileRepository = new ProfileRepository($conn);
+        $this->emailService = new EmailService();
+        $this->conn = $conn;
+    }
+
+    public function preparerMiseAjourEmail($user, $nouveauEmail, $motDePasseActuel)
+    {
+        if ($this->profileRepository->existEmail($nouveauEmail)) {
+            throw new \Exception("Cet email est déjà utilisé par un autre compte.");
+        }
+
+        if (!password_verify($motDePasseActuel, $user->getPassword())) {
+            throw new \Exception("Mot de passe incorrect.");
+        }
+
+        $codeVerification = rand(10000000, 99999999);
+
+        $_SESSION['modification_email_temp'] = [
+            'idUtilisateur' => $user->getId(),
+            'nouveauEmail' => $nouveauEmail,
+            'codeOtp' => $codeVerification,
+            'dateExpiration' => time() + 600
+        ];
+
+        $sujet = "Vérification de votre nouvelle adresse email";
+        $corpsMessage = "
+                        <h2>Confirmation de changement d'email</h2>
+                        <p>Pour finaliser le changement de votre adresse email, veuillez utiliser le code suivant :</p>
+                        <h1 style='color: #22C55E;'>$codeVerification</h1>
+                        <p>Ce code est valable pendant 10 minutes.</p>
+                        <p>Si vous n'êtes pas à l'origine de cette demande, veuillez ignorer cet email.</p>
+                    ";
+
+        try {
+            $this->emailService->send(
+                $nouveauEmail,
+                $user->getPrenom() . " " . $user->getNom(),
+                $sujet,
+                $corpsMessage
+            );
+        } catch (\Exception $e) {
+            throw new \Exception("Erreur lors de l'envoi de l'email. Veuillez réessayer.");
+        }
+    }
+    public function finaliserMiseAjourEmail($codeSaisi)
+    {
+        $temp = $_SESSION['modification_email_temp'] ?? null;
+
+        if (!$temp) {
+            throw new \Exception("Session expirée ou invalide.");
+        }
+
+        if (time() > $temp['dateExpiration']) {
+            unset($_SESSION['modification_email_temp']);
+            throw new \Exception("Le code a expiré.");
+        }
+
+        if ($codeSaisi != $temp['codeOtp']) {
+            throw new \Exception("Code de vérification incorrect.");
+        }
+
+        return $this->profileRepository->confirmEmailUpdate($temp['idUtilisateur'], $temp['nouveauEmail']);
+    }
+
+    public function updatePassword($user, $ancienPassword, $nouvellePassword)
+    {
+        if (!password_verify($ancienPassword, $user->getPassword())) {
+            echo json_encode([
+                'type' => 'error',
+                'message' => ['ancienPassword' => 'L\'ancien mot de passe est incorrect.']
+            ]);
+            exit;
+        }
+
+        try {
+            $this->beginTransaction();
+            $user->setPassword(password_hash($nouvellePassword, PASSWORD_DEFAULT));
+            $this->profileRepository->updatePassword($user);
+            $this->commit();
+        } catch (\Exception $e) {
+            $this->rollBack();
+            throw new \Exception('Erreur lors de la modification du mot de passe.');
+        }
     }
 
     public function updateProfile($adherent)
     {
-        return $this->profileRepository->updateProfile($adherent);
+        try {
+            $this->beginTransaction();
+            $this->profileRepository->updateProfile($adherent);
+            $this->commit();
+            return true;
+        } catch (\PDOException $e) {
+            $this->rollBack();
+            throw new \Exception("Erreur base de données");
+        } catch (\Exception $e) {
+            $this->rollBack();
+            throw new \Exception("Une erreur imprévue est survenue.");
+        }
     }
 
     public function updateImageProfile($userSession, $file)
@@ -28,16 +126,30 @@ class ProfileService
         $fullDestination = $baseDossier . $nomFichierUnique;
 
         try {
-            $oldImagePath = $baseDossier . $userSession->getImageProfile();
-            $this->deleteFile($oldImagePath);
+            $this->beginTransaction();
+
             $this->uploadFile($file, $fullDestination);
 
             $this->profileRepository->updateImageProfile($userSession->getId(), $nomFichierUnique);
 
+            if ($userSession->getImageProfile()) {
+                $oldImagePath = $baseDossier . $userSession->getImageProfile();
+                if (file_exists($oldImagePath)) {
+                    $this->deleteFile($oldImagePath);
+                }
+            }
+
+            $this->commit();
             return $nomFichierUnique;
 
-        } catch (Exception $e) {
-            throw $e;
+        } catch (\Exception $e) {
+            $this->rollBack();
+
+            if (file_exists($fullDestination)) {
+                unlink($fullDestination);
+            }
+
+            throw new \Exception("Erreur lors de la mise à jour de l'image");
         }
     }
 }
