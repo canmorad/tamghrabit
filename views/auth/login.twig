@@ -1,92 +1,102 @@
 <!DOCTYPE html>
 <html lang="fr">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion - Tamghrabit</title>
-    <link rel="stylesheet" href="{{ url('public/css/login.css') }}">
-    <link rel="stylesheet" href="{{ url('public/css/footer.css') }}">
-    <link rel="stylesheet" href="{{ url('public/css/header.css') }}">
-    <link rel="stylesheet" href="{{ url('public/css/all.min.css') }}">
-</head>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Connexion - Tamghrabit</title>
+		<link rel="stylesheet" href="{{ url('public/css/login.css') }}">
+		<link rel="stylesheet" href="{{ url('public/css/footer.css') }}">
+		<link rel="stylesheet" href="{{ url('public/css/header.css') }}">
+		<link rel="stylesheet" href="{{ url('public/css/all.min.css') }}">
+	</head>
 
-<body>
+	<body>
 
-    {% include 'layouts/header.twig' %}
+		{% include 'layouts/header.twig' %}
 
-    <div class="login-page">
-        <div class="login-container">
-            <div class="login-form-side">
-                <div class="login-header">
-                    <div class="logo-circle">
-                        <img src="{{ url('public/images/logo.png') }}" alt="Logo">
-                    </div>
-                    <h1>Bon retour !</h1>
-                    <p>Connectez-vous pour accéder à votre espace.</p>
-                </div>
+		<div class="login-page">
+			<div class="login-container">
+				<div class="login-form-side">
+					<div class="login-header">
+						<div class="logo-circle">
+							<img src="{{ url('public/images/logo.png') }}" alt="Logo">
+						</div>
+						<h1>Bon retour !</h1>
+						<p>Connectez-vous pour accéder à votre espace.</p>
+					</div>
 
-                {% set errors = session_errors() %}
-                {% if errors %}
-                <div class="alert alert-danger">
-                    <i class="fa-solid fa-circle-exclamation"></i>
-                    <p>
-                        {% for message in errors %}
-                        {{ message }}<br>
-                        {% endfor %}
-                    </p>
-                </div>
-                {% endif %}
+					{% set errors = session_errors() %}
+					{% if errors %}
+						<div class="alert alert-danger">
+							<i class="fa-solid fa-circle-exclamation"></i>
+							<p>
+								{% for message in errors %}
+									{{ message }}<br>
+								{% endfor %}
+							</p>
+						</div>
+					{% endif %}
 
-                <form class="form-container" method="POST" action="{{ route('login.store') }}">
-                    <div class="form-group">
-                        <label>E-mail</label>
-                        <input type="email" name="email" placeholder="exemple@mail.com" required>
-                    </div>
+					<form class="form-container" method="POST" action="{{ route('login.store') }}">
+						<div class="form-group">
+							<label>E-mail</label>
+							<input type="email" name="email" placeholder="exemple@mail.com" required>
+						</div>
 
-                    <div class="form-group">
-                        <div class="label-row">
-                            <label>Mot de passe</label>
-                        </div>
-                        <div class="input-wrapper">
-                            <input type="password" name="password" placeholder="••••••••" id="passInput" required>
-                            <i class="fa-regular fa-eye-slash" id="togglePass"></i>
-                        </div>
-                    </div>
+						<div class="form-group">
+							<div class="label-row">
+								<label>Mot de passe</label>
+							</div>
+							<div class="input-wrapper">
+								<input type="password" name="password" placeholder="••••••••" id="passInput" required>
+								<i class="fa-regular fa-eye-slash" id="togglePass"></i>
+							</div>
+						</div>
 
-                    <div class="form-checkbox">
-                        <input type="checkbox" id="remember">
-                        <label for="remember">Se souvenir de moi</label>
-                    </div>
+						<div class="form-checkbox">
+							<input type="checkbox" id="remember">
+							<label for="remember">Se souvenir de moi</label>
+						</div>
 
-                    <button type="submit" class="bouton-submit">Se connecter</button>
+						<button type="submit" class="bouton-submit">Se connecter</button>
 
-                    <p class="register-link">Nouveau ici ? <a href="{{ route('register.create') }}">Créer un compte</a>
-                    </p>
-                </form>
-            </div>
+						<div class="divider">
+							<span>Ou</span>
+						</div>
 
-            <div class="login-image-side">
-                <div class="image-overlay">
-                    <h2>BÂTIR. CHANGER.</h2>
-                </div>
-            </div>
-        </div>
-    </div>
+						<a href="{{ google_auth_url }}" class="btn-google">
+							<img src="{{ url('public/images/google-icon.png') }}" alt="Google Logo" class="google-icon">
+							<span>Se connecter avec Google</span>
+						</a>
 
-    {% include 'layouts/footer.twig' %}
+						<p class="register-link">Nouveau ici ?
+							<a href="{{ route('register.create') }}">Créer un compte</a>
+						</p>
+					</form>
+				</div>
 
-    <script>
-        const togglePass = document.querySelector('#togglePass');
-        const passInput = document.querySelector('#passInput');
+				<div class="login-image-side">
+					<div class="image-overlay">
+						<h2>BÂTIR. CHANGER.</h2>
+					</div>
+				</div>
+			</div>
+		</div>
 
-        togglePass.addEventListener('click', () => {
-            const type = passInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passInput.setAttribute('type', type);
-            togglePass.classList.toggle('fa-eye');
-            togglePass.classList.toggle('fa-eye-slash');
-        });
-    </script>
-</body>
+		{% include 'layouts/footer.twig' %}
+
+		<script>
+			const togglePass = document.querySelector('#togglePass');
+const passInput = document.querySelector('#passInput');
+
+togglePass.addEventListener('click', () => {
+const type = passInput.getAttribute('type') === 'password' ? 'text' : 'password';
+passInput.setAttribute('type', type);
+togglePass.classList.toggle('fa-eye');
+togglePass.classList.toggle('fa-eye-slash');
+});
+		</script>
+	</body>
 
 </html>

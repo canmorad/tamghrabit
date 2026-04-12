@@ -7,6 +7,7 @@ use App\Services\AuthentificationService;
 use App\Core\Connection;
 use App\Entities\User;
 use App\Entities\Adherent;
+use Google\Client;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -25,7 +26,17 @@ class AuthenticatedSessionController extends Controller
     }
     public function create()
     {
-        return $this->view('auth/login');
+        $client = new Client();
+        $client->setClientId('636624887237-6etnq9800j8i7rdtcrqd12c2r4obmh29.apps.googleusercontent.com');
+        $client->setClientSecret('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');
+        $client->setRedirectUri('http://localhost/Tamghrabit/auth/google/callback');
+        $client->addScope("email");
+        $client->addScope("profile");
+
+        $google_auth_url = $client->createAuthUrl();
+        return $this->view('auth/login',[
+           'google_auth_url' => $google_auth_url
+        ]);
     }
 
     public function store()

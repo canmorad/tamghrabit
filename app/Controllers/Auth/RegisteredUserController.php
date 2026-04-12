@@ -60,6 +60,7 @@ class RegisteredUserController extends Controller
 
 
         if (!$validate->isValid()) {
+            Session::set('old', $_POST);
             Session::flush('errors', $validate->errorMessages);
             return $this->view('auth/register');
         } else {

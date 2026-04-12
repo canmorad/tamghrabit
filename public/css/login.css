@@ -204,3 +204,46 @@ body {
     padding: 40px 20px;
   }
 }
+.btn-google {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  color: #062121;
+  font-weight: 600;
+  text-decoration: none;
+  transition: 0.3s;
+}
+.btn-google img {
+  width: 20px;
+}
+.btn-google:hover {
+  background-color: #f1f1f1;
+}
+.divider {
+  text-align: center;
+  margin: 20px 0;
+  position: relative;
+}
+.divider::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #e2e8f0;
+}
+.divider span {
+  position: relative;
+  background: white;
+  padding: 0 15px;
+  color: #64748b;
+  font-size: 14px;
+}

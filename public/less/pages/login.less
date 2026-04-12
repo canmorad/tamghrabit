@@ -1,7 +1,11 @@
+// out: ../../css/login.css
+
 @couleur-primaire: #C5F82A;
 @couleur-noire: #062121;
 @couleur-blanche: #FFFFFF;
 @police-principale: 'Inter', sans-serif;
+@couleur-grise-bordure: #e2e8f0;
+@couleur-texte-muet: #64748b;
 
 body {
     margin: 0;
@@ -24,7 +28,7 @@ body {
 .login-container {
     background-color: @couleur-blanche;
     width: 90%;
-    max-width: 1000px; // أصغر قليلاً من صفحة التسجيل
+    max-width: 1000px; 
     display: flex;
     border-radius: 24px;
     overflow: hidden;
@@ -250,5 +254,40 @@ body {
 
     .login-form-side {
         padding: 40px 20px;
+    }
+}
+
+.btn-google {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    background-color: white;
+    border: 1px solid @couleur-grise-bordure;
+    border-radius: 10px;
+    color: @couleur-noire;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.3s;
+
+    img { width: 20px; }
+    &:hover { background-color: #f1f1f1; }
+}
+
+.divider {
+    text-align: center;
+    margin: 20px 0;
+    position: relative;
+    &::before {
+        content: "";
+        position: absolute; top: 50%; left: 0; right: 0;
+        height: 1px; background: @couleur-grise-bordure;
+    }
+    span {
+        position: relative; background: white; padding: 0 15px;
+        color: @couleur-texte-muet; font-size: 14px;
     }
 }
