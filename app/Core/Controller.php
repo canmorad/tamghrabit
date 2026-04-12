@@ -30,6 +30,12 @@ class Controller
                 return is_array($errors) ? $errors : [$errors];
             })
         );
+
+        $this->twig->addFunction(
+            new TwigFunction('old', function ($key) {
+                return Session::old($key);
+            })
+        );
     }
 
     protected function view($template, $data = [])

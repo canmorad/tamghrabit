@@ -121,11 +121,11 @@ class Router
 
         $route = $this->routes[$method][$uri];
 
-        if (!$route) {
+        if (!$this->routes[$method][$uri]) {
             $this->abort("Route non trouvée", 404);
         }
 
-        if (!empty($route['middleware'])) {
+        if (!empty($this->routes[$method][$uri]['middleware'])) {
             foreach ($route['middleware'] as $key) {
                 $middlewareClass = $this->middlewareMap[$key];
                 (new $middlewareClass())->handle();

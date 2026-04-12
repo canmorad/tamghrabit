@@ -20,7 +20,7 @@ class AdminMiddleware
             exit();
         }
 
-        if ($user->getRole()->role !== "admin") {
+        if ($user->getRole()->getNom() !== "admin") {
             http_response_code(403);
             echo "Accès refusé : Réservé aux administrateurs.";
             exit();
