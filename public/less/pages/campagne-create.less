@@ -311,3 +311,42 @@ small {
 .alert-error {
     background: red;
 }
+
+.alert-verify {
+    background: rgba(245, 158, 11, 0.1); 
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    padding: 20px;
+    border-radius: 12px;
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: #b45309; 
+    font-size: 14px;
+    line-height: 1.5;
+
+    i {
+        font-size: 20px;
+        color: #f59e0b; 
+    }
+
+    a {
+        color: #b45309;
+        font-weight: 700;
+        text-decoration: underline;
+        transition: 0.3s;
+        margin-left: 5px;
+
+        &:hover {
+            color: @couleur-noire;
+            text-decoration: none;
+        }
+    }
+}
+
+.form-type {
+    .alert-verify {
+        justify-content: center; 
+        text-align: center;
+    }
+}

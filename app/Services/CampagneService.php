@@ -19,6 +19,21 @@ class CampagneService
         $this->campagneRepo = new CampagneRepository($conn);
     }
 
+    public function getCampagnesByUser($userId)
+    {
+        $campagnes = $this->campagneRepo->getCampagnesByUser($userId);
+
+        foreach ($campagnes as &$c) {
+            if (isset($c['objectifMontant']) && $c['objectifMontant'] > 0) {
+                $c['percentage'] = round(($c['montantCollecte'] / $c['objectifMontant']) * 100);
+            } else {
+                $c['percentage'] = 0;
+            }
+        }
+
+        return $campagnes;
+    }
+
     public function store($campagne)
     {
         try {

@@ -11,15 +11,21 @@ create table roles (
 create table users (
     id int primary key auto_increment,
     nom varchar(100) not null,
-    prenom varchar(100) not null,
+    prenom varchar(100) null,
     email varchar(150) unique,
     password varchar(255) not null,
+    idGoogle varchar(255),
+    tokenVerification varchar(255),
+    estVerifieGmail boolean default false,
     imageProfile varchar(255),
     dateCreation timestamp default(now()),
-    dateModifier timestamp,
+    dateModifier timestamp on update current_timestamp,
     idRole int,
     constraint FK_role foreign key (idRole) references roles (id)
 );
+
+drop table users;
+drop table adherents;
 
 create table adherents (
     id int primary key,
@@ -205,37 +211,41 @@ values (
 
 delimiter
 
+drop procedure if exists login;
+
 create procedure login (
     p_email varchar(150)
 )
 begin
-   declare v_count int;
+    declare v_exists int;
+    declare v_verified int;
 
-    select count(*) into v_count
+    select count(*), max(estVerifieGmail) into v_exists, v_verified 
     from users 
     where email = p_email;
 
-    if v_count = 0 then
-       signal sqlstate '45000'
-       set message_text = 'Email ou mot de passe incorrect';
+    if v_exists = 0 then
+        signal sqlstate '45000' set message_text = 'Email ou mot de passe incorrect';
+    elseif v_verified = 0 then
+        signal sqlstate '45000' set message_text = 'Veuillez vérifier votre boîte email pour activer votre compte';
     else
-       select u.*, r.nom as role
-       from users u
-       join roles r on u.idRole = r.id
-       where u.email = p_email;
+        select u.*, r.nom as role
+        from users u
+        join roles r on u.idRole = r.id
+        where u.email = p_email;
     end if;   
 end;
-
-drop procedure login;
+drop procedure if exists register;
 
 create procedure register (
     p_nom varchar(100),
     p_prenom varchar(100),
     p_email varchar(150),
     p_password varchar(250),
-    p_sexe varchar(5),
+    p_sexe varchar(10),
     p_dateNaissance date,
-    p_role varchar(50)
+    p_role varchar(50),
+    p_tokenVerification varchar(255)
 ) 
 begin
     declare v_role int default 0;
@@ -254,20 +264,16 @@ begin
         set message_text = 'Erreur serveur';
     end;
 
-    select id into v_role
-    from roles
-    where nom = p_role;
+    select id into v_role from roles where nom = p_role;
     
     start transaction;
-        insert into users (nom, prenom, email, password, idRole)
-            values (p_nom, p_prenom, p_email, p_password, v_role);
+        insert into users (nom, prenom, email, password, idRole, tokenVerification, estVerifieGmail)
+            values (p_nom, p_prenom, p_email, p_password, v_role, p_tokenVerification, false);
 
         insert into adherents (id, sexe, dateNaissance)
             values (last_insert_id(), p_sexe, p_dateNaissance);
     commit;
-
 end;
-
 delimiter;
 
 drop procedure register;

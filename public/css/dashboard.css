@@ -147,7 +147,8 @@ main header .action-buttons {
   align-items: center;
   gap: 15px;
 }
-main header .action-buttons .icon-btn {
+main header .action-buttons .icon-btn,
+main header .action-buttons a {
   background: #F8FAFC;
   border: 1px solid #E2E8F0;
   color: #64748B;
@@ -156,8 +157,13 @@ main header .action-buttons .icon-btn {
   border-radius: 12px;
   cursor: pointer;
   transition: 0.3s;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-main header .action-buttons .icon-btn:hover {
+main header .action-buttons .icon-btn:hover,
+main header .action-buttons a:hover {
   background: #062121;
   color: #FFFFFF;
 }

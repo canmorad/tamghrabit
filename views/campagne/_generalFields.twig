@@ -1,62 +1,67 @@
 <div class="form-section">
-    <h3 class="section-title">Informations Générales</h3>
+	<h3 class="section-title">Informations Générales</h3>
 
-    <div class="info-profile-data">
-        <i class="fa-solid fa-circle-info"></i>
-        <span>Les fonds seront versés sur le <strong>RIB</strong> configuré dans votre profil.</span>
-    </div>
+	{% if suffix != 'nature'%}
+		<div class="info-profile-data">
+			<i class="fa-solid fa-circle-info"></i>
+			<span>Les fonds seront versés sur le
+				<strong>RIB</strong>
+				configuré dans votre profil.</span>
+		</div>
+	{% endif %}
 
-    <div class="grid-row">
-        <div class="form-group full">
-            <label>Titre de la campagne</label>
-            <input type="text" name="titre" placeholder="Ex: Construction d'une école..." required>
-        </div>
-    </div>
+	<div class="grid-row">
+		<div class="form-group full">
+			<label>Titre de la campagne</label>
+			<input type="text" name="titre" placeholder="Ex: Construction d'une école..." required>
+		</div>
+	</div>
 
-    <div class="grid-row">
-        <div class="form-group">
-            <label>Catégorie</label>
-            <select name="idCategorie" required>
-                <option value="1">Éducation</option>
-                <option value="2">Santé</option>
-                <option value="3">Social</option>
-            </select>
-        </div>
+	<div class="grid-row">
+		<div class="form-group">
+			<label>Catégorie</label>
+			<select name="idCategorie" required>
+				<option value="">Choisir une catégorie</option>
+				{% for cat in categories %}
+					<option value="{{ cat.id }}">{{ cat.nom }}</option>
+				{% endfor %}
+			</select>
+		</div>
 
-        <div class="form-group">
-            <label>Numéro de téléphone</label>
-            <input type="tel" name="telephone" placeholder="+212 600-000000" required>
-        </div>
-    </div>
+		<div class="form-group">
+			<label>Numéro de téléphone</label>
+			<input type="tel" name="telephone" placeholder="+212 600-000000" required>
+		</div>
+	</div>
 
-    <div class="grid-row">
-        <div class="form-group">
-            <label>Date de début</label>
-            <input type="date" name="dateDebut" required>
-        </div>
+	<div class="grid-row">
+		<div class="form-group">
+			<label>Date de début</label>
+			<input type="date" name="dateDebut" required>
+		</div>
 
-        <div class="form-group">
-            <label>Date de fin</label>
-            <input type="date" name="dateFin" required>
-        </div>
-    </div>
+		<div class="form-group">
+			<label>Date de fin</label>
+			<input type="date" name="dateFin" required>
+		</div>
+	</div>
 
-    <div class="form-group">
-        <label>Description</label>
-        <textarea name="description" rows="4" placeholder="Détails du projet..." required></textarea>
-    </div>
+	<div class="form-group">
+		<label>Description</label>
+		<textarea name="description" rows="4" placeholder="Détails du projet..." required></textarea>
+	</div>
 
-    <div class="form-group">
-        <label>Image de la campagne</label>
-        <div class="file-upload">
-            <input type="file" name="image" id="comp-img-{{ suffix }}" accept="image/*" required onchange="previewImage(event, this)">
-            <label for="comp-img-{{ suffix }}">
-                <i class="fa-solid fa-cloud-arrow-up"></i>
-                Choisir une image
-            </label>
-        </div>
-        <div class="image-preview-container" style="display:none; margin-top: 10px;">
-            <img class="image-preview-img" src="#" alt="Aperçu" style="width: 100px; border-radius: 8px;">
-        </div>
-    </div>
+	<div class="form-group">
+		<label>Image de la campagne</label>
+		<div class="file-upload">
+			<input type="file" name="image" id="comp-img-{{ suffix }}" accept="image/*" required onchange="previewImage(event, this)">
+			<label for="comp-img-{{ suffix }}">
+				<i class="fa-solid fa-cloud-arrow-up"></i>
+				Choisir une image
+			</label>
+		</div>
+		<div class="image-preview-container" style="display:none; margin-top: 10px;">
+			<img class="image-preview-img" src="#" alt="Aperçu" style="width: 100px; border-radius: 8px;">
+		</div>
+	</div>
 </div>

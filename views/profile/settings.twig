@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Paramètres - Tamghrabit</title>
+
+		<link rel="stylesheet" href="{{ url('public/css/dashboard.css') }}">
+		<link rel="stylesheet" href="{{ url('public/css/profile-settings.css') }}">
+		<link rel="stylesheet" href="{{ url('public/css/all.min.css') }}">
+	</head>
+	<body>
+
+		<div class="main-wrapper">
+			{% include 'layouts/sidebar.twig' %}
+
+			<main>
+				<header>
+					<div class="search-bar">
+						<i class="fa-solid fa-magnifying-glass"></i>
+						<input type="text" placeholder="Rechercher dans les paramètres...">
+					</div>
+					<div class="action-buttons">
+						<div class="profile-container">
+							<img src="{{ currentUser.imageProfile ? url('public/storage/profiles/' ~ currentUser.imageProfile) : url('public/images/default-profile.png') }}" class="avatar">
+							<div class="user-info">
+								<span class="nom">{{ currentUser.prenom }}
+									{{ currentUser.nom }}</span>
+								<span class="email">{{ currentUser.email }}</span>
+							</div>
+						</div>
+					</div>
+				</header>
+
+				<section class="dashboard-body">
+    <div class="profile-settings-container">
+        
+        <nav class="profile-tabs">
+            <button class="tab-btn active" onclick="switchTab(event, 'security')">
+                <i class="fa-solid fa-lock"></i> Sécurité
+            </button>
+            <button class="tab-btn" onclick="switchTab(event, 'email-tab')">
+                <i class="fa-solid fa-envelope"></i> Email
+            </button>
+        </nav>
+
+        <div class="settings-main-card">
+            
+            <div id="security" class="tab-content active">
+                <div class="section-header">
+                    <h2><i class="fa-solid fa-lock" style="color: #062121;"></i> Mot de passe</h2>
+                    <p>Mettez à jour votre mot de passe pour protéger votre compte.</p>
+                </div>
+
+                <form id="password-form" action="/profile/update-password" method="POST">
+                    <div class="form-group">
+                        <label>Ancien mot de passe</label>
+                        <div class="input-wrapper">
+                            <input type="password" name="old_password" placeholder="••••••••" required>
+                            <i class="fa-solid fa-eye toggle-password"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Nouveau mot de passe</label>
+                        <div class="input-wrapper">
+                            <input type="password" name="new_password" placeholder="••••••••" required>
+                            <i class="fa-solid fa-eye toggle-password"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Confirmer le nouveau mot de passe</label>
+                        <div class="input-wrapper">
+                            <input type="password" name="confirm_password" placeholder="••••••••" required>
+                            <i class="fa-solid fa-eye toggle-password"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-footer">
+                        <button type="submit" class="btn-submit">Sauvegarder</button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="email-tab" class="tab-content">
+                <div class="section-header">
+                    <h2><i class="fa-solid fa-at" style="color: #062121;"></i> Adresse Email</h2>
+                    <p>Modifiez l'adresse email associée à votre compte.</p>
+                </div>
+
+                <form id="email-form" action="/profile/update-email" method="POST">
+                    <div class="form-group">
+                        <label>Email actuel</label>
+                        <input type="email" value="{{ currentUser.email }}" disabled style="opacity: 0.6; cursor: not-allowed; background: #eee;">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Nouvel Email</label>
+                        <input type="email" name="new_email" placeholder="nom@exemple.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Confirmer par mot de passe</label>
+                        <div class="input-wrapper">
+                            <input type="password" name="password_verify" placeholder="Tapez votre mot de passe" required>
+                        </div>
+                    </div>
+
+                    <div class="form-footer">
+                        <button type="submit" class="btn-submit">Changer l'email</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</section>
+			</main>
+		</div>
+
+		<script>
+			function switchTab(evt, tabName) {
+    // 1. Hide all tab contents
+    const tabContents = document.querySelectorAll(".tab-content");
+    tabContents.forEach(content => content.classList.remove("active"));
+
+    // 2. Remove 'active' class from all buttons
+    const tabBtns = document.querySelectorAll(".tab-btn");
+    tabBtns.forEach(btn => btn.classList.remove("active"));
+
+    // 3. Show current tab & add active class to button
+    document.getElementById(tabName).classList.add("active");
+    evt.currentTarget.classList.add("active");
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Password Toggle Logic (العين ديال الباسورد)
+    const eyeIcons = document.querySelectorAll('.toggle-password');
+    eyeIcons.forEach(icon => {
+        icon.addEventListener('click', function () {
+            const input = this.parentElement.querySelector('input');
+            if (input.type === 'password') {
+                input.type = 'text';
+                this.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                input.type = 'password';
+                this.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        });
+    });
+});
+		</script>
+	</body>
+
+</html>

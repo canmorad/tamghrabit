@@ -26,7 +26,7 @@
 		<nav>
 			<p class="menu-title">MON ACTIVITÉ</p>
 			<div class="menu-group">
-				<a href="/campagnes" class="menu-item {{ current_uri == 'mes_campagnes' ? 'active' : '' }}">
+				<a href="{{ url(route('mes.ampagnes')) }}" class="menu-item {{ current_uri == 'mes_campagnes' ? 'active' : '' }}">
 					<i class="fa-solid fa-bullhorn"></i>
 					Mes Campagnes
 				</a>
@@ -48,11 +48,11 @@
 					<i class="fa-solid fa-address-book"></i>
 					Mon Profil
 				</a>
-				<a href="" class="menu-item {{ current_uri == 'settings' ? 'active' : '' }}">
+				<a href="{{url('profile/settings')}}" class="menu-item {{ current_uri == 'settings' ? 'active' : '' }}">
 					<i class="fa-solid fa-gear"></i>
 					Paramètres
 				</a>
-				<a href="" class="menu-item">
+				<a href="{{url('support')}}" class="menu-item {{ current_uri == 'support' ? 'active' : '' }}">
 					<i class="fa-solid fa-circle-question"></i>
 					Aide / Support
 				</a>

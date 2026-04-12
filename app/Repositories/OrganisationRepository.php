@@ -26,8 +26,6 @@ class OrganisationRepository
         return $this->conn->rollBack();
     }
 
-    // داخل ملف OrganisationRepository.php
-
     public function updateStatus($orgId, $status, $reason = null)
     {
         $sql = "UPDATE organisations SET status = ?, rejection_reason = ? WHERE id = ?";

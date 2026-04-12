@@ -13,6 +13,8 @@ class Connection
             $dbuser = 'root';
             $dbpass = '';
             self::$conn = new PDO("mysql:host=$dbhost;dbname=$dbname;charset=utf8", $dbuser, $dbpass);
+
+            self::$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         }
         return self::$conn;
     }

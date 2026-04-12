@@ -17,18 +17,26 @@
 						<i class="fa-solid fa-magnifying-glass"></i>
 						<input type="text" placeholder="Rechercher...">
 					</div>
+
 					<div class="action-buttons">
 						<button class="icon-btn">
 							<i class="fa-solid fa-moon"></i>
 						</button>
+						<a href="{{url(route('chat'))}}" class="icon-btn">
+							<i class="fa-solid fa-message"></i>
+						</a>
 						<button class="icon-btn">
 							<i class="fa-solid fa-bell"></i>
 						</button>
-						<div class="profile-container">
-							<img src="{{ url('public/storage/profiles/') ~ user.imageProfile }}" alt="Profile" class="avatar">
-							<div class="user-info">
-								<span class="nom">{{ user.nom ~ ' ' ~ user.prenom }}</span>
-								<span class="email">{{ user.email }}</span>
+
+						<div class="action-buttons">
+							<div class="profile-container">
+								<img src="{{ currentUser.imageProfile ? url('public/storage/profiles/' ~ currentUser.imageProfile) : url('public/images/default-profile.png') }}" class="avatar">
+								<div class="user-info">
+									<span class="nom">{{ currentUser.prenom }}
+										{{ currentUser.nom }}</span>
+									<span class="email">{{ currentUser.email }}</span>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -141,7 +149,7 @@
 								<h3 class="section-title">Pièces d'identité</h3>
 
 								<select class="identity-document-select" name="idType" id="idType" onchange="toggleIdUploads()" style="margin-bottom: 20px;">
-									<option value="cni" selected >Carte Nationale</option>
+									<option value="cni" selected>Carte Nationale</option>
 									<option value="passport">Passeport</option>
 								</select>
 

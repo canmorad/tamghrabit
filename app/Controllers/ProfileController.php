@@ -31,6 +31,12 @@ class ProfileController extends Controller
         ]);
     }
 
+    public function settings(){
+        return $this->view('profile/settings',[
+            'current_uri' => 'settings'
+        ]);
+    }
+
     public function adminProfile()
     {
         $this->view('admin/adminProfile',[

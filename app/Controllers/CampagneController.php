@@ -11,24 +11,32 @@ use App\Entities\CampagneNature;
 use App\Services\CampagneService;
 use App\Entities\Categorie;
 use App\Core\Connection;
+use App\Services\OrganisationService;
+use App\Services\CategorieService;
 use App\Helpers\Validator;
 
 Session::start();
 class CampagneController extends Controller
 {
     private $campagneService;
+    private $orgService;
+    private $catService;
+
 
     public function __construct()
     {
         parent::__construct();
         $this->campagneService = new CampagneService(Connection::getInstance());
+        $this->orgService = new OrganisationService(Connection::getInstance());
+         $this->catService = new CategorieService(Connection::getInstance());
     }
 
-    public function index()
+    public function explorer()
     {
         $campagnes = $this->campagneService->getAllCampagnes();
         return $this->view("explorer/campagnes", [
-            'campagnes' => $campagnes
+            'campagnes' => $campagnes,
+            'current_uri' => 'explorer'
         ]);
     }
 
@@ -57,12 +65,24 @@ class CampagneController extends Controller
 
     public function mesCampagnes()
     {
-        return $this->view("mesCampagnes");
+        $user = Session::get('user');
+        $campagnes =  $this->campagneService->getCampagnesByUser($user->getId());
+
+        return $this->view("mesCampagnes",[
+            'campagnes' => $campagnes,
+            'count' => count($campagnes),
+            'current_uri' => 'mes_campagnes'
+        ]);
     }
 
     public function create()
     {
+        $user = Session::get('user');
+        $organisations = $this->orgService->getOrgByUserId($user->getId());
+        $categories = $this->catService->getAllCategories();
         return $this->view("campagne/create", [
+            'organisations' => $organisations,
+            'categories'    => $categories,
             'current_uri' => 'create_campagne'
         ]);
     }

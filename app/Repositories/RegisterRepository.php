@@ -11,26 +11,17 @@ class RegisterRepository
 
     public function store($adherent)
     {
-        try {
-            $stm = $this->conn->prepare("call register(?,?,?,?,?,?,?)");
-            $stm->execute([
-                $adherent->getNom(),
-                $adherent->getPrenom(),
-                $adherent->getEmail(),
-                $adherent->getPassword(),
-                $adherent->getSexe(),
-                $adherent->getDateNaissance(),
-                $adherent->getRole()->getNom(),
-            ]);
 
-        } catch (\PDOException $e) {
-            $errorInfo = $e->errorInfo;
-
-            if (isset($errorInfo[2])) {
-                throw new \Exception($errorInfo[2]);
-            }
-
-            throw new \Exception("Erreur serveur");
-        }
+        $stm = $this->conn->prepare("call register(?,?,?,?,?,?,?,?)");
+        $stm->execute([
+            $adherent->getNom(),
+            $adherent->getPrenom(),
+            $adherent->getEmail(),
+            $adherent->getPassword(),
+            $adherent->getSexe(),
+            $adherent->getDateNaissance(),
+            $adherent->getRole()->getNom(),
+            $adherent->getTokenVerification()
+        ]);
     }
 }

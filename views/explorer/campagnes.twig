@@ -24,18 +24,21 @@
 						<button class="icon-btn">
 							<i class="fa-solid fa-moon"></i>
 						</button>
-						<button class="icon-btn">
+						<a href="{{url(route('chat'))}}" class="icon-btn">
 							<i class="fa-solid fa-message"></i>
-						</button>
+						</a>
 						<button class="icon-btn">
 							<i class="fa-solid fa-bell"></i>
 						</button>
 
-						<div class="profile-container">
-							<img src="{{ url('public/images/profile-cv.png') }}" alt="Profile" class="avatar">
-							<div class="user-info">
-								<span class="nom">Morad Benaissa</span>
-								<span class="email">moradbenaissa@gmail.com</span>
+						<div class="action-buttons">
+							<div class="profile-container">
+								<img src="{{ currentUser.imageProfile ? url('public/storage/profiles/' ~ currentUser.imageProfile) : url('public/images/default-profile.png') }}" class="avatar">
+								<div class="user-info">
+									<span class="nom">{{ currentUser.prenom }}
+										{{ currentUser.nom }}</span>
+									<span class="email">{{ currentUser.email }}</span>
+								</div>
 							</div>
 						</div>
 					</div>

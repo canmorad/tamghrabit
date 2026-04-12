@@ -1,6 +1,9 @@
+// out: ../../css/register.css
+
 @couleur-primaire: #C5F82A;
 @couleur-noire: #062121;
 @couleur-blanche: #FFFFFF;
+@couleur-gris-fonce: #1a2e2e;
 @police-principale: 'Inter', sans-serif;
 @couleur-grise-bordure: #e2e8f0;
 @couleur-grise-fond: #f8fafc;
@@ -62,6 +65,36 @@
 }
 
 .form-container {
+
+     .gender-selection {
+        margin-bottom: 25px;
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: @couleur-noire;
+            margin-bottom: 6px;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+
+            .radio-item {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                color: @couleur-gris-fonce;
+                cursor: pointer;
+
+                input {
+                    accent-color: @couleur-primaire;
+                    scale: 1.2;
+                }
+            }
+        }
+    }
 
     .section-genre {
         margin-bottom: 25px;
@@ -128,6 +161,8 @@
                 }
             }
         }
+
+        
     }
 
     @media (max-width: 480px) {
@@ -335,5 +370,39 @@
     .form-row {
         flex-direction: column;
         gap: 0;
+    }
+}
+.btn-google {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    background-color: white;
+    border: 1px solid @couleur-grise-bordure;
+    border-radius: 10px;
+    color: @couleur-noire;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.3s;
+
+    img { width: 20px; }
+    &:hover { background-color: #f1f1f1; }
+}
+
+.divider {
+    text-align: center;
+    margin: 20px 0;
+    position: relative;
+    &::before {
+        content: "";
+        position: absolute; top: 50%; left: 0; right: 0;
+        height: 1px; background: @couleur-grise-bordure;
+    }
+    span {
+        position: relative; background: white; padding: 0 15px;
+        color: @couleur-texte-muet; font-size: 14px;
     }
 }

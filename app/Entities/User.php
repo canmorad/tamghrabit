@@ -9,6 +9,9 @@ class User
     protected $password;
     protected $imageProfile;
     protected $role;
+    protected $idGoogle ;
+    protected $tokenVerification;
+    protected $estVerifieGmail;
     protected $adherent;
 
     public function __construct($nom, $prenom, $email, $password)
@@ -97,6 +100,37 @@ class User
     public function setRole($role)
     {
         $this->role = $role;
+    }
+    public function getIdGoogle()
+    {
+        return $this->idGoogle;
+    }
+
+    public function setIdGoogle($idGoogle)
+    {
+        $this->idGoogle = $idGoogle;
+        return $this;
+    }
+
+    public function getTokenVerification()
+    {
+        return $this->tokenVerification;
+    }
+
+    public function setTokenVerification($tokenVerification)
+    {
+        $this->tokenVerification = $tokenVerification;
+        return $this;
+    }
+
+    public function getEstVerifieGmail()
+    {
+        return (bool) $this->estVerifieGmail;
+    }
+    public function setEstVerifieGmail($estVerifieGmail)
+    {
+        $this->estVerifieGmail = $estVerifieGmail;
+        return $this;
     }
 
 }

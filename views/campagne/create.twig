@@ -1,274 +1,249 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tamghrabit - Plateforme de Dons</title>
-    <link rel="stylesheet" href="{{ url('public/css/dashboard.css') }}">
-    <link rel="stylesheet" href="{{ url('public/css/campagne-create.css') }}">
-    <link rel="stylesheet" href="{{ url('public/css/all.min.css') }}">
-</head>
-<body>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Tamghrabit - Plateforme de Dons</title>
+		<link rel="stylesheet" href="{{ url('public/css/dashboard.css') }}">
+		<link rel="stylesheet" href="{{ url('public/css/campagne-create.css') }}">
+		<link rel="stylesheet" href="{{ url('public/css/all.min.css') }}">
+	</head>
+	<body>
 
-    <div class="main-wrapper">
-        {% include 'layouts/sidebar.twig' %}
+		<div class="main-wrapper">
+			{% include 'layouts/sidebar.twig' %}
 
-        <main>
-            <header>
-                <div class="search-bar">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" placeholder="Rechercher...">
-                </div>
+			<main>
+				<header>
+					<div class="search-bar">
+						<i class="fa-solid fa-magnifying-glass"></i>
+						<input type="text" placeholder="Rechercher...">
+					</div>
 
-                <div class="action-buttons">
-                    <button class="icon-btn"><i class="fa-solid fa-moon"></i></button>
-                    <button class="icon-btn"><i class="fa-solid fa-message"></i></button>
-                    <button class="icon-btn"><i class="fa-solid fa-bell"></i></button>
+					<div class="action-buttons">
+						<button class="icon-btn">
+							<i class="fa-solid fa-moon"></i>
+						</button>
+						<a href="{{url(route('chat'))}}" class="icon-btn">
+							<i class="fa-solid fa-message"></i>
+						</a>
+						<button class="icon-btn">
+							<i class="fa-solid fa-bell"></i>
+						</button>
 
-                    <div class="profile-container">
-                        <img src="{{ url('public/images/profile-cv.png') }}" alt="Profile" class="avatar">
-                        <div class="user-info">
-                            <span class="nom">Morad Benaissa</span>
-                            <span class="email">moradbenaissa@gmail.com</span>
-                        </div>
-                    </div>
-                </div>
-            </header>
+						<div class="action-buttons">
+							<div class="profile-container">
+								<img src="{{ currentUser.imageProfile ? url('public/storage/profiles/' ~ currentUser.imageProfile) : url('public/images/default-profile.png') }}" class="avatar">
+								<div class="user-info">
+									<span class="nom">{{ currentUser.prenom }}
+										{{ currentUser.nom }}</span>
+									<span class="email">{{ currentUser.email }}</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</header>
 
-            <section class="dashboard-body">
-                <div id="selection-container" class="form-card">
-                    <div class="form-header">
-                        <h2><i class="fa-solid fa-layer-group"></i> Type de Campagne</h2>
-                        <p>Sélectionnez le type de projet pour commencer le processus de vérification.</p>
-                    </div>
-                    <div class="type-grid">
-                        <div class="type-card" onclick="showForm('argent')">
-                            <i class="fa-solid fa-hand-holding-dollar"></i>
-                            <h3>Don d'Argent</h3>
-                            <p>Santé, opération, cas sociaux...</p>
-                        </div>
-                        <div class="type-card" onclick="showForm('association')">
-                            <i class="fa-solid fa-building-ngo"></i>
-                            <h3>Association / ONG</h3>
-                            <p>Projets associatifs officiels.</p>
-                        </div>
-                        <div class="type-card" onclick="showForm('parrainage')">
-                            <i class="fa-solid fa-user-graduate"></i>
-                            <h3>Parrainage</h3>
-                            <p>Étudiants, orphelins, veuves...</p>
-                        </div>
-                        <div class="type-card" onclick="showForm('nature')">
-                            <i class="fa-solid fa-box-open"></i>
-                            <h3>Dons & Services</h3>
-                            <p>Matériel, expertise, logistique...</p>
-                        </div>
-                    </div>
-                </div>
+				<section class="dashboard-body">
+					<div id="selection-container" class="form-card">
+						<div class="form-header">
+							<h2>
+								<i class="fa-solid fa-layer-group"></i>
+								Type de Campagne</h2>
+							<p>Sélectionnez le type de projet pour commencer le processus de vérification.</p>
+						</div>
+						<div class="type-grid">
+							<div class="type-card" onclick="showForm('argent')">
+								<i class="fa-solid fa-hand-holding-dollar"></i>
+								<h3>Don d'Argent</h3>
+								<p>Santé, opération, cas sociaux...</p>
+							</div>
+							<div class="type-card" onclick="showForm('association')">
+								<i class="fa-solid fa-building-ngo"></i>
+								<h3>Association / ONG</h3>
+								<p>Projets associatifs officiels.</p>
+							</div>
+							<div class="type-card" onclick="showForm('parrainage')">
+								<i class="fa-solid fa-user-graduate"></i>
+								<h3>Parrainage</h3>
+								<p>Étudiants, orphelins, veuves...</p>
+							</div>
+							<div class="type-card" onclick="showForm('nature')">
+								<i class="fa-solid fa-box-open"></i>
+								<h3>Dons & Services</h3>
+								<p>Matériel, expertise, logistique...</p>
+							</div>
+						</div>
+					</div>
 
-                <div id="form-container-main" class="form-card" style="display:none;">
-                    <button class="back-btn" onclick="goBack()">
-                        <i class="fa-solid fa-arrow-left"></i> Retour
-                    </button>
-                    <h2 id="form-title" style="margin-bottom: 25px;"></h2>
+					<div id="form-container-main" class="form-card" style="display:none;">
+						<button class="back-btn" onclick="goBack()">
+							<i class="fa-solid fa-arrow-left"></i>
+							Retour
+						</button>
+						<h2 id="form-title" style="margin-bottom: 25px;"></h2>
 
-                    <div id="form-argent" class="form-type" style="display:none;">
-                        <form action="/campagne/store/argent" method="POST" enctype="multipart/form-data">
-                            {% include 'campagne/_generalFields.twig' with {'suffix': 'argent'} %}
-                            <div class="form-section">
-                                <h3 class="section-title">Détails de l'objectif</h3>
-                                <div class="form-group">
-                                    <label>Montant total recherché (DH)</label>
-                                    <input type="number" name="objectifMontant" required>
-                                </div>
-                                <div class="form-group full">
-                                    <label>Preuve du besoin (Justificatif)</label>
-                                    <input type="file" name="justificatif" required>
-                                </div>
-                            </div>
-                            <div class="form-footer">
-                                <button type="submit" class="btn-submit">Lancer la campagne</button>
-                            </div>
-                        </form>
-                    </div>
+						<div id="form-argent" class="form-type" style="display:none;">
+							<form action="/campagne/store/argent" method="POST" enctype="multipart/form-data">
+								{% include 'campagne/_generalFields.twig' with {'suffix': 'argent'} %}
+								<div class="form-section">
+									<h3 class="section-title">Détails de l'objectif</h3>
+									<div class="form-group">
+										<label>Montant total recherché (DH)</label>
+										<input type="number" name="objectifMontant" required>
+									</div>
+									<div class="form-group full">
+										<label>Preuve du besoin (Justificatif)</label>
+										<input type="file" name="justificatif" required>
+									</div>
+								</div>
+								{% if currentUser.estVerifie %}
+									<div class="form-footer">
+										<button type="submit" class="btn-submit">Lancer la campagne</button>
+									</div>
+								{% else %}
+									<div class="alert-verify">
+										<i class="fa-solid fa-triangle-exclamation"></i>
+										<span>
+											Votre compte doit être vérifié pour lancer une campagne.
+											<a href="{{ url('profile/verify') }}">Vérifier mon compte</a>
+										</span>
+									</div>
+								{% endif %}
+							</form>
+						</div>
 
-                    <div id="form-association" class="form-type" style="display:none;">
-                        <form action="/campagne/store/association" method="POST" enctype="multipart/form-data">
-                            {% include 'campagne/_generalFields.twig' with {'suffix': 'assoc'} %}
-                            <div class="form-section">
-                                <h3 class="section-title">Détails de l'objectif</h3>
-                                <div class="form-group">
-                                    <label>Montant total recherché (DH)</label>
-                                    <input type="number" name="objectifMontant" required>
-                                </div>
-                                <div class="form-group full">
-                                    <label>Organisation</label>
-                                    <select name="idOrganisation" required>
-                                        <option value="1">Association Atlas</option>
-                                        <option value="2">Fondation Maroc</option>
-                                    </select>
-                                </div>
-                                <div class="form-group full">
-                                    <label>Document justificatif</label>
-                                    <input type="file" name="justificatif" required>
-                                </div>
-                            </div>
-                            <div class="form-footer">
-                                <button type="submit" class="btn-submit">Lancer la campagne</button>
-                            </div>
-                        </form>
-                    </div>
+						<div id="form-association" class="form-type" style="display:none;">
+							<form action="/campagne/store/association" method="POST" enctype="multipart/form-data">
+								{% include 'campagne/_generalFields.twig' with {'suffix': 'assoc'} %}
+								<div class="form-section">
+									<h3 class="section-title">Détails de l'objectif</h3>
+									<div class="form-group">
+										<label>Montant total recherché (DH)</label>
+										<input type="number" name="objectifMontant" required>
+									</div>
+									<div class="form-group full">
+										<label>Organisation</label>
 
-                    <div id="form-parrainage" class="form-type" style="display:none;">
-                        <form action="/campagne/store/parrainage" method="POST" enctype="multipart/form-data">
-                            {% include 'campagne/_generalFields.twig' with {'suffix': 'parrain'} %}
-                            <div class="form-section">
-                                <div class="grid-row">
-                                    <div class="form-group">
-                                        <label>Montant (DH)</label>
-                                        <input type="number" name="objectifMontant" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Fréquence</label>
-                                        <select name="frequence">
-                                            <option value="mensuel">Mensuel</option>
-                                            <option value="annuel">Annuel</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group full">
-                                    <label>Justificatif</label>
-                                    <input type="file" name="justificatif" required>
-                                </div>
-                            </div>
-                            <div class="form-footer">
-                                <button type="submit" class="btn-submit">Créer le parrainage</button>
-                            </div>
-                        </form>
-                    </div>
+										{% set allOrgs = organisations|default([]) %}
+										{% set approvedOrgs = allOrgs|filter(o => o.status == 'approuvee') %}
 
-                    <div id="form-nature" class="form-type" style="display:none;">
-                        <form action="/campagne/store/nature" method="POST" enctype="multipart/form-data">
-                            {% include 'campagne/_generalFields.twig' with {'suffix': 'nature'} %}
-                            <div class="form-section">
-                                <div class="form-group">
-                                    <label>Type de don</label>
-                                    <input type="text" name="typeDon" placeholder="Ex: Matériel" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>Article / Service</label>
-                                    <input type="text" name="nomArticle" placeholder="Ex: Fauteuils" required>
-                                </div>
-                                <div class="form-group full">
-                                    <label>Justificatif</label>
-                                    <input type="file" name="justificatif" required>
-                                </div>
-                            </div>
-                            <div class="form-footer">
-                                <button type="submit" class="btn-submit">Publier</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </section>
-        </main>
-    </div>
+										<select name="idOrganisation" required>
+											<option value="">Sélectionnez votre organisation</option>
+											{% for org in approvedOrgs %}
+												<option value="{{ org.id }}">{{ org.nom }}</option>
+											{% endfor %}
+										</select>
 
-    <script>
-        function showForm(type) {
-            document.getElementById('selection-container').style.display = 'none';
-            document.getElementById('form-container-main').style.display = 'block';
-            document.querySelectorAll('.form-type').forEach(f => f.style.display = 'none');
-            const targetForm = document.getElementById('form-' + type);
-            if (targetForm) targetForm.style.display = 'block';
+										{% if approvedOrgs is empty and allOrgs is not empty %}
+											<p style="color: #f59e0b; font-size: 12px; margin-top: 5px;">
+												<i class="fa-solid fa-clock"></i>
+												Vos organisations sont en cours de validation.
+											</p>
+										{% elseif allOrgs is empty %}
+											<p style="color: #e11d48; font-size: 12px; margin-top: 5px;">
+												<i class="fa-solid fa-circle-exclamation"></i>
+												Vous devez d'abord créer une organisation.
+											</p>
+										{% endif %}
+									</div>
+									<div class="form-group full">
+										<label>Document justificatif</label>
+										<input type="file" name="justificatif" required>
+									</div>
+								</div>
+								{% if currentUser.estVerifie %}
+									<div class="form-footer">
+										<button type="submit" class="btn-submit">Lancer la campagne</button>
+									</div>
+								{% else %}
+									<div class="alert-verify">
+										<i class="fa-solid fa-triangle-exclamation"></i>
+										<span>
+											Votre compte doit être vérifié pour lancer une campagne.
+											<a href="{{ url('profile/verify') }}">Vérifier mon compte</a>
+										</span>
+									</div>
+								{% endif %}
+							</form>
+						</div>
 
-            const titles = {
-                'argent': '<i class="fa-solid fa-hand-holding-dollar"></i> Don d\'Argent',
-                'association': '<i class="fa-solid fa-building-ngo"></i> Association / ONG',
-                'parrainage': '<i class="fa-solid fa-user-graduate"></i> Parrainage',
-                'nature': '<i class="fa-solid fa-box-open"></i> Dons & Services'
-            };
-            document.getElementById('form-title').innerHTML = titles[type] || 'Nouvelle Campagne';
-            window.scrollTo(0, 0);
-        }
+						<div id="form-parrainage" class="form-type" style="display:none;">
+							<form action="/campagne/store/parrainage" method="POST" enctype="multipart/form-data">
+								{% include 'campagne/_generalFields.twig' with {'suffix': 'parrain'} %}
+								<div class="form-section">
+									<div class="grid-row">
+										<div class="form-group">
+											<label>Montant (DH)</label>
+											<input type="number" name="objectifMontant" required>
+										</div>
+										<div class="form-group">
+											<label>Fréquence</label>
+											<select name="frequence">
+												<option value="mensuel">Mensuel</option>
+												<option value="annuel">Annuel</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group full">
+										<label>Justificatif</label>
+										<input type="file" name="justificatif" required>
+									</div>
+								</div>
+								{% if currentUser.estVerifie %}
+									<div class="form-footer">
+										<button type="submit" class="btn-submit">Lancer la campagne</button>
+									</div>
+								{% else %}
+									<div class="alert-verify">
+										<i class="fa-solid fa-triangle-exclamation"></i>
+										<span>
+											Votre compte doit être vérifié pour lancer une campagne.
+											<a href="{{ url('profile/verify') }}">Vérifier mon compte</a>
+										</span>
+									</div>
+								{% endif %}
+							</form>
+						</div>
 
-        function goBack() {
-            document.getElementById('form-container-main').style.display = 'none';
-            document.getElementById('selection-container').style.display = 'block';
-        }
+						<div id="form-nature" class="form-type" style="display:none;">
+							<form action="/campagne/store/nature" method="POST" enctype="multipart/form-data">
+								{% include 'campagne/_generalFields.twig' with {'suffix': 'nature'} %}
+								<div class="form-section">
+									<div class="form-group">
+										<label>Type de don</label>
+										<input type="text" name="typeDon" placeholder="Ex: Matériel" required>
+									</div>
+									<div class="form-group">
+										<label>Article / Service</label>
+										<input type="text" name="nomArticle" placeholder="Ex: Fauteuils" required>
+									</div>
+									<div class="form-group full">
+										<label>Justificatif</label>
+										<input type="file" name="justificatif" required>
+									</div>
+								</div>
+								{% if currentUser.estVerifie %}
+									<div class="form-footer">
+										<button type="submit" class="btn-submit">Lancer la campagne</button>
+									</div>
+								{% else %}
+									<div class="alert-verify">
+										<i class="fa-solid fa-triangle-exclamation"></i>
+										<span>
+											Votre compte doit être vérifié pour lancer une campagne.
+											<a href="{{ url('profile/verify') }}">Vérifier mon compte</a>
+										</span>
+									</div>
+								{% endif %}
 
-        function previewImage(event, input) {
-            const file = event.target.files[0];
-            if (!file) return;
+							</form>
+						</div>
+					</div>
+				</section>
+			</main>
+		</div>
 
-            const reader = new FileReader();
-        
-            const parentGroup = input.closest('.form-group');
-            const previewContainer = parentGroup.querySelector('.image-preview-container');
-            const previewImg = parentGroup.querySelector('.image-preview-img');
-
-            reader.onload = function(){
-                if (previewImg) {
-                    previewImg.src = reader.result;
-                    previewContainer.style.display = 'block';
-                }
-            };
-            reader.readAsDataURL(file);
-        }
-
-		function createCampagne() {
-			const forms = document.querySelectorAll('.form-type form');
-
-			forms.forEach(form => {
-				form.addEventListener("submit", async function (e) {
-					e.preventDefault();
-
-					const formData = new FormData(this);
-					const actionUrl = '/Tamghrabit' + this.getAttribute('action');
-
-					try {
-						const res = await fetch(actionUrl, {
-							method: "POST",
-							body: formData
-						});
-
-						const data = await res.text();
-						console.log(data)
-
-						// showAlert(data.message, data.type);
-
-					} catch (err) {
-						showAlert("Erreur de connexion au serveur", "error");
-						console.error(err);
-					}
-				});
-			});
-		}
-
-		function showAlert(message, type) {
-			const oldAlert = document.querySelector('.alert');
-			if (oldAlert) oldAlert.remove();
-
-			const alert = document.createElement("div");
-			alert.className = `alert alert-${type}`;
-
-			if (typeof message === 'object' && message !== null) {
-				let htmlContent = "";
-				Object.values(message).forEach(msg => {
-					htmlContent += `<div style="margin-bottom: 5px;">• ${msg}</div>`;
-				});
-				alert.innerHTML = htmlContent;
-			} else {
-				alert.textContent = message;
-			}
-
-			document.body.prepend(alert);
-			setTimeout(() => {
-				alert.style.opacity = '0';
-				setTimeout(() => alert.remove(), 500);
-			}, 4000);
-		}
-
-document.addEventListener('DOMContentLoaded', createCampagne);
-    </script>
-</body>
+		<script src="{{url('public/js/campagne.js')}}"></script>
+	</body>
 </html>

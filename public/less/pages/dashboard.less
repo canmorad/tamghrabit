@@ -3,7 +3,7 @@
 @couleur-primaire: #C5F82A;
 @couleur-noire: #062121;
 @couleur-blanche: #FFFFFF;
-@couleur-gris-fonce: #1a2e2e; 
+@couleur-gris-fonce: #1a2e2e;
 @couleur-gris-clair: #F8FAFC;
 @couleur-border: #E2E8F0;
 @police-principale: 'Inter', sans-serif;
@@ -65,6 +65,7 @@ aside {
 
     nav {
         flex-shrink: 0;
+
         .menu-title {
             font-size: 11px;
             color: #94A3B8;
@@ -155,7 +156,9 @@ main {
                 background: white;
             }
 
-            i { color: #94A3B8; }
+            i {
+                color: #94A3B8;
+            }
 
             input {
                 background: none;
@@ -164,7 +167,10 @@ main {
                 outline: none;
                 width: 100%;
                 font-size: 14px;
-                &::placeholder { color: #94A3B8; }
+
+                &::placeholder {
+                    color: #94A3B8;
+                }
             }
         }
 
@@ -173,7 +179,8 @@ main {
             align-items: center;
             gap: 15px;
 
-            .icon-btn {
+            .icon-btn,
+            a {
                 background: @couleur-gris-clair;
                 border: 1px solid @couleur-border;
                 color: #64748B;
@@ -182,6 +189,10 @@ main {
                 border-radius: 12px;
                 cursor: pointer;
                 transition: 0.3s;
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+                justify-content: center;
 
                 &:hover {
                     background: @couleur-noire;
@@ -213,8 +224,17 @@ main {
     .user-info {
         display: flex;
         flex-direction: column;
-        .nom { font-size: 13px; font-weight: 600; color: @couleur-noire; }
-        .email { font-size: 10px; color: #64748B; }
+
+        .nom {
+            font-size: 13px;
+            font-weight: 600;
+            color: @couleur-noire;
+        }
+
+        .email {
+            font-size: 10px;
+            color: #64748B;
+        }
     }
 }
 
@@ -227,9 +247,11 @@ main {
     &::-webkit-scrollbar {
         width: 6px;
     }
+
     &::-webkit-scrollbar-track {
         background: transparent;
     }
+
     &::-webkit-scrollbar-thumb {
         background: #CBD5E1;
         border-radius: 10px;

@@ -24,7 +24,16 @@ class AdminController extends Controller
 
     public function dashboard()
     {
-       return $this->view('admin/dashboard');
+        return $this->view('admin/dashboard', [
+            'current_uri' => 'dashboard'
+        ]);
+    }
+
+    public function support()
+    {
+        return $this->view('admin/support', [
+            'current_uri' => 'support'
+        ]);
     }
 
 
