@@ -29,12 +29,4 @@ class AdminController extends Controller
         ]);
     }
 
-    public function support()
-    {
-        return $this->view('admin/support', [
-            'current_uri' => 'support'
-        ]);
-    }
-
-
 }

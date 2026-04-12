@@ -82,7 +82,8 @@ $router->post("admin/identities/verify", ['App\Controllers\IdentifierController'
 
 
 $router->get("admin/dashboard", ['App\Controllers\AdminController', 'dashboard']);
-$router->get("support", ['App\Controllers\AdminController', 'support']);
+$router->get("support", ['App\Controllers\SupportController', 'index']);
+$router->post("support/send", ['App\Controllers\SupportController', 'send']);
 
 
 $router->get('auth/google/redirect', ['App\Controllers\Auth\GoogleAuthController', 'redirectToGoogle']);

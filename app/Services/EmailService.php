@@ -29,29 +29,39 @@ class EmailService
         $this->mailer->CharSet = 'UTF-8';
     }
 
-    public function send($toEmail, $toName, $subject, $messageBody)
+    public function send($toEmail, $toName, $subject, $messageBody, $replyToEmail = null)
     {
         try {
             $this->mailer->clearAddresses();
             $this->mailer->clearAttachments();
+            $this->mailer->clearReplyTos(); 
 
             $this->mailer->addAddress($toEmail, $toName);
+
+            if ($replyToEmail) {
+                $this->mailer->addReplyTo($replyToEmail);
+            }
+
             $this->mailer->Subject = $subject;
 
             $logoPath = $_SERVER['DOCUMENT_ROOT'] . '/Tamghrabit/public/images/logo.png';
-
-            $this->mailer->addEmbeddedImage($logoPath, 'app_logo');
+            if (file_exists($logoPath)) {
+                $this->mailer->addEmbeddedImage($logoPath, 'app_logo');
+            }
 
             $fullHtmlBody = "
-            <div style='font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee;'>
-                <div style='text-align: center; padding: 20px;'>
+            <div style='font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; border-radius: 8px; overflow: hidden;'>
+                <div style='text-align: center; padding: 20px; background-color: #f8f9fa;'>
                     <img src='cid:app_logo' alt='Logo' style='max-width: 150px;'>
                 </div>
-                <div style='padding: 20px;'>
+                <div style='padding: 30px; line-height: 1.6; color: #333;'>
                     $messageBody
                 </div>
+                <div style='text-align: center; padding: 15px; background-color: #f8f9fa; font-size: 12px; color: #777;'>
+                    &copy; " . date('Y') . " Tamghrabit - Système de Support
+                </div>
             </div>
-        ";
+            ";
 
             $this->mailer->Body = $fullHtmlBody;
             return $this->mailer->send();

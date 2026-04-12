@@ -36,6 +36,12 @@ class Controller
                 return Session::old($key);
             })
         );
+
+         $this->twig->addFunction(
+            new TwigFunction('flush', function ($key) {
+                return Session::flush($key);
+            })
+        );
     }
 
     protected function view($template, $data = [])
