@@ -17,14 +17,16 @@ class EmailService
 
     protected function setupConfig()
     {
+        $config = require __DIR__ . '/../Helpers/config.php';
+        $mailConfig = $config['mail'];
+
         $this->mailer->isSMTP();
-        $this->mailer->Host = 'smtp.gmail.com';
+        $this->mailer->Host = $mailConfig['host'];
         $this->mailer->SMTPAuth = true;
-        $this->mailer->Username = 'benaissamorad559@gmail.com';
-        $this->mailer->Password = 'sqnm gqoj cqlm gcqh';
-        $this->mailer->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $this->mailer->Port = 587;
-        $this->mailer->setFrom('benaissamorad559@gmail.com', 'Tamghrabit');
+        $this->mailer->Username = $mailConfig['user'];
+        $this->mailer->Password = $mailConfig['pass'];
+        $this->mailer->Port = $mailConfig['port'];
+        $this->mailer->setFrom($mailConfig['user'], $mailConfig['from_name']);
         $this->mailer->isHTML(true);
         $this->mailer->CharSet = 'UTF-8';
     }
@@ -34,7 +36,7 @@ class EmailService
         try {
             $this->mailer->clearAddresses();
             $this->mailer->clearAttachments();
-            $this->mailer->clearReplyTos(); 
+            $this->mailer->clearReplyTos();
 
             $this->mailer->addAddress($toEmail, $toName);
 

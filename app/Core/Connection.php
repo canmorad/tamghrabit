@@ -8,11 +8,15 @@ class Connection
     public static function getInstance()
     {
         if (!self::$conn) {
-            $dbhost = 'localhost';
-            $dbname = 'Tamghrabit';
-            $dbuser = 'root';
-            $dbpass = '';
-            self::$conn = new PDO("mysql:host=$dbhost;dbname=$dbname;charset=utf8", $dbuser, $dbpass);
+            $config = require __DIR__ . '/../Helpers/config.php';
+
+            $db = $config['db'];
+
+            self::$conn = new PDO(
+                "mysql:host={$db['host']};dbname={$db['name']};charset=utf8",
+                $db['user'],
+                $db['pass']
+            );
 
             self::$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         }

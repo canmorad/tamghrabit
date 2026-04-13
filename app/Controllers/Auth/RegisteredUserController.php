@@ -20,12 +20,16 @@ class RegisteredUserController extends Controller
     }
     public function create()
     {
-        $client = new Client();
-        $client->setClientId('636624887237-6etnq9800j8i7rdtcrqd12c2r4obmh29.apps.googleusercontent.com');
-        $client->setClientSecret('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');
-        $client->setRedirectUri('http://localhost/Tamghrabit/auth/google/callback');
+        $config = require __DIR__ . '/../../Helpers/config.php';
+        $googleConfig = $config['google'];
+
+        $lient = new Client();
+        $client->setClientId($googleConfig['client_id']);
+        $client->setClientSecret($googleConfig['client_secret']);
+        $client->setRedirectUri($googleConfig['redirect_uri']);
         $client->addScope("email");
         $client->addScope("profile");
+
 
         $google_auth_url = $client->createAuthUrl();
 

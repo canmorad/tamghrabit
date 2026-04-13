@@ -20,12 +20,16 @@ class GoogleAuthController extends Controller
         parent::__construct();
         $this->authService = new AuthentificationService(Connection::getInstance());
 
-        $this->googleClient = new Client();
-        $this->googleClient->setClientId('636624887237-6etnq9800j8i7rdtcrqd12c2r4obmh29.apps.googleusercontent.com');
-        $this->googleClient->setClientSecret('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');
-        $this->googleClient->setRedirectUri('http://localhost/Tamghrabit/auth/google/callback');
-        $this->googleClient->addScope("email");
-        $this->googleClient->addScope("profile");
+        $config = require __DIR__ . '/../../Helpers/config.php';
+        $googleConfig = $config['google'];
+
+        $lient = new Client();
+        $client->setClientId($googleConfig['client_id']);
+        $client->setClientSecret($googleConfig['client_secret']);
+        $client->setRedirectUri($googleConfig['redirect_uri']);
+        $client->addScope("email");
+        $client->addScope("profile");
+
     }
 
     public function redirectToGoogle()
