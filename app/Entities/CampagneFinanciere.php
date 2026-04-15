@@ -3,7 +3,7 @@
 namespace App\Entities;
 
 use App\Entities\Campagne;
-abstract class CampagneFinanciere extends Campagne
+class CampagneFinanciere extends Campagne
 {
     protected $objectifMontant;
     protected $montantCollecte;

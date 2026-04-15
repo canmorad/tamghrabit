@@ -90,7 +90,7 @@ $router->get('auth/google/redirect', ['App\Controllers\Auth\GoogleAuthController
 $router->get('auth/google/callback', ['App\Controllers\Auth\GoogleAuthController', 'handleGoogleCallback']);
 $router->get("verify/email", ['App\Controllers\Auth\VerifyEmailController', 'verify'])->name('verify.email');
 
-
+$router->post("donation/checkout", ['App\Controllers\DonationController', 'checkout']);
 
 
 $router->dispatch($method, $url);

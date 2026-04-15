@@ -23,7 +23,7 @@ class GoogleAuthController extends Controller
         $config = require __DIR__ . '/../../Helpers/config.php';
         $googleConfig = $config['google'];
 
-        $lient = new Client();
+        $client = new Client();
         $client->setClientId($googleConfig['client_id']);
         $client->setClientSecret($googleConfig['client_secret']);
         $client->setRedirectUri($googleConfig['redirect_uri']);

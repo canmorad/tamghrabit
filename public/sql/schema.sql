@@ -96,6 +96,18 @@ create table organisations (
     constraint fk_org_adherent foreign key (idAdherent) references adherents (id)
 );
 
+create table donations (
+    id int primary key auto_increment,
+    idCampagne int not null,
+    idAdherent int not null,
+    montant decimal(12, 2) not null check (montant > 0),
+    status enum('en_attente', 'complete', 'echoue') default 'complete',
+    dateDon timestamp default current_timestamp,
+    
+    constraint fk_donation_campagne foreign key (idCampagne) references campagnes (id) on delete cascade,
+    constraint fk_donation_adherent foreign key (idAdherent) references adherents (id) on delete cascade
+);
+
 drop table organisations;
 
 create table campagnes (
@@ -199,14 +211,16 @@ insert into
         prenom,
         email,
         password,
-        idRole
+        idRole,
+        estVerifieGmail
     )
 values (
         'Benaissa',
         'Morad',
         'admin@tamghrabit.com',
-        '$2y$10$fJfTE2isWREd2bYnCQGVcOCNXXUH4yyLoDCk2qShGf3lNCAG68VKa',
-        1
+        '$2y$10$z1FDIsUS8TMzhXva8upAM.dTvJ2hFK.sZjVLf0Wlr1VcJ11uB5Wpi',
+        1,
+        true
     );
 
 delimiter

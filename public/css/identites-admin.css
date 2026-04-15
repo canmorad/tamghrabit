@@ -1,5 +1,5 @@
 .verify-container {
-  background: #FFFFFF;
+  background: #F4F7F7;
   border-radius: 16px;
   border: 1px solid #E2E8F0;
   margin: 24px;
@@ -55,7 +55,7 @@
   color: #64748B;
 }
 .view-btn {
-  background: #FFFFFF;
+  background: #F4F7F7;
   border: 1px solid #E2E8F0;
   padding: 8px 16px;
   border-radius: 10px;
@@ -121,7 +121,7 @@
 .modal-header h3 {
   margin: 0;
   font-size: 18px;
-  color: #FFFFFF;
+  color: #F4F7F7;
   font-weight: 700;
   letter-spacing: 0.5px;
 }
@@ -211,7 +211,7 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .modal-footer .btn-secondary {
-  background: #FFFFFF;
+  background: #F4F7F7;
   color: #64748B;
   border: 1px solid #E2E8F0;
 }

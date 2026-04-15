@@ -1,5 +1,5 @@
 .verify-container {
-  background: #FFFFFF;
+  background: #F4F7F7;
   border-radius: 16px;
   border: 1px solid #E2E8F0;
   margin: 24px;
@@ -8,7 +8,7 @@
 }
 .verify-container .table-header {
   padding: 25px 30px;
-  background: linear-gradient(to right, #FFFFFF, #F8FAFC);
+  background: linear-gradient(to right, #F4F7F7, #F8FAFC);
   border-bottom: 1px solid #E2E8F0;
 }
 .verify-container .table-header h2 {
@@ -77,7 +77,7 @@
   color: #64748B;
 }
 .view-btn {
-  background: #FFFFFF;
+  background: #F4F7F7;
   border: 1px solid #E2E8F0;
   padding: 10px 18px;
   border-radius: 10px;
@@ -112,7 +112,7 @@
 }
 .modal .modal-content {
   width: 650px;
-  background: #FFFFFF;
+  background: #F4F7F7;
   border-radius: 12px;
   overflow: hidden;
   animation: modalSlideUp 0.3s ease-out;
@@ -125,7 +125,7 @@
   align-items: center;
 }
 .modal-header h3 {
-  color: #FFFFFF;
+  color: #F4F7F7;
   font-size: 18px;
   margin: 0;
 }
@@ -230,7 +230,7 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .modal-footer .btn-secondary {
-  background: #FFFFFF;
+  background: #F4F7F7;
   color: #64748B;
   border: 1px solid #E2E8F0;
 }

@@ -52,6 +52,26 @@
 				</main>
 
 				<aside class="donation-sidebar">
+					{% set successMsg = flush('success') %}
+
+					{% set errorMsg = flush('error') %}
+
+					{% if successMsg or errorMsg %}
+						<div class="alert alert-{{ successMsg ? 'success' : 'error' }}" id="flash-alert">
+							{{ successMsg ?: errorMsg }}
+						</div>
+
+						<script>
+							setTimeout(() => {
+const alert = document.getElementById('flash-alert');
+if (alert) 
+alert.style.display = 'none';
+
+
+
+}, 4000);
+						</script>
+					{% endif %}
 					<div class="sticky-card">
 						{% if c.type != 'nature' %}
 							<div class="progress-section">
@@ -83,9 +103,10 @@
 						<div class="action-buttons">
 							{% if c.type != 'nature' %}
 								<form action="{{ url('donation/checkout') }}" method="POST" style="width: 100%;">
-									<input type="hidden" name="campagne_id" value="{{ c.id }}">
+									<input type="hidden" name="idCampagne" value="{{ c.id }}">
+
 									<div class="amount-input-wrapper" style="margin-bottom: 12px;">
-										<input type="number" name="amount" name="amount" placeholder="Montant en DH" required class="form-control" min="10" style="width: 100%; padding: 15px; border-radius: 10px; border: 1px solid #ddd;">
+										<input type="number" name="amount" placeholder="Montant en DH" class="form-control" min="10" style="width: 100%; padding: 15px; border-radius: 10px; border: 1px solid #ddd;">
 									</div>
 									<button type="submit" class="btn-primary-lg" style="width: 100%;">
 										<i class="fa-solid fa-heart"></i>

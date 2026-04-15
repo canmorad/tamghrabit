@@ -2,7 +2,7 @@
 
 namespace App\Entities;
 
-abstract class Campagne
+class Campagne
 {
     protected $id;
     protected $adherent;
