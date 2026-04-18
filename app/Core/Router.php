@@ -88,7 +88,7 @@ class Router
 
         $previousGroupMiddleware = $this->groupMiddleware;
         $this->groupMiddleware = array_merge($this->groupMiddleware, $this->tempMiddlewares);
-        $this->tempMiddlewares = []; 
+        $this->tempMiddlewares = [];
 
         $callback($this);
 
@@ -119,11 +119,12 @@ class Router
             $this->abort("Méthode HTTP non supportée", 405);
         }
 
-        $route = $this->routes[$method][$uri];
-
-        if (!$this->routes[$method][$uri]) {
+        if (!isset($this->routes[$method][$uri])) {
             $this->abort("Route non trouvée", 404);
         }
+
+        $route = $this->routes[$method][$uri];
+
 
         if (!empty($this->routes[$method][$uri]['middleware'])) {
             foreach ($route['middleware'] as $key) {

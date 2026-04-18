@@ -531,6 +531,7 @@ body {
   border-radius: 5px;
   text-align: center;
   font-weight: bold;
+  z-index: 1000;
 }
 .alert-success {
   background-color: #dcfce7;

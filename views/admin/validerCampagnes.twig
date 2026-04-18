@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tamghrabit - Validation Campagnes</title>
+    <link rel="stylesheet" href="{{ url('public/css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url('public/css/campagnes-admin.css') }}">
+    <link rel="stylesheet" href="{{ url('public/css/all.min.css') }}">
+</head>
+<body>
+    <div class="main-wrapper">
+        {% include 'layouts/sidebar.twig' %}
+
+        <main>
+            <header>
+                <div class="search-bar">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Rechercher une campagne...">
+                </div>
+                <div class="profile-container">
+                    <img src="{{ currentUser.imageProfile ? url('public/storage/profiles/' ~ currentUser.imageProfile) : url('public/images/default-profile.png') }}" class="avatar">
+                    <div class="user-info">
+                        <span class="nom">{{ currentUser.prenom }} {{ currentUser.nom }}</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="dashboard-body">
+                <div class="verify-container">
+                    <div class="table-header">
+                        <h2><i class="fa-solid fa-bullhorn"></i> Validation des Campagnes</h2>
+                        <p class="subtitle">Examinez les nouvelles demandes de collecte de fonds.</p>
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Campagne / Organisateur</th>
+                                <th>Type & Catégorie</th>
+                                <th>Objectif</th>
+                                <th>Date d'envoi</th>
+                                <th class="text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for c in campagnes %}
+                                <tr>
+                                    <td>
+                                        <div class="user-cell">
+                                            <div class="campagne-img">
+                                                <img src="{{ url('public/storage/campagnes/' ~ c.image) }}">
+                                            </div>
+                                            <div class="info">
+                                                <span class="name">{{ c.titre }}</span>
+                                                <span class="email">Par: {{ c.prenomAdherent }} {{ c.nomAdherent }}</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="badge badge-{{ c.type }}">{{ c.type|capitalize }}</span>
+                                        <div class="sub-info">{{ c.categorieNom }}</div>
+                                    </td>
+                                    <td>
+                                        <strong class="text-dark">
+                                            {% if c.type == 'nature' %}
+                                                {{ c.nomArticle }}
+                                            {% else %}
+                                                {{ c.objectifMontant|number_format(0, '.', ' ') }} DH
+                                            {% endif %}
+                                        </strong>
+                                    </td>
+                                    <td>{{ c.dateCreation|date("d M Y") }}</td>
+                                    <td class="text-right">
+                                        <button class="view-btn" onclick="openVerifyModal('{{ c.id }}', '{{ c.titre|e('js') }}', '{{ c.description|e('js') }}', '{{ url('public/storage/campagnes/' ~ c.image) }}', '{{ url('public/storage/campagnes/' ~ c.justificatif) }}', '{{ c.type }}', '{{ c.objectifMontant }}')">
+                                           
+											<i class="fa-solid fa-eye"></i> Examiner
+                                        </button>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr><td colspan="5" style="text-align: center; padding: 50px;">Aucune campagne en attente.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="campagneModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div>
+                            <h3 id="m-titre">Titre</h3>
+                        </div>
+                        <span class="close" onclick="closeModal()">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <div class="campagne-details-grid">
+                            <div class="detail-main">
+                                <div class="preview-container">
+                                    <img id="m-image" src="" onclick="previewMedia(this.src, 'image')">
+                                    <span>Page 1</span>
+                                </div>
+                                <div class="description-box">
+                                    <label><i class="fa-solid fa-align-left"></i> Description :</label>
+                                    <p id="m-description"></p>
+                                </div>
+                            </div>
+
+                            <div class="detail-sidebar">
+                                <div class="info-group">
+                                    <label>Justificatif Juridique :</label>
+                                    <div id="justif-container">
+                                        </div>
+                                </div>
+                                <div class="info-group">
+                                    <label>Détails financiers :</label>
+                                    <ul class="type-specs">
+                                        <li><strong>Type:</strong> <span id="m-type"></span></li>
+                                        <li><strong>Objectif:</strong> <span id="m-objectif"></span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="rejection-area">
+                            <label><i class="fa-solid fa-comment-dots"></i> Motif du refus :</label>
+                            <textarea id="rejectionMessage" placeholder="Précisez la raison en cas de rejet..."></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn-danger" onclick="handleAction('reject')">Refuser</button>
+                        <button class="btn-success" onclick="handleAction('approve')">Approuver</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="imagePreviewModal" class="image-viewer-modal">
+        <span class="close-viewer" onclick="closeImageViewer()"><i class="fa-solid fa-xmark"></i></span>
+        <div class="viewer-wrapper" id="viewerWrapper">
+            <img id="fullImage">
+            <iframe id="pdfViewer" src="" style="display:none; width:90%; height:90%; border:none;"></iframe>
+        </div>
+        <div class="viewer-controls" id="viewerControls">
+            <button onclick="zoomImage(0.2)"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
+            <button onclick="zoomImage(-0.2)"><i class="fa-solid fa-magnifying-glass-minus"></i></button>
+            <button onclick="resetZoom()"><i class="fa-solid fa-compress"></i></button>
+        </div>
+    </div>
+
+    <script>
+        let currentId = null;
+        let scale = 1;
+
+        function openVerifyModal(id, titre, desc, img, justif, type, goal) {
+            currentId = id;
+            document.getElementById('m-titre').innerText = titre;
+            document.getElementById('m-description').innerText = desc;
+            document.getElementById('m-image').src = img;
+            document.getElementById('m-type').innerText = type;
+            document.getElementById('m-objectif').innerText = goal + " DH";
+
+            const justifBtn = document.getElementById('justif-container');
+            const isPDF = justif.toLowerCase().endsWith('.pdf');
+            
+            if (isPDF) {
+                justifBtn.innerHTML = `<div class="doc-link" onclick="previewMedia('${justif}', 'pdf')">
+                    <i class="fa-solid fa-file-pdf"></i> Voir le justificatif (PDF)
+                </div>`;
+            } else {
+                justifBtn.innerHTML = `<div class="doc-link" onclick="previewMedia('${justif}', 'image')">
+                    <i class="fa-solid fa-image"></i> Voir le justificatif (Image)
+                </div>`;
+            }
+
+            document.getElementById('campagneModal').style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById('campagneModal').style.display = "none";
+            document.getElementById('rejectionMessage').value = '';
+        }
+
+        function previewMedia(src, type) {
+            const imgEl = document.getElementById('fullImage');
+            const pdfEl = document.getElementById('pdfViewer');
+            const controls = document.getElementById('viewerControls');
+
+            if (type === 'image') {
+                imgEl.src = src;
+                imgEl.style.display = "inline-block";
+                pdfEl.style.display = "none";
+                controls.style.display = "flex";
+            } else {
+                pdfEl.src = src;
+                pdfEl.style.display = "block";
+                imgEl.style.display = "none";
+                controls.style.display = "none"; 
+            }
+            document.getElementById('imagePreviewModal').style.display = "flex";
+            resetZoom();
+        }
+
+        function closeImageViewer() { document.getElementById('imagePreviewModal').style.display = "none"; }
+
+        function zoomImage(delta) {
+            scale += delta;
+            scale = Math.min(Math.max(.5, scale), 4);
+            const img = document.getElementById('fullImage');
+            img.style.transform = `scale(${scale})`;
+        }
+
+        function resetZoom() {
+            scale = 1;
+            document.getElementById('fullImage').style.transform = "scale(1)";
+        }
+
+        async function handleAction(action) {
+            const reason = document.getElementById('rejectionMessage').value;
+            if (action === 'reject' && !reason) return alert("Motif requis.");
+
+			if(!confirm("Voulez-vous vraiment confirmer cette action ?")) return;
+            const fd = new FormData();
+            fd.append('orgId', currentId);
+            fd.append('action', action);
+            fd.append('reason', reason);
+
+            try {
+                const res = await fetch('/Tamghrabit/admin/campagnes/verify',{ 
+				   method: 'POST',
+			       body: fd
+			   });
+                const data = await res.json();
+
+                if (data.type === 'success') {
+                    location.reload();
+                } else {
+                    alert("Erreur: " + data.message);
+                }
+            } catch (error) {
+                alert("Erreur de connexion.");
+            }
+        }
+
+        window.onclick = (e) => {
+            if (e.target.id === 'campagneModal') closeModal();
+            if (e.target.id === 'imagePreviewModal') closeImageViewer();
+        };
+    </script>
+</body>
+</html>

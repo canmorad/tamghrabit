@@ -31,6 +31,17 @@ class AuthentificationRepository
         return $user;
     }
 
+    public function getAllUsers() {
+        $sql = "SELECT u.*, a.estVerifie 
+                FROM users u 
+                LEFT JOIN adherents a ON u.id = a.id 
+                ORDER BY u.dateCreation DESC";
+        
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
     public function findByGoogleId($googleId)
     {
         $sql = "select u.*, r.nom as role from users u join roles r ON u.idRole = r.id where u.idGoogle = ?";

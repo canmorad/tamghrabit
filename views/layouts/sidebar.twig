@@ -8,7 +8,7 @@
 		<nav>
 			<p class="menu-title">MENU PRINCIPAL</p>
 			<div class="menu-group">
-				<a href="{{ url(route('adherent.dashboard')) }}" class="menu-item {{ current_uri == 'dashboard' ? 'active' : '' }}">
+				<a href="{{ url(route('adherent.dashboard')) }}" class="menu-item {{ current_uri == 'adherent_dash' ? 'active' : '' }}">
 					<i class="fa-solid fa-house"></i>
 					Dashboard
 				</a>
@@ -30,7 +30,7 @@
 					<i class="fa-solid fa-bullhorn"></i>
 					Mes Campagnes
 				</a>
-				<a href="" class="menu-item {{ current_uri == 'mes_dons' ? 'active' : '' }}">
+				<a href="{{ url(route('mes.donations')) }}" class="menu-item {{ current_uri == 'mes_dons' ? 'active' : '' }}">
 					<i class="fa-solid fa-hand-holding-dollar"></i>
 					Mes Dons
 				</a>
@@ -103,11 +103,11 @@
 		<nav class="admin-nav">
 			<p class="menu-title">MODÉRATION CAMPAGNES</p>
 			<div class="menu-group">
-				<a href="/admin/campagnes/pending" class="menu-item {{ current_uri == 'admin_pending_camp' ? 'active' : '' }}">
+				<a href="{{ url('/admin/campagnes/pending') }}" class="menu-item {{ current_uri == 'admin_pending_camp' ? 'active' : '' }}">
 					<i class="fa-solid fa-hourglass-half"></i>
-					En attente
+					Campagnes en attente
 				</a>
-				<a href="/admin/campagnes/active" class="menu-item {{ current_uri == 'admin_active_camp' ? 'active' : '' }}">
+				<a href=" {{ url('/admin/campagnes/actives') }}" class="menu-item {{ current_uri == 'admin_active_camp' ? 'active' : '' }}">
 					<i class="fa-solid fa-bullhorn"></i>
 					Campagnes actives
 				</a>

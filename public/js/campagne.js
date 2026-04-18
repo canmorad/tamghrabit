@@ -40,6 +40,61 @@ function previewImage(event, input) {
     reader.readAsDataURL(file);
 }
 
+async function deleteCampagne(id) {
+    if (confirm("Voulez-vous vraiment supprimer cette campagne ?")) {
+        try {
+            const response = await fetch(`{{ url('campagne/delete?id=') }}${id}`, {
+                method: 'GET'
+            });
+            const data = await response.json();
+
+            if (data.type === 'success') {
+                alert(data.message);
+                window.location.href = "/Tamghrabit/campagnes"; 
+            } else {
+                alert(data.message);
+            }
+        } catch (error) {
+            console.error("Erreur:", error);
+        }
+    }
+}
+
+function updateCampagne() {
+    const editForm = document.getElementById('editForm');
+
+    if (editForm) {
+        editForm.addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const actionUrl = '/Tamghrabit/campagne/update';
+
+            try {
+                const res = await fetch(actionUrl, {
+                    method: "POST",
+                    body: formData
+                });
+
+                const data = await res.json();
+                showAlert(data.message, data.type);
+
+                if (data.type === 'success') {
+                    setTimeout(() => {
+                        window.location.href = '/Tamghrabit/campagnes';
+                    }, 1500);
+                }
+
+            } catch (err) {
+                showAlert("Erreur de connexion au serveur", "error");
+                console.error(err);
+            }
+        });
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => initApp());
+
 function createCampagne() {
     const forms = document.querySelectorAll('.form-type form');
 
@@ -99,6 +154,7 @@ function showAlert(message, type) {
 
 function initApp() {
     createCampagne();
+    updateCampagne();
 }
 
 document.addEventListener('DOMContentLoaded', initApp());

@@ -71,39 +71,33 @@
   padding: 8px 16px;
   border-radius: 10px;
   cursor: pointer;
-  font-weight: 600;
-  font-size: 13px;
+  font-weight: 500;
   transition: all 0.3s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
 }
 .view-btn:hover {
   background: #062121;
   color: #C5F82A;
-  border-color: #062121;
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(197, 248, 42, 0.2);
 }
 .actions-cell {
   text-align: right;
 }
 .actions-cell .btn-quick-approve {
-  background: white;
-  color: #166534;
-  border: 1px solid #DCFCE7;
-  width: 38px;
-  height: 38px;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  padding: 8px 16px;
   border-radius: 10px;
   cursor: pointer;
+  font-weight: 500;
   transition: all 0.3s ease;
 }
 .actions-cell .btn-quick-approve:hover {
-  background: #C5F82A;
-  color: #062121;
-  border-color: #C5F82A;
-  transform: scale(1.1);
+  background: #062121;
+  color: #C5F82A;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(197, 248, 42, 0.2);
 }
-/* Modal Styling */
 .modal {
   display: none;
   position: fixed;
@@ -120,7 +114,7 @@
   margin: 5vh auto;
   width: 90%;
   max-width: 800px;
-  border-radius: 24px;
+  border-radius: 10px;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   overflow: hidden;
   animation: modalSlideUp 0.4s ease-out;
@@ -177,7 +171,6 @@
 .modal-body {
   padding: 30px;
 }
-/* Photos Row with Horizontal Scroll */
 .document-grid {
   display: flex;
   gap: 16px;
@@ -264,26 +257,23 @@
   background: #F8FAFC;
   display: flex;
   justify-content: flex-end;
-  gap: 14px;
-  border-top: 1px solid #E2E8F0;
+  gap: 12px;
 }
 .modal-footer button {
-  padding: 12px 24px;
-  border-radius: 12px;
+  padding: 10px 20px;
+  border-radius: 10px;
   border: none;
   cursor: pointer;
-  font-weight: 700;
-  font-size: 14px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 600;
+  transition: 0.3s;
 }
-.modal-footer .btn-secondary {
-  background: #FFFFFF;
-  color: #64748B;
-  border: 1px solid #E2E8F0;
-}
-.modal-footer .btn-secondary:hover {
-  background: #f1f5f9;
+.modal-footer .btn-success {
+  background: #C5F82A;
   color: #062121;
+}
+.modal-footer .btn-success:hover {
+  opacity: 0.8;
+  transform: translateY(-2px);
 }
 .modal-footer .btn-danger {
   background: #FEE2E2;
@@ -292,17 +282,8 @@
 .modal-footer .btn-danger:hover {
   background: #EF4444;
   color: white;
-}
-.modal-footer .btn-success {
-  background: #C5F82A;
-  color: #062121;
-  box-shadow: 0 4px 14px rgba(197, 248, 42, 0.3);
-}
-.modal-footer .btn-success:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(197, 248, 42, 0.4);
 }
-/* Image Viewer Style */
 .image-viewer-modal {
   display: none;
   position: fixed;
@@ -311,53 +292,85 @@
   top: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.98);
+  background: rgba(6, 33, 33, 0.98);
+  backdrop-filter: blur(15px);
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
-.image-viewer-modal .viewer-content {
-  max-width: 95%;
-  max-height: 85vh;
-  object-fit: contain;
+.image-viewer-modal .viewer-wrapper {
+  width: 95%;
+  height: 85%;
+  display: block;
+  overflow: auto;
+  text-align: center;
+  scroll-behavior: smooth;
+}
+.image-viewer-modal .viewer-wrapper::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.image-viewer-modal .viewer-wrapper::-webkit-scrollbar-thumb {
+  background: #C5F82A;
+  border-radius: 10px;
+}
+.image-viewer-modal .viewer-wrapper::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+.image-viewer-modal .viewer-wrapper img {
+  max-width: 90%;
+  margin: auto;
   border-radius: 4px;
-  transition: transform 0.25s ease;
+  transition: width 0.3s ease, transform 0.3s ease;
+  display: inline-block;
+  vertical-align: middle;
 }
 .image-viewer-modal .close-viewer {
   position: absolute;
-  top: 25px;
-  right: 35px;
+  top: 20px;
+  right: 20px;
   color: white;
-  font-size: 35px;
+  font-size: 24px;
   cursor: pointer;
-  background: rgba(255, 255, 255, 0.1);
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
+  width: 45px;
+  height: 45px;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  z-index: 2100;
+  transition: 0.3s;
 }
 .image-viewer-modal .close-viewer:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: #EF4444;
+  transform: rotate(90deg);
 }
 .image-viewer-modal .viewer-controls {
-  margin-top: 25px;
+  position: absolute;
+  bottom: 30px;
   display: flex;
-  gap: 15px;
+  gap: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 10px 30px;
+  border-radius: 50px;
+  z-index: 2100;
+  backdrop-filter: blur(5px);
 }
 .image-viewer-modal .viewer-controls button {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  border: none;
   color: white;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
+  font-size: 18px;
+  width: 45px;
+  height: 45px;
   cursor: pointer;
-  transition: 0.2s;
+  border-radius: 50%;
+  transition: 0.3s;
 }
 .image-viewer-modal .viewer-controls button:hover {
   background: #C5F82A;
   color: #062121;
   transform: scale(1.1);
+  box-shadow: 0 0 15px #C5F82A;
 }

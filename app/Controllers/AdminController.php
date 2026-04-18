@@ -2,31 +2,29 @@
 namespace App\Controllers;
 
 use App\Core\Controller;
-use App\Helpers\Session;
-use App\Entities\CampagneParrainage;
-use App\Entities\CampagneAssociation;
-use App\Entities\Organisation;
-use App\Entities\CampagneArgent;
-use App\Entities\CampagneNature;
-use App\Services\CampagneService;
-use App\Entities\Categorie;
 use App\Core\Connection;
-use App\Helpers\Validator;
+use App\Repositories\AdminRepository;
+use App\Services\AdminService;
 
-Session::start();
 class AdminController extends Controller
 {
+    private $adminService;
 
     public function __construct()
     {
         parent::__construct();
+        $this->adminService = new AdminService(Connection::getInstance());
     }
 
     public function dashboard()
     {
+        $stats = $this->adminService->getDashboardStats();
+        $chartData = $this->adminService->getChartData();
+
         return $this->view('admin/dashboard', [
-            'current_uri' => 'dashboard'
+            'current_uri' => 'admin_dash',
+            'stats' => $stats,
+            'chartData' => $chartData
         ]);
     }
-
 }

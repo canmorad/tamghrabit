@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Tamghrabit - Explorer les campagnes</title>
+		<link rel="stylesheet" href="{{ url('public/css/dashboard.css') }}">
+		<link rel="stylesheet" href="{{ url('public/css/mes-dons.css') }}">
+		<link rel="stylesheet" href="{{ url('public/css/all.min.css') }}">
+	</head>
+	<body>
+
+		<div class="main-wrapper">
+			{% include 'layouts/sidebar.twig' %}
+
+			<main>
+				<header>
+					<div class="search-bar">
+						<i class="fa-solid fa-magnifying-glass"></i>
+						<input type="text" placeholder="Rechercher..." id='userSearch'>
+					</div>
+
+					<div class="action-buttons">
+						<button class="icon-btn">
+							<i class="fa-solid fa-moon"></i>
+						</button>
+						<a href="{{url(route('chat'))}}" class="icon-btn">
+							<i class="fa-solid fa-message"></i>
+						</a>
+						<button class="icon-btn">
+							<i class="fa-solid fa-bell"></i>
+						</button>
+
+						<div class="action-buttons">
+							<div class="profile-container">
+								<img src="{{ currentUser.imageProfile ? url('public/storage/profiles/' ~ currentUser.imageProfile) : url('public/images/default-profile.png') }}" class="avatar">
+								<div class="user-info">
+									<span class="nom">{{ currentUser.prenom }}
+										{{ currentUser.nom }}</span>
+									<span class="email">{{ currentUser.email }}</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</header>
+
+				<div class="dashboard-body">
+					<div class="users-container">
+						<div class="table-header">
+							<div class="title-section">
+								<h2>
+									<i class="fa-solid fa-hand-holding-heart"></i>
+									Mes Dons Personnels</h2>
+								<p class="subtitle">Historique de votre générosité</p>
+							</div>
+							<div class="controls">
+								<div class="stat-pill">
+									<span>Total des dons:</span>
+									<strong>{{ donations|length }}</strong>
+								</div>
+							</div>
+						</div>
+
+						<div class="table-responsive">
+							<table class="custom-table">
+								<thead>
+									<tr>
+										<th>Campagne</th>
+										<th>Montant</th>
+										<th>Date du don</th>
+										<th>Statut</th>
+										<th class="text-center">Action</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for d in donations %}
+										<tr class="donation-row">
+											<td>
+												<div class="campagne-info">
+													<span class="campagne-name">{{ d.getCampagne().getTitre() }}</span>
+												</div>
+											</td>
+											<td>
+												<span class="amount-tag">
+													{{ d.getMontant()|number_format(2, '.', ' ') }}
+													DH
+												</span>
+											</td>
+											<td>
+												<div class="date-cell">
+													<i class="fa-regular fa-calendar-days"></i>
+													{{ d.getDateDon()|date("d/m/Y") }}
+													<small>{{ d.getDateDon()|date("H:i") }}</small>
+												</div>
+											</td>
+											<td>
+												{% if d.getStatus() == 'complete' %}
+													<span class="status-indicator verifie">
+														<i class="fa-solid fa-circle-check"></i>
+														Complété
+													</span>
+												{% elseif d.getStatus() == 'en_attente' %}
+													<span class="status-indicator en_attente">
+														<i class="fa-solid fa-clock"></i>
+														En attente
+													</span>
+												{% else %}
+													<span class="status-indicator bloque">
+														<i class="fa-solid fa-circle-xmark"></i>
+														Échoué
+													</span>
+												{% endif %}
+											</td>
+											<td class="text-center">
+												<a href="{{ url('campagne/show?id=' ~ d.getCampagne().getId()) }}" class="action-btn-view" title="Voir la campagne">
+													<i class="fa-solid fa-arrow-up-right-from-square"></i>
+												</a>
+											</td>
+										</tr>
+									{% else %}
+										<tr>
+											<td colspan="5" class="empty-state">
+												<div class="empty-content">
+													<i class="fa-solid fa-heart-crack"></i>
+													<p>Vous n'avez pas encore effectué de dons.</p>
+													<a href="{{ url('campagne/index') }}" class="btn-primary-sm">Découvrir les campagnes</a>
+												</div>
+											</td>
+										</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+
+			</main>
+		</div>
+
+		<script>
+			document.addEventListener('DOMContentLoaded', function() {
+				const searchInput = document.getElementById('userSearch'); 
+				const tableRows = document.querySelectorAll('.donation-row');
+
+				if (searchInput) {
+					searchInput.addEventListener('input', function(e) {
+						const searchTerm = e.target.value.toLowerCase();
+
+						tableRows.forEach(row => {
+							const campagneName = row.querySelector('.campagne-name').textContent.toLowerCase();
+							const amount = row.querySelector('.amount-tag').textContent.toLowerCase();
+							
+							if (campagneName.includes(searchTerm) || amount.includes(searchTerm)) {
+								row.style.display = '';
+								row.style.animation = 'fadeIn 0.3s ease';
+							} else {
+								row.style.display = 'none';
+							}
+						});
+					});
+				}
+			});
+
+			
+			const style = document.createElement('style');
+			style.innerHTML = `
+				@keyframes fadeIn {
+					from { opacity: 0; transform: translateY(5px); }
+					to { opacity: 1; transform: translateY(0); }
+				}
+			`;
+			document.head.appendChild(style);
+		</script>
+	</body>
+</html>

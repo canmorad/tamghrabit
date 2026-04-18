@@ -1,0 +1,236 @@
+.users-container {
+  background: #FFFFFF;
+  border-radius: 12px;
+  margin: 20px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  border: 1px solid #EDF2F7;
+}
+.users-container .table-header-main {
+  padding: 20px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #EDF2F7;
+}
+.users-container .table-header-main h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1A202C;
+  margin: 0;
+}
+.users-container .table-header-main .title-section {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.users-container .table-header-main .title-section .search-box-table {
+  position: relative;
+}
+.users-container .table-header-main .title-section .search-box-table input {
+  padding: 8px 15px 8px 35px;
+  background: #F7FAFC;
+  border: 1px solid #EDF2F7;
+  border-radius: 8px;
+  font-size: 13px;
+  width: 250px;
+}
+.users-container .table-header-main .title-section .search-box-table i {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #718096;
+}
+.modern-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.modern-table th {
+  padding: 12px 25px;
+  background: #F7FAFC;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 700;
+  color: #718096;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.modern-table td {
+  padding: 15px 25px;
+  border-bottom: 1px solid #EDF2F7;
+  vertical-align: middle;
+  font-size: 14px;
+}
+.modern-table .user-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.modern-table .user-cell .campagne-thumb {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+.modern-table .user-cell .info .name {
+  display: block;
+  font-weight: 600;
+  color: #1A202C;
+}
+.modern-table .user-cell .info .sub-text {
+  font-size: 12px;
+  color: #718096;
+}
+.modern-table .status-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.modern-table .status-indicator.status-active {
+  color: #48BB78;
+  background: rgba(72, 187, 120, 0.1);
+}
+.modern-table .status-indicator.status-active .dot {
+  background: #48BB78;
+}
+.modern-table .status-indicator.status-pause {
+  color: #ED8936;
+  background: rgba(237, 137, 54, 0.1);
+}
+.modern-table .status-indicator.status-pause .dot {
+  background: #ED8936;
+}
+.modern-table .status-indicator .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+.modern-table .amount-text {
+  font-weight: 500;
+  color: #1A202C;
+}
+.modern-table .date-text {
+  color: #718096;
+  font-size: 13px;
+}
+.modern-table .action-btns {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.modern-table .action-btns .icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #718096;
+  transition: 0.2s;
+}
+.modern-table .action-btns .icon-btn:hover.stop {
+  color: #E53E3E;
+}
+.modern-table .action-btns .icon-btn:hover.edit {
+  color: #1A202C;
+}
+.main-img-container {
+  position: relative;
+  width: 48px;
+  height: 48px;
+}
+.main-img-container .campagne-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  object-fit: cover;
+}
+.main-img-container .owner-avatar {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  object-fit: cover;
+}
+.amount-cell strong {
+  display: block;
+  color: #1a202c;
+  font-size: 14px;
+}
+.amount-cell .progress-mini {
+  width: 80px;
+  height: 4px;
+  background: #edf2f7;
+  border-radius: 10px;
+  margin-top: 5px;
+  overflow: hidden;
+}
+.amount-cell .progress-mini .bar {
+  height: 100%;
+  background: #C5F82A;
+}
+.status-indicator.status-active {
+  color: #059669;
+  background: #ecfdf5;
+  border: 1px solid #d1fae5;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.status-indicator.status-active .dot {
+  width: 6px;
+  height: 6px;
+  background: #10b981;
+  border-radius: 50%;
+}
+.status-dropdown {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid #EDF2F7;
+  background-color: #F7FAFC;
+  color: #1A202C;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s ease;
+}
+.status-dropdown:hover {
+  border-color: #718096;
+  background-color: #fff;
+}
+.status-dropdown:focus {
+  border-color: #48BB78;
+  box-shadow: 0 0 0 2px rgba(72, 187, 120, 0.1);
+}
+.status-dropdown option {
+  padding: 10px;
+  background: #fff;
+  color: #1A202C;
+}
+.btn-icon.delete {
+  background: #FFF5F5;
+  color: #E53E3E;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: 1px solid #FED7D7;
+  transition: 0.2s;
+}
+.btn-icon.delete:hover {
+  background: #E53E3E;
+  color: #fff;
+  transform: scale(1.05);
+}

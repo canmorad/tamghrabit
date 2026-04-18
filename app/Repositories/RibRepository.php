@@ -42,7 +42,7 @@ class RibRepository
     }
     public function getPendingRibs()
     {
-        $sql = "SELECT r.*, u.prenom, u.nom 
+        $sql = "SELECT r.*, u.prenom, u.nom,u.imageProfile,u.email
                 FROM ribs r 
                 JOIN users u ON r.id = u.id 
                 WHERE r.status = 'en_attente'

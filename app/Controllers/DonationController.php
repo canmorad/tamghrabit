@@ -20,29 +20,31 @@ class DonationController extends Controller
         $this->donationService = new DonationService(Connection::getInstance());
     }
 
-    // App/Controllers/DonationController.php
+    public function myDonations()
+    {
+        $user = Session::get('user');
+
+        $donations = $this->donationService->myDonations($user->getId());
+
+        return $this->view('mesDons', [
+            'donations' => $donations,
+            'current_uri' => 'mes_dons'
+        ]);
+    }
 
     public function checkout()
     {
-        // 1. التحقق من تسجيل الدخول
         $user = Session::get('user');
-        if (!$user) {
-            Session::flush('error', 'Veuillez vous connecter pour faire un don.');
-            header('Location: ' . url('auth/login'));
-            exit();
-        }
 
-        // 2. التحقق من المعطيات
-        $montant = (float) ($_POST['amount'] ?? 0); // توحيد الاسم مع HTML
+        $montant = (float) ($_POST['montant'] ?? 0);
         $idCampagne = $_POST['idCampagne'] ?? null;
 
         if ($montant <= 0) {
             Session::flush('error', 'Le montant doit être supérieur à zéro.');
-            header('Location: ' . $_SERVER['HTTP_REFERER']);
+            return $this->view('auth/login');
             exit();
         }
 
-        // 3. بناء الـ Entities
         $campagne = new Campagne('', '', '', '', '', '', '', '', '', '');
         $campagne->setId($idCampagne);
 
@@ -53,9 +55,8 @@ class DonationController extends Controller
         try {
             $this->donationService->processDonation($donation);
 
-            // نجاح العملية
             Session::flush('success', 'Merci pour votre générosité ! Votre don de ' . $montant . ' DH a été enregistré.');
-            header('Location: ' . url('campagne/show?id=' . $idCampagne));
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
             exit();
 
         } catch (\Exception $e) {

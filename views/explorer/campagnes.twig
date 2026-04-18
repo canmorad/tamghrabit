@@ -61,7 +61,7 @@
 					<div class="campaigns-grid">
 
 						{% for c in campagnes %}
-							{# تنظيف الـ Type من أي خطأ مطبعي في الداتابيز #}
+
 							{% set type = (c.type == 'associationassociation') ? 'association' : c.type %}
 
 							<div class="campaign-card type-{{ type }}">
@@ -72,16 +72,17 @@
 
 								<div class="card-content">
 									<div class="org-info">
-										<img src="{{ url('public/images/logo-placeholder.png') }}" class="mini-logo">
-										<span>
-											{{ c.organisation_nom ?: 'Donateur Privé' }}
-											<i class="fa-solid fa-circle-check" style="color: #2563EB;"></i>
-										</span>
+										{% if c.organisationNom %}
+											<div class="initials-avatar">{{ c.organisationNom|slice(0, 1) }}</div>
+										{% else %}
+											<img src="{{ c.imageProfile ? url('public/storage/profiles/' ~ c.imageProfile) : url('public/images/profil.png') }}" class="mini-logo">
+										{% endif %}
+
+										<span>{{ c.organisationNom ?: c.nomDestinataire ~ ' ' ~ c.prenomDestinataire }}</span>
 									</div>
 
 									<h3 class="card-title">{{ c.titre }}</h3>
 
-									{# 1. الجزء الخاص بالحملات المالية (Argent, Parrainage, Association) #}
 									{% if type in ['argent', 'parrainage', 'association'] %}
 										<div class="progress-container">
 											<div class="progress-bar">
@@ -90,7 +91,8 @@
 											<div class="progress-stats">
 												<span>
 													<strong>{{ c.montantCollecte | number_format(0, '.', ' ') }}
-														DH</strong>
+														DH
+													</strong>
 													/
 													{{ c.objectifMontant | number_format(0, '.', ' ') }}
 													DH</span>
@@ -99,7 +101,6 @@
 										</div>
 									{% endif %}
 
-									{# 2. الجزء الخاص بحملات الـ Nature #}
 									{% if type == 'nature' %}
 										<div class="item-needed">
 											<i class="fa-solid fa-box-open"></i>
@@ -109,7 +110,6 @@
 										<p class="card-desc">{{ c.description | slice(0, 80) }}...</p>
 									{% endif %}
 
-									{# 3. التاغات الخاصة بالـ Parrainage فقط #}
 									{% if type == 'parrainage' %}
 										<div class="tags-row">
 											<span class="tag tag-blue">
@@ -145,8 +145,8 @@
 		</div>
 
 		<script>
-			// Tab switching logic (UI Only)
-document.querySelectorAll('.cat-pill').forEach(pill => {
+
+			document.querySelectorAll('.cat-pill').forEach(pill => {
 pill.addEventListener('click', () => {
 document.querySelector('.cat-pill.active').classList.remove('active');
 pill.classList.add('active');

@@ -7,13 +7,18 @@ use App\Traits\DatabaseTransaction;
 class DonationService
 {
     use DatabaseTransaction;
-    private $repository;
+    private $donationRepo;
     private $conn;
 
     public function __construct($conn)
     {
-        $this->repository = new DonationRepository($conn);
+        $this->donationRepo = new DonationRepository($conn);
         $this->conn = $conn;
+    }
+
+    public function myDonations($userId)
+    {
+        return $this->donationRepo->myDonations($userId);
     }
 
     public function processDonation($donation)
@@ -21,9 +26,9 @@ class DonationService
         try {
             $this->beginTransaction();
 
-            $this->repository->saveDonation($donation);
+            $this->donationRepo->saveDonation($donation);
 
-            $this->repository->updateCampagneAmount($donation);
+            $this->donationRepo->updateCampagneAmount($donation);
 
             $this->commit();
 

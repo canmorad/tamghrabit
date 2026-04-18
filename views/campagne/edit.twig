@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Tamghrabit - Plateforme de Dons</title>
+		<link rel="stylesheet" href="{{ url('public/css/dashboard.css') }}">
+		<link rel="stylesheet" href="{{ url('public/css/campagne-create.css') }}">
+		<link rel="stylesheet" href="{{ url('public/css/all.min.css') }}">
+	</head>
+	<body>
+
+		<div class="main-wrapper">
+			{% include 'layouts/sidebar.twig' %}
+			<main>
+				<section class="dashboard-body">
+					<div class="form-card">
+						{% set successMsg = flush('success') %}
+
+						{% set errorMsg = flush('error') %}
+
+						{% if successMsg or errorMsg %}
+							<div class="alert alert-{{ successMsg ? 'success' : 'error' }}" id="flash-alert">
+								{{ successMsg ?: errorMsg }}
+							</div>
+
+							<script>
+								setTimeout(() => {
+                                    const alert = document.getElementById('flash-alert');
+                                    if (alert) 
+                                    alert.style.display = 'none';
+                                }, 4000);
+							</script>
+						{% endif %}
+
+						<div class="form-header">
+							<h2>
+								<i class="fa-solid fa-pen-to-square"></i>
+								Modifier la Campagne
+							</h2>
+							<p>Vous modifiez une campagne de type :
+								<strong>{{ campagne.type }}</strong>
+							</p>
+						</div>
+
+						<form action="{{ url('campagne/update')}}" id="editForm" method="POST" enctype="multipart/form-data">
+							<input type="hidden" name="id" value="{{ campagne.id }}">
+							<input type="hidden" name="type" value="{{ campagne.type }}">
+
+							{% include 'campagne/_generalFields.twig' with {'suffix': suffix,  'campagne': campagne, 'categories': categories} %}
+
+							<div class="form-section">
+								<h3 class="section-title">Détails Spécifiques</h3>
+
+								{% if campagne.type != 'nature' %}
+									<div class="form-group">
+										<label>Montant total recherché (DH)</label>
+										<input type="number" name="objectifMontant" value="{{ campagne.objectifMontant }}" required>
+									</div>
+								{% endif %}
+
+								{% if campagne.type == 'parrainage' %}
+									<div class="form-group">
+										<label>Fréquence</label>
+										<select name="frequence">
+											<option value="mensuel" {{ campagne.frequence == 'mensuel' ? 'selected' }}>Mensuel</option>
+											<option value="annuel" {{ campagne.frequence == 'annuel' ? 'selected' }}>Annuel</option>
+										</select>
+									</div>
+								{% elseif campagne.type == 'nature' %}
+									<div class="grid-row">
+										<div class="form-group">
+											<label>Type de don</label>
+											<input type="text" name="typeDon" value="{{ campagne.typeDon }}" required>
+										</div>
+										<div class="form-group">
+											<label>Article / Service</label>
+											<input type="text" name="nomArticle" value="{{ campagne.nomArticle }}" required>
+										</div>
+									</div>
+								{% elseif campagne.type == 'association' %}
+									<div class="form-group full">
+										<label>Organisation</label>
+										<select name="idOrganisation" required>
+											{% for org in organisations %}
+												<option value="{{ org.id }}" {{ campagne.organisation.id == org.id ? 'selected' }}>{{ org.nom }}</option>
+											{% endfor %}
+										</select>
+									</div>
+								{% endif %}
+
+								<div class="form-group full">
+									<label>Justificatif (Optionnel - Laissez vide pour conserver l'actuel)</label>
+									<input type="file" name="justificatif">
+								</div>
+							</div>
+
+							<div class="form-footer">
+								<button type="submit" class="btn-submit">Mettre à jour la campagne</button>
+							</div>
+						</form>
+					</div>
+				</section>
+			</main>
+		</div>
+
+		<script src="{{url('public/js/campagne.js')}}"></script>
+	</body>
+</html>

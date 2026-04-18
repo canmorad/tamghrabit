@@ -37,7 +37,7 @@ class Controller
             })
         );
 
-         $this->twig->addFunction(
+        $this->twig->addFunction(
             new TwigFunction('flush', function ($key) {
                 return Session::flush($key);
             })
@@ -47,6 +47,31 @@ class Controller
     protected function view($template, $data = [])
     {
         echo $this->twig->render($template . ".twig", $data);
+    }
+
+    protected function abort($message, $code = 404)
+    {
+        http_response_code($code);
+
+
+        $titles = [
+            404 => 'Page non trouvée',
+            403 => 'Accès refusé',
+            500 => 'Erreur interne du serveur',
+            401 => 'Non autorisé'
+        ];
+
+        echo $this->twig->render("errors/layoutError.twig", [
+            'code' => $code,
+            'title' => $titles[$code] ?? 'Erreur',
+            'message' => $message
+        ]);
+        exit();
+    }
+    protected function redirect($url)
+    {
+        header('Location: ' . $url);
+        exit();
     }
 
 }

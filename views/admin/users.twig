@@ -36,10 +36,6 @@
 						<div class="table-header">
 							<h2>Utilisateurs</h2>
 							<div class="controls">
-								<div class="search-box">
-									<i class="fa-solid fa-magnifying-glass"></i>
-									<input type="text" placeholder="Rechercher des utilisateurs">
-								</div>
 								<div class="filter-select">
 									Statut:
 									<select>
@@ -55,7 +51,6 @@
 						<table>
 							<thead>
 								<tr>
-									<th width="40"><input type="checkbox"></th>
 									<th>Nom Complet</th>
 									<th>Statut</th>
 									<th>Email</th>
@@ -63,153 +58,46 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>
-										<div class="user-cell">
-											<img src="https://i.pravatar.cc/150?u=amanda">
-											<div class="name-wrapper">
-												Amanda Harvey
-												<i class="fa-solid fa-circle-check verify-badge"></i>
+								{% for user in users %}
+									<tr>
+										<td>
+											<div class="user-cell">
+												<img src="{{ user.imageProfile ? url('public/storage/profiles/' ~ user.imageProfile) : url('public/images/default-profile.png') }}">
+												<div class="name-wrapper">
+													{{ user.prenom }}
+													{{ user.nom }}
+													{% if user.estVerifie %}
+														<i class="fa-solid fa-circle-check verify-badge"></i>
+													{% endif %}
+												</div>
 											</div>
-										</div>
-									</td>
-									<td>
-										<span class="status-indicator verifie">Vérifié</span>
-									</td>
-									<td style="color: #64748b;">amanda@site.com</td>
-									<td style="color: #64748b;">Il y a 1 an</td>
-								</tr>
-
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>
-										<div class="user-cell">
-											<img src="https://i.pravatar.cc/150?u=rachel">
-											<div class="name-wrapper">Rachel Doe</div>
-										</div>
-									</td>
-									<td>
-										<span class="status-indicator en_attente">En attente</span>
-									</td>
-									<td style="color: #64748b;">rachel@site.com</td>
-									<td style="color: #64748b;">Il y a 6 mois</td>
-								</tr>
-
-                                <tr>
-									<td><input type="checkbox"></td>
-									<td>
-										<div class="user-cell">
-											<img src="https://i.pravatar.cc/150?u=amanda">
-											<div class="name-wrapper">
-												Amanda Harvey
-												<i class="fa-solid fa-circle-check verify-badge"></i>
-											</div>
-										</div>
-									</td>
-									<td>
-										<span class="status-indicator verifie">Vérifié</span>
-									</td>
-									<td style="color: #64748b;">amanda@site.com</td>
-									<td style="color: #64748b;">Il y a 1 an</td>
-								</tr>
-
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>
-										<div class="user-cell">
-											<img src="https://i.pravatar.cc/150?u=rachel">
-											<div class="name-wrapper">Rachel Doe</div>
-										</div>
-									</td>
-									<td>
-										<span class="status-indicator en_attente">En attente</span>
-									</td>
-									<td style="color: #64748b;">rachel@site.com</td>
-									<td style="color: #64748b;">Il y a 6 mois</td>
-								</tr>
-
-                                <tr>
-									<td><input type="checkbox"></td>
-									<td>
-										<div class="user-cell">
-											<img src="https://i.pravatar.cc/150?u=amanda">
-											<div class="name-wrapper">
-												Amanda Harvey
-												<i class="fa-solid fa-circle-check verify-badge"></i>
-											</div>
-										</div>
-									</td>
-									<td>
-										<span class="status-indicator verifie">Vérifié</span>
-									</td>
-									<td style="color: #64748b;">amanda@site.com</td>
-									<td style="color: #64748b;">Il y a 1 an</td>
-								</tr>
-
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>
-										<div class="user-cell">
-											<img src="https://i.pravatar.cc/150?u=rachel">
-											<div class="name-wrapper">Rachel Doe</div>
-										</div>
-									</td>
-									<td>
-										<span class="status-indicator en_attente">En attente</span>
-									</td>
-									<td style="color: #64748b;">rachel@site.com</td>
-									<td style="color: #64748b;">Il y a 6 mois</td>
-								</tr>
-
-                                <tr>
-									<td><input type="checkbox"></td>
-									<td>
-										<div class="user-cell">
-											<img src="https://i.pravatar.cc/150?u=amanda">
-											<div class="name-wrapper">
-												Amanda Harvey
-												<i class="fa-solid fa-circle-check verify-badge"></i>
-											</div>
-										</div>
-									</td>
-									<td>
-										<span class="status-indicator verifie">Vérifié</span>
-									</td>
-									<td style="color: #64748b;">amanda@site.com</td>
-									<td style="color: #64748b;">Il y a 1 an</td>
-								</tr>
-
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>
-										<div class="user-cell">
-											<img src="https://i.pravatar.cc/150?u=rachel">
-											<div class="name-wrapper">Rachel Doe</div>
-										</div>
-									</td>
-									<td>
-										<span class="status-indicator en_attente">En attente</span>
-									</td>
-									<td style="color: #64748b;">rachel@site.com</td>
-									<td style="color: #64748b;">Il y a 6 mois</td>
-								</tr>
+										</td>
+										<td>
+											{% if user.estVerifie %}
+												<span class="status-indicator verifie">Vérifié</span>
+											{% else %}
+												<span class="status-indicator en_attente">En attente</span>
+											{% endif %}
+										</td>
+										<td style="color: #64748b;">{{ user.email }}</td>
+										<td style="color: #64748b;">{{ user.time_ago }}</td>
+									</tr>
+								{% else %}
+									<tr>
+										<td colspan="5" style="text-align: center; padding: 30px; color: #94A3B8;">
+											Aucun utilisateur enregistré.
+										</td>
+									</tr>
+								{% endfor %}
 							</tbody>
 						</table>
 
-						
+
 					</div>
 				</div>
 			</main>
 		</div>
 
-		<script>
-			document.getElementById('selectAll').onclick = function () {
-let checkboxes = document.querySelectorAll('input[type="checkbox"]');
-for (let checkbox of checkboxes) {
-checkbox.checked = this.checked;
-}
-}
-		</script>
+		<script></script>
 	</body>
 </html>

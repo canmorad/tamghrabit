@@ -15,7 +15,7 @@
 </head>
 <body>
     <div class="main-wrapper">
-        {% include 'layouts/sidebar.twig' %}
+         {% include 'layouts/sidebar.twig' %}
         
         <main>
             <header>
@@ -24,14 +24,14 @@
                     <p>Bienvenue, {{ currentUser.prenom }} ! Voici ce qui se passe aujourd'hui.</p>
                 </div>
                 <div class="action-buttons">
-						<div class="profile-container">
-							<img src="{{ currentUser.imageProfile ? url('public/storage/profiles/') ~ currentUser.imageProfile : url('public/images/default-profile.png')}}" alt="Admin" class="avatar">
-							<div class="user-info">
-								<span class="nom">{{ currentUser.nom ~ ' ' ~ currentUser.prenom }}</span>
-								<span class="email">{{ currentUser.email }}</span>
-							</div>
-						</div>
-					</div>
+                    <div class="profile-container">
+                        <img src="{{ currentUser.imageProfile ? url('public/storage/profiles/') ~ currentUser.imageProfile : url('public/images/default-profile.png')}}" alt="Admin" class="avatar">
+                        <div class="user-info">
+                            <span class="nom">{{ currentUser.nom ~ ' ' ~ currentUser.prenom }}</span>
+                            <span class="email">{{ currentUser.email }}</span>
+                        </div>
+                    </div>
+                </div>
             </header>
 
             <div class="dashboard-content">
@@ -40,7 +40,7 @@
                         <div class="icon-box blue"><i class="fa-solid fa-users"></i></div>
                         <div class="details">
                             <span class="label">Utilisateurs</span>
-                            <span class="value">1,284</span>
+                            <span class="value">{{ stats.users|number_format(0, ',', ' ') }}</span>
                             <span class="trend up"><i class="fa-solid fa-arrow-up"></i> 12%</span>
                         </div>
                     </div>
@@ -49,7 +49,7 @@
                         <div class="icon-box green"><i class="fa-solid fa-bullhorn"></i></div>
                         <div class="details">
                             <span class="label">Campagnes</span>
-                            <span class="value">42</span>
+                            <span class="value">{{ stats.campagnes }}</span>
                             <span class="trend up"><i class="fa-solid fa-arrow-up"></i> 5%</span>
                         </div>
                     </div>
@@ -58,7 +58,7 @@
                         <div class="icon-box yellow"><i class="fa-solid fa-wallet"></i></div>
                         <div class="details">
                             <span class="label">Revenus (DH)</span>
-                            <span class="value">12,450</span>
+                            <span class="value">{{ stats.revenus|number_format(0, '.', ' ') }}</span>
                             <span class="trend down"><i class="fa-solid fa-arrow-down"></i> 2%</span>
                         </div>
                     </div>
@@ -67,7 +67,7 @@
                         <div class="icon-box purple"><i class="fa-solid fa-check-to-slot"></i></div>
                         <div class="details">
                             <span class="label">RIB Validés</span>
-                            <span class="value">85%</span>
+                            <span class="value">{{ stats.rib_rate }}%</span>
                             <span class="trend up"><i class="fa-solid fa-arrow-up"></i> 8%</span>
                         </div>
                     </div>
@@ -88,15 +88,14 @@
     </div>
 
     <script>
-        // Line Chart - Performance
         const ctx1 = document.getElementById('analyticsChart').getContext('2d');
         new Chart(ctx1, {
             type: 'line',
             data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                labels: {{ chartData.months|json_encode|raw }},
                 datasets: [{
                     label: 'Ventes (DH)',
-                    data: [5000, 7000, 6500, 9000, 11000, 12450],
+                    data: {{ chartData.revenues|json_encode|raw }},
                     borderColor: '#C5F82A',
                     backgroundColor: 'rgba(197, 248, 42, 0.1)',
                     fill: true,
@@ -114,15 +113,15 @@
             }
         });
 
-        // Doughnut Chart - Distribution
+       
         const ctx2 = document.getElementById('distributionChart').getContext('2d');
         new Chart(ctx2, {
             type: 'doughnut',
             data: {
-                labels: ['Actifs', 'Inactifs', 'En attente'],
+                labels: {{ chartData.type_labels|json_encode|raw }}, 
                 datasets: [{
-                    data: [70, 20, 10],
-                    backgroundColor: ['#C5F82A', '#062121', '#E2E8F0'],
+                    data: {{ chartData.type_counts|json_encode|raw }}, 
+                    backgroundColor: ['#C5F82A', '#062121', '#3b82f6', '#a855f7'],
                     borderWidth: 0
                 }]
             },
@@ -130,7 +129,7 @@
                 responsive: true,
                 cutout: '70%',
                 plugins: {
-                    legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } }
+                    legend: { position: 'bottom' }
                 }
             }
         });

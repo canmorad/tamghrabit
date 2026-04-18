@@ -1,0 +1,288 @@
+// out: ../../css/campagnes-actives.css
+
+@bg-white: #FFFFFF;
+@text-main: #1A202C;
+@text-sub: #718096;
+@border-color: #EDF2F7;
+@green-success: #48BB78;
+@orange-wait: #ED8936;
+
+.users-container {
+    background: @bg-white;
+    border-radius: 12px;
+    margin: 20px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    border: 1px solid @border-color;
+
+    .table-header-main {
+        padding: 20px 25px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid @border-color;
+
+        h2 {
+            font-size: 18px;
+            font-weight: 700;
+            color: @text-main;
+            margin: 0;
+        }
+
+        .title-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+
+            .search-box-table {
+                position: relative;
+
+                input {
+                    padding: 8px 15px 8px 35px;
+                    background: #F7FAFC;
+                    border: 1px solid @border-color;
+                    border-radius: 8px;
+                    font-size: 13px;
+                    width: 250px;
+                }
+
+                i {
+                    position: absolute;
+                    left: 12px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    color: @text-sub;
+                }
+            }
+        }
+    }
+}
+
+.modern-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th {
+        padding: 12px 25px;
+        background: #F7FAFC;
+        text-align: left;
+        font-size: 11px;
+        font-weight: 700;
+        color: @text-sub;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    td {
+        padding: 15px 25px;
+        border-bottom: 1px solid @border-color;
+        vertical-align: middle;
+        font-size: 14px;
+    }
+
+    .user-cell {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        .campagne-thumb {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .info {
+            .name {
+                display: block;
+                font-weight: 600;
+                color: @text-main;
+            }
+
+            .sub-text {
+                font-size: 12px;
+                color: @text-sub;
+            }
+        }
+    }
+
+    .status-indicator {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+
+        &.status-active {
+            color: @green-success;
+            background: rgba(72, 187, 120, 0.1);
+
+            .dot {
+                background: @green-success;
+            }
+        }
+
+        &.status-pause {
+            color: @orange-wait;
+            background: rgba(237, 137, 54, 0.1);
+
+            .dot {
+                background: @orange-wait;
+            }
+        }
+
+        .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+    }
+
+    .amount-text {
+        font-weight: 500;
+        color: @text-main;
+    }
+
+    .date-text {
+        color: @text-sub;
+        font-size: 13px;
+    }
+
+    .action-btns {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+
+        .icon-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            color: @text-sub;
+            transition: 0.2s;
+
+            &:hover.stop {
+                color: #E53E3E;
+            }
+
+            &:hover.edit {
+                color: @text-main;
+            }
+        }
+    }
+}
+
+.main-img-container {
+    position: relative;
+    width: 48px;
+    height: 48px;
+
+    .campagne-img {
+        width: 100%;
+        height: 100%;
+        border-radius: 10px;
+        object-fit: cover;
+    }
+
+    .owner-avatar {
+        position: absolute;
+        bottom: -2px;
+        right: -2px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 2px solid #fff;
+        object-fit: cover;
+    }
+}
+
+.amount-cell {
+    strong {
+        display: block;
+        color: #1a202c;
+        font-size: 14px;
+    }
+
+    .progress-mini {
+        width: 80px;
+        height: 4px;
+        background: #edf2f7;
+        border-radius: 10px;
+        margin-top: 5px;
+        overflow: hidden;
+
+        .bar {
+            height: 100%;
+            background: #C5F82A;
+        }
+    }
+}
+
+.status-indicator.status-active {
+    color: #059669;
+    background: #ecfdf5;
+    border: 1px solid #d1fae5;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    .dot {
+        width: 6px;
+        height: 6px;
+        background: #10b981;
+        border-radius: 50%;
+    }
+}
+
+.status-dropdown {
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: 1px solid @border-color;
+    background-color: #F7FAFC;
+    color: @text-main;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.2s ease;
+
+    &:hover {
+        border-color: @text-sub;
+        background-color: #fff;
+    }
+
+    &:focus {
+        border-color: @green-success;
+        box-shadow: 0 0 0 2px rgba(72, 187, 120, 0.1);
+    }
+
+    option {
+        padding: 10px;
+        background: #fff;
+        color: @text-main;
+    }
+}
+
+.btn-icon.delete {
+    background: #FFF5F5;
+    color: #E53E3E;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    border: 1px solid #FED7D7;
+    transition: 0.2s;
+
+    &:hover {
+        background: #E53E3E;
+        color: #fff;
+        transform: scale(1.05);
+    }
+}

@@ -21,7 +21,10 @@ class AuthenticatedSessionController extends Controller
 
     public function index()
     {
+        $users = $this->authService->getUsersList();
+
         return $this->view('admin/users', [
+            'users' => $users,
             'current_uri' => 'admin_users'
         ]);
     }

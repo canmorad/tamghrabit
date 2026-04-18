@@ -7,7 +7,6 @@
 		<link rel="stylesheet" href="{{ url('public/css/dashboard.css') }}">
 		<link rel="stylesheet" href="{{ url('public/css/organisation-admin.css') }}">
 		<link rel="stylesheet" href="{{ url('public/css/all.min.css') }}">
-		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 	</head>
 	<body>
 		<div class="main-wrapper">
@@ -67,13 +66,14 @@
 											{% if org.recepisse %}
 												{% set docs = docs|merge([{'url': url('public/storage/organisations/' ~ org.recepisse), 'label': 'Récépissé'}]) %}
 											{% endif %}
-											{% if org.pvElection %}
-												{% set docs = docs|merge([{'url': url('public/storage/organisations/' ~ org.pvElection), 'label': 'PV d\'élection'}]) %}{% endif %}
-                                        {% if org.statuts %}{% set docs = docs|merge([{'url': url('public/storage/organisations/' ~ org.statuts), 'label': 'Statuts'}]) %}{% endif %}
-                                        {% if org.attestationRib %}{% set docs = docs|merge([{'url': url('public/storage/organisations/' ~ org.attestationRib), 'label': 'RIB'}]) %}{% endif %}
-                                        
+											{% if org.pvElection %}{% set docs = docs|merge([{'url': url('public/storage/organisations/' ~ org.pvElection), 'label': 'PV d\'élection'}]) %}{% endif %}
+                                            {% if org.statuts %}{% set docs = docs|merge([{'url': url('public/storage/organisations/' ~ org.statuts), 'label': 'Statuts'}]) %}{% endif %}
+                                            {% if org.attestationRib %}{% set docs = docs|merge([{'url': url('public/storage/organisations/' ~ org.attestationRib), 'label': 'RIB'}]) %}{% endif %}
+                                            {% if org.cniPresidentVerso %}{% set docs = docs|merge([{'url': url('public/storage/organisations/' ~ org.cniPresidentVerso), 'label': 'CNI'}]) %}{% endif %}
+                                            {% if org.cniPresidentVerso %}{% set docs = docs|merge([{'url': url('public/storage/organisations/' ~ org.cniPresidentVerso), 'label': 'CNI'}]) %}{% endif %}
+
                                         <button class="view-btn" onclick="openVerifyModal('{{ org.nom|e('js') }}', {{ docs|json_encode }}, '{{ org.id }}')">
-                                            <i class="fa-solid fa-folder-open"></i> Voir le dossier
+                                            <i class="fa-solid fa-eye"></i> Voir
                                         </button>
                                     </td>
                                     <td class="actions-cell">
@@ -102,7 +102,7 @@
             <div class="modal-header">
                 <div>
                     <h3 id="m-orgName">Chargement...</h3>
-                    <span class="status-badge">Dossier de vérification</span>
+                   
                 </div>
                 <span class="close" onclick="closeModal()">&times;</span>
             </div>
@@ -114,9 +114,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn-secondary" onclick="closeModal()">Fermer</button>
                 <button class="btn-danger" onclick="handleAction('reject')">Refuser</button>
-                <button class="btn-success" onclick="handleAction('approve')">Approuver l'organisation</button>
+                <button class="btn-success" onclick="handleAction('approve')">Approuver</button>
             </div>
         </div>
     </div>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="UTF-8">
+		<title>Tamghrabit | Mes Campagnes</title>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+		<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="{{ url('public/css/dashboard.css') }}">
+		<link rel="stylesheet" href="{{ url('public/css/mes-campagnes.css') }}">
+	</head>
+	<body>
+		<div class="main-wrapper">
+			{% include 'layouts/sidebar.twig' %}
+			<main class="main-content">
+				<header>
+					<div class="search-bar">
+						<i class="fa-solid fa-magnifying-glass"></i>
+						<input type="text" id="userSearch" placeholder="Rechercher...">
+					</div>
+					<div class="action-buttons">
+						<button class="icon-btn">
+							<i class="fa-solid fa-moon"></i>
+						</button>
+						<button class="icon-btn">
+							<i class="fa-solid fa-bell"></i>
+						</button>
+						<div class="profile-container">
+							<img src="{{ url('public/images/profile-cv.png') }}" class="avatar">
+							<div class="user-info">
+								<span class="nom">Morad Benaissa</span>
+								<span class="email">moradbenaissa@gmail.com</span>
+							</div>
+						</div>
+					</div>
+				</header>
+
+				<section class="dashboard-body">
+					<div class="page-intro">
+						<div class="intro-text">
+							<h1>Mes Campagnes
+								<span>({{ count < 10 ? '0' ~ count : count }})</span>
+							</h1>
+							<p>Gérez vos collectes et suivez l'impact de vos actions en temps réel.</p>
+						</div>
+						<button class="btn-create-main">
+							<i class="fa-solid fa-plus"></i>
+							Lancer une campagne</button>
+					</div>
+
+					<div class="filters-container">
+						<div class="tabs-group">
+							<button class="filter-tab active" data-status="all">Toutes</button>
+							<button class="filter-tab" data-status="approuvee">En cours</button>
+							<button class="filter-tab" data-status="en_attente">En attente</button>
+							<button class="filter-tab" data-status="terminee">Terminées</button>
+							<button class="filter-tab" data-status="rejetee">Rejetee</button>
+						</div>
+					</div>
+
+					<div class="campaigns-grid">
+						{% for c in campagnes %}
+							<div class="premium-card" data-status="{{ c.status }}">
+								<div class="card-media">
+									<img src="{{ url('public/storage/campagnes/' ~ c.image) }}">
+									<div class="media-overlay">
+										<span class="tag-category">{{ c.categorieNom }}</span>
+										<span class="status-indicator {{ c.status }}">
+											<i class="fa-solid {{ c.status == 'approuvee' ? 'fa-check' : 'fa-clock' }}"></i>
+										</span>
+									</div>
+								</div>
+								<div class="card-content">
+									<div class="card-top">
+										<span class="type-label">
+											{% if c.type == 'argent' %}
+												<i class="fa-solid fa-wallet"></i>
+												Argent
+											{% elseif c.type == 'parrainage' %}
+												<i class="fa-solid fa-repeat"></i>
+												Parrainage
+											{% elseif c.type == 'nature' %}
+												<i class="fa-solid fa-box-open"></i>
+												Nature
+											{% else %}
+												<i class="fa-solid fa-building-ngo"></i>
+												Association
+											{% endif %}
+										</span>
+										<span class="timestamp">{{ c.datecreation|date("d M") }}</span>
+									</div>
+									<h3 class="card-title">{{ c.titre }}</h3>
+
+									{% if c.type != 'nature' %}
+										<div class="funding-tracker">
+											<div class="tracker-info">
+												<span class="current">{{ c.montantCollecte|number_format(0, '.', ' ') }}
+													DH</span>
+												<span class="target">Cible:
+													{{ c.objectifMontant|number_format(0, '.', ' ') }}
+													DH
+												</span>
+											</div>
+											<div class="custom-progress">
+												<div class="progress-bar" style="width: {{ c.percentage }}%">
+													<div class="shimmer-effect"></div>
+												</div>
+											</div>
+											<div class="tracker-footer">
+												<span class="donors-count">
+													<i class="fa-solid fa-users"></i>
+													{{ c.type == 'parrainage' ? 'Parrains' : 'Donateurs' }}</span>
+												<span class="percent-label">{{ c.percentage }}%</span>
+											</div>
+										</div>
+									{% else %}
+										<div class="funding-tracker nature-box">
+											<div class="nature-badge">Objectif:
+												{{ c.nomArticle }}</div>
+											<p class="nature-desc">{{ c.description|slice(0, 70) }}...</p>
+										</div>
+									{% endif %}
+
+									<div class="card-footer-actions">
+										<button class="btn-manage" onclick="window.location.href='{{ url('campagne/gerer?id=' ~ c.id) }}'">
+											Gérer
+										</button>
+										<div class="iconic-actions">
+											<button class="btn-mini">
+												<i class="fa-solid fa-chart-simple"></i>
+											</button>
+											<button class="btn-mini delete" onclick="deleteCampagne({{ c.id }})">
+												<i class="fa-solid fa-trash-can"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						{% endfor %}
+					</div>
+				</section>
+			</main>
+		</div>
+		<script src="{{ url('public/js/mes-campagnes.js') }}"></script>
+	</body>
+</html>

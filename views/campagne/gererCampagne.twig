@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="UTF-8">
+		<title>Tamghrabit | Gérer la Campagne</title>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+		<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="{{ url('public/css/dashboard.css') }}">
+		<link rel="stylesheet" href="{{ url('public/css/gerer_campagne.css') }}">
+	</head>
+	<body>
+		<div class="main-wrapper">
+			{% include 'layouts/sidebar.twig' %}
+			<main class="main-content">
+				<header>
+					<div class="search-bar">
+						<i class="fa-solid fa-magnifying-glass"></i>
+						<input type="text" placeholder="Rechercher...">
+					</div>
+					<div class="action-buttons">
+						<button class="icon-btn">
+							<i class="fa-solid fa-moon"></i>
+						</button>
+						<button class="icon-btn">
+							<i class="fa-solid fa-bell"></i>
+						</button>
+						<div class="profile-container">
+							<img src="{{ url('public/images/profile-cv.png') }}" class="avatar">
+							<div class="user-info">
+								<span class="nom">{{ currentUser.prenom }}
+									{{ currentUser.nom }}</span>
+								<span class="email">{{ currentUser.email }}</span>
+							</div>
+						</div>
+					</div>
+				</header>
+
+				<div class="manage-container">
+					<header class="manage-header">
+						<div class="header-info">
+
+							<h1>{{ campagne.titre }}</h1>
+							<p class="status-text">Statut:
+								<span class="status-{{ campagne.status }}">{{ campagne.status }}</span>
+							</p>
+						</div>
+						<div class="header-actions">
+							<button class="btn-action btn-edit" onclick="openEditModal({{ campagne.id }})">
+								<i class="fa-solid fa-pen-to-square"></i>
+								Modifier</button>
+							<button class="btn-action btn-stop" onclick="terminerCampagne({{ campagne.id }})">
+								<i class="fa-solid fa-circle-check"></i>
+								Terminer</button>
+						</div>
+					</header>
+
+					<div class="stats-grid">
+						<div class="stat-card">
+							<i class="fa-solid fa-coins"></i>
+							<div class="stat-val">
+								{% if campagne.type != 'nature' %}
+									<h3>{{ campagne.montantCollecte|number_format(0, '.', ' ') }}
+										DH</h3>
+									<p>Sur
+										{{ campagne.objectifMontant|number_format(0, '.', ' ') }}
+										DH</p>
+								{% else %}
+									<h3>{{ campagne.nomArticle }}</h3>
+									<p>Objectif Nature</p>
+								{% endif %}
+							</div>
+						</div>
+						<div class="stat-card">
+							<i class="fa-solid fa-users"></i>
+							<div class="stat-val">
+								<h3>{{ donors|length }}</h3>
+								<p>Contributeurs</p>
+							</div>
+						</div>
+						<div class="stat-card">
+							<i class="fa-solid fa-calendar-days"></i>
+							<div class="stat-val">
+								<h3>{{ date(campagne.datefin).diff(date()).days }}</h3>
+								<p>Jours restants</p>
+							</div>
+						</div>
+					</div>
+
+					<div class="manage-sections">
+						<section class="manage-section">
+							<div class="section-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+								<h2 style="margin: 0;">
+									<i class="fa-solid fa-list-ul"></i>
+									Liste des Dons
+								</h2>
+
+							</div>
+							<table class="minimal-table">
+								<thead>
+									<tr>
+										<th>Donateur</th>
+										<th>Montant/Action</th>
+										<th>Date</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for d in donors %}
+										<tr>
+											<td>{{ d.prenom }}
+												{{ d.nom }}</td>
+											<td>
+												<strong>{{ d.montant|number_format(2, '.', ' ') }}
+													DH</strong>
+											</td>
+											<td>{{ d.dateDon|date('d/m/Y') }}</td>
+										</tr>
+									{% else %}
+										<tr>
+											<td colspan="3" style="text-align: center; padding: 40px; color: #94A3B8;">Aucun don pour le moment.</td>
+										</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</section>
+
+						<aside class="manage-sidebar">
+							<div class="info-card">
+								<h3>
+									<i class="fa-solid fa-circle-info"></i>
+									Détails Spécifiques</h3>
+								<div class="details-list">
+									{% if campagne.type == 'association' %}
+										<p>
+											<strong>Organisation:</strong>
+											<span>{{ campagne.nomOrg }}</span>
+										</p>
+										<p>
+											<strong>RIB:</strong>
+											<span>{{ campagne.ribAssociation }}</span>
+										</p>
+									{% elseif campagne.type == 'parrainage' %}
+										<p>
+											<strong>Fréquence:</strong>
+											<span>{{ campagne.frequence }}</span>
+										</p>
+									{% elseif campagne.type == 'nature' %}
+										<p>
+											<strong>Type:</strong>
+											<span>{{ campagne.typeDon }}</span>
+										</p>
+									{% endif %}
+									<p>
+										<strong>Date Début:</strong>
+										<span>{{ campagne.datedebut|date('d/m/Y') }}</span>
+									</p>
+									<p>
+										<strong>Date Fin:</strong>
+										<span>{{ campagne.datefin|date('d/m/Y') }}</span>
+									</p>
+								</div>
+							</div>
+						</aside>
+					</div>
+				</div>
+			</main>
+		</div>
+
+		<script>
+			function openEditModal(id) {
+			    window.location.href = `/Tamghrabit/campagne/edit?id=${id}`;
+			}
+
+			async function terminerCampagne(id) {
+				if (confirm("Voulez-vous vraiment marquer cette campagne comme terminée ?")) {
+					try {
+						const formData = new FormData();
+						formData.append('id', id);
+
+						const response = await fetch("{{ url('campagne/terminer') }}", {
+							method: 'POST',
+							body: formData
+						});
+
+						const data = await response.json();
+						showAlert(data.message, data.type);
+
+						if (data.type === 'success') {
+							setTimeout(() => {
+								window.location.reload();
+							}, 1500);
+						}
+					} catch (error) {
+					showAlert("Erreur de connexion au serveur", "error");
+						console.error("Erreur:", error);
+					}
+				}
+			}
+
+			function showAlert(message, type) {
+				const oldAlert = document.querySelector('.alert');
+				if (oldAlert) oldAlert.remove();
+
+				const alert = document.createElement("div");
+				alert.className = `alert alert-${type}`;
+
+				if (typeof message === 'object' && message !== null) {
+					let htmlContent = "";
+					Object.values(message).forEach(msg => {
+						htmlContent += `<div style="margin-bottom: 5px;">• ${msg}</div>`;
+					});
+					alert.innerHTML = htmlContent;
+				} else {
+					alert.textContent = message;
+				}
+
+				document.body.prepend(alert);
+				setTimeout(() => {
+					alert.style.opacity = '0';
+					setTimeout(() => alert.remove(), 500);
+				}, 4000);
+			}
+		</script>
+	</body>
+</html>

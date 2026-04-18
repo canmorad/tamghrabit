@@ -3,7 +3,7 @@ namespace App\Traits;
 
 trait LoggableException
 {
-    protected function handleServiceException(\Throwable $e, string $userFriendlyMessage = "Une erreur technique est survenue.")
+    protected function handle(\Throwable $e, $message = "Une erreur technique est survenue.")
     {
         $category = strtoupper(basename(str_replace('\\', '/', get_class($this))));
         $ref = $category . "-" . strtoupper(uniqid());
@@ -29,6 +29,6 @@ trait LoggableException
 
         file_put_contents($logPath, $logEntry, FILE_APPEND);
 
-        throw new \Exception("$userFriendlyMessage (Ref: $ref)");
+        throw new \Exception("$message (Ref: $ref)");
     }
 }

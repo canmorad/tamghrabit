@@ -1,0 +1,153 @@
+// out: ../../css/mes-dons.css
+
+@couleur-primaire: #bef264;
+@couleur-noire: #062121;
+@text-slate: #64748b;
+@bg-light: #f8fafc;
+
+.users-container {
+    background: #F4F7F7;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+
+    .table-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+
+        h2 {
+            font-size: 24px;
+            color: @couleur-noire;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            i {
+                background: @couleur-primaire;
+                color: @couleur-noire;
+                width: 45px;
+                height: 45px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 12px;
+                font-size: 20px;
+            }
+        }
+
+        .subtitle {
+            color: @text-slate;
+            font-size: 14px;
+            margin: 4px 0 0 36px;
+        }
+    }
+}
+
+.custom-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 8px;
+
+    thead th {
+        padding: 12px 20px;
+        color: @text-slate;
+        font-weight: 600;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-bottom: 2px solid @bg-light;
+    }
+
+    .donation-row {
+        transition: transform 0.2s;
+
+        &:hover {
+            transform: scale(1.005);
+
+            td {
+                background: @bg-light;
+            }
+        }
+
+        td {
+            padding: 16px 20px;
+            background: white;
+            border-top: 1px solid #f1f5f9;
+            border-bottom: 1px solid #f1f5f9;
+
+            &:first-child {
+                border-left: 1px solid #f1f5f9;
+                border-radius: 12px 0 0 12px;
+            }
+
+            &:last-child {
+                border-right: 1px solid #f1f5f9;
+                border-radius: 0 12px 12px 0;
+            }
+        }
+    }
+}
+
+.amount-tag {
+    background: @couleur-noire;
+    color: @couleur-primaire;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.date-cell {
+    display: flex;
+    
+    font-size: 14px;
+    color: @couleur-noire;
+
+    i {
+        margin-right: 5px;
+        color: @text-slate;
+    }
+
+    small {
+        color: @text-slate;
+        font-size: 12px;
+    }
+}
+
+.action-btn-view {
+    width: 35px;
+    height: 35px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: @bg-light;
+    color: @couleur-noire;
+    transition: 0.3s;
+
+    &:hover {
+        background: @couleur-primaire;
+        transform: translateY(-2px);
+    }
+}
+
+.empty-state {
+    .empty-content {
+        padding: 60px 0;
+        text-align: center;
+
+        i {
+            font-size: 48px;
+            color: #e2e8f0;
+            margin-bottom: 16px;
+        }
+
+        p {
+            color: @text-slate;
+            margin-bottom: 20px;
+        }
+    }
+}

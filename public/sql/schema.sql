@@ -108,6 +108,8 @@ create table donations (
     constraint fk_donation_adherent foreign key (idAdherent) references adherents (id) on delete cascade
 );
 
+drop table donations;
+
 drop table organisations;
 
 create table campagnes (
@@ -118,8 +120,8 @@ create table campagnes (
     description text not null,
     image varchar(255) not null,
     telephone varchar(50) not null,
-    datedebut date not null,
-    datefin date not null,
+    dateDebut date not null,
+    dateFin date not null,
     justificatif varchar(255),
     type enum(
         'parrainage',
@@ -133,9 +135,9 @@ create table campagnes (
         'rejetee',
         'terminee'
     ) default 'en_attente',
-    datecreation timestamp default current_timestamp,
-    datemodifier timestamp on update current_timestamp,
-    datesupprimer timestamp default null,
+    dateCreation timestamp default current_timestamp,
+    dateModifier timestamp on update current_timestamp,
+    dateSupprimer timestamp default null,
     constraint fk_campagne_adherent foreign key (idAdherent) references adherents (id),
     constraint fk_campagne_categorie foreign key (idCategorie) references categories (id)
 );
@@ -293,25 +295,6 @@ delimiter;
 drop procedure register;
 
 insert into roles (nom) values ('admin'), ('adherent');
-
--- 1. أولا: تنظيف الجداول القديمة (باش ما يوقعش تكرار للإدج أيدي)
-SET FOREIGN_KEY_CHECKS = 0;
-
-TRUNCATE TABLE campagnesNature;
-
-TRUNCATE TABLE campagnesAssociation;
-
-TRUNCATE TABLE campagnesParrainage;
-
-TRUNCATE TABLE CampagnesArgent;
-
-TRUNCATE TABLE campagnesFinancieres;
-
-TRUNCATE TABLE campagnes;
-
-SET FOREIGN_KEY_CHECKS = 1;
-
--- 2. تعمير الأصناف (إذا كانت خاوية)
 INSERT IGNORE INTO
     categories (id, nom)
 VALUES (1, 'Santé'),
@@ -321,649 +304,59 @@ VALUES (1, 'Santé'),
     (5, 'Orphelins'),
     (6, 'Urgence');
 
--- 3. حملات من نوع ARGENT (10 سطور)
-INSERT INTO
-    campagnes (
-        id,
-        idAdherent,
-        idCategorie,
-        titre,
-        description,
-        image,
-        telephone,
-        datedebut,
-        datefin,
-        type,
-        status
-    )
-VALUES (
-        1,
-        1,
-        1,
-        'Soutien Urgence Médicale',
-        'Aide pour les soins intensifs.',
-        'img_1_1774988780.png',
-        '0661000001',
-        '2026-04-01',
-        '2026-06-01',
-        'argent',
-        'approuvee'
-    ),
-    (
-        2,
-        1,
-        1,
-        'Opération Coeur Ouvert',
-        'Collecte pour un enfant de 5 ans.',
-        'img_1_1774988780.png',
-        '0661000002',
-        '2026-04-01',
-        '2026-07-01',
-        'argent',
-        'approuvee'
-    ),
-    (
-        3,
-        1,
-        2,
-        'Rénovation Salle de Classe',
-        'Achat de tables et tableaux.',
-        'img_1_1774988780.png',
-        '0661000003',
-        '2026-04-01',
-        '2026-08-01',
-        'argent',
-        'approuvee'
-    ),
-    (
-        4,
-        1,
-        3,
-        'Paniers Solidaires',
-        'Aide alimentaire mensuelle.',
-        'img_1_1774988780.png',
-        '0661000004',
-        '2026-04-01',
-        '2026-05-01',
-        'argent',
-        'approuvee'
-    ),
-    (
-        5,
-        1,
-        6,
-        'Aide Sinistrés Al Haouz',
-        'Reconstruction des foyers.',
-        'img_1_1774988780.png',
-        '0661000005',
-        '2026-04-01',
-        '2026-12-01',
-        'argent',
-        'approuvee'
-    ),
-    (
-        6,
-        1,
-        4,
-        'Forage Puits Atlas',
-        'Eau potable pour le village.',
-        'img_1_1774988780.png',
-        '0661000006',
-        '2026-04-01',
-        '2026-09-01',
-        'argent',
-        'approuvee'
-    ),
-    (
-        7,
-        1,
-        2,
-        'Bourses d\'études Supérieures',
-        'Soutien aux étudiants Master.',
-        'img_1_1774988780.png',
-        '0661000007',
-        '2026-04-01',
-        '2026-10-01',
-        'argent',
-        'approuvee'
-    ),
-    (
-        8,
-        1,
-        5,
-        'Espace Jeux Orphelinat',
-        'Aménagement parc de jeux.',
-        'img_1_1774988780.png',
-        '0661000008',
-        '2026-04-01',
-        '2026-06-01',
-        'argent',
-        'approuvee'
-    ),
-    (
-        9,
-        1,
-        3,
-        'Projet Micro-Couture',
-        'Achat machines à coudre.',
-        'img_1_1774988780.png',
-        '0661000009',
-        '2026-04-01',
-        '2026-08-01',
-        'argent',
-        'approuvee'
-    ),
-    (
-        10,
-        1,
-        1,
-        'Soins Dialyse',
-        'Prise en charge des séances.',
-        'img_1_1774988780.png',
-        '0661000010',
-        '2026-04-01',
-        '2026-05-01',
-        'argent',
-        'approuvee'
-    );
+update campagnes set dateSupprimer = null;
+SET FOREIGN_KEY_CHECKS = 0;
 
-INSERT INTO
-    campagnesFinancieres (
-        id,
-        objectifMontant,
-        montantCollecte
-    )
-SELECT id, 20000, 5000
-FROM campagnes
-WHERE
-    type = 'argent';
+drop table if exists campagnesNature;
+drop table if exists campagnesAssociation;
+drop table if exists campagnesParrainage;
+drop table if exists CampagnesArgent;
+drop table if exists campagnesFinancieres;
+drop table if exists donations;
+drop table if exists campagnes;
+drop table if exists organisations;
 
-INSERT INTO
-    CampagnesArgent (id)
-SELECT id
-FROM campagnes
-WHERE
-    type = 'argent';
+SET FOREIGN_KEY_CHECKS = 1;
+SET FOREIGN_KEY_CHECKS = 0;
+TRUNCATE TABLE campagnesNature;
+TRUNCATE TABLE campagnesAssociation;
+TRUNCATE TABLE campagnesParrainage;
+TRUNCATE TABLE CampagnesArgent;
+TRUNCATE TABLE campagnesFinancieres;
+TRUNCATE TABLE campagnes;
+TRUNCATE TABLE organisations;
+SET FOREIGN_KEY_CHECKS = 1;
 
--- 4. حملات من نوع PARRAINAGE (10 سطور)
-INSERT INTO
-    campagnes (
-        id,
-        idAdherent,
-        idCategorie,
-        titre,
-        description,
-        image,
-        telephone,
-        datedebut,
-        datefin,
-        type,
-        status
-    )
-VALUES (
-        11,
-        1,
-        5,
-        'Kafala Petit Yassine',
-        'Soutien mensuel complet.',
-        'img_1_1774988780.png',
-        '0662000001',
-        '2026-04-01',
-        '2027-04-01',
-        'parrainage',
-        'approuvee'
-    ),
-    (
-        12,
-        1,
-        5,
-        'Parrainage Amina',
-        'Frais de scolarité.',
-        'img_1_1774988780.png',
-        '0662000002',
-        '2026-04-01',
-        '2027-04-01',
-        'parrainage',
-        'approuvee'
-    ),
-    (
-        13,
-        1,
-        2,
-        'Soutien Etudiant Ingénierie',
-        'Bourse de vie mensuelle.',
-        'img_1_1774988780.png',
-        '0662000003',
-        '2026-04-01',
-        '2027-04-01',
-        'parrainage',
-        'approuvee'
-    ),
-    (
-        14,
-        1,
-        5,
-        'Parrainage Orphelin Omar',
-        'Aide santé et nutrition.',
-        'img_1_1774988780.png',
-        '0662000004',
-        '2026-04-01',
-        '2027-04-01',
-        'parrainage',
-        'approuvee'
-    ),
-    (
-        15,
-        1,
-        3,
-        'Soutien Famille Précaire',
-        'Loyer et subsistance.',
-        'img_1_1774988780.png',
-        '0662000005',
-        '2026-04-01',
-        '2027-04-01',
-        'parrainage',
-        'approuvee'
-    ),
-    (
-        16,
-        1,
-        5,
-        'Kafala Bébé Sara',
-        'Lait et soins médicaux.',
-        'img_1_1774988780.png',
-        '0662000006',
-        '2026-04-01',
-        '2027-04-01',
-        'parrainage',
-        'approuvee'
-    ),
-    (
-        17,
-        1,
-        2,
-        'Parrainage Transport Scolaire',
-        'Abonnement bus pour 1 an.',
-        'img_1_1774988780.png',
-        '0662000007',
-        '2026-04-01',
-        '2027-04-01',
-        'parrainage',
-        'approuvee'
-    ),
-    (
-        18,
-        1,
-        5,
-        'Soutien Jeune Apprenti',
-        'Frais de formation pro.',
-        'img_1_1774988780.png',
-        '0662000008',
-        '2026-04-01',
-        '2027-04-01',
-        'parrainage',
-        'approuvee'
-    ),
-    (
-        19,
-        1,
-        5,
-        'Parrainage Médical Permanent',
-        'Traitement maladie chronique.',
-        'img_1_1774988780.png',
-        '0662000009',
-        '2026-04-01',
-        '2027-04-01',
-        'parrainage',
-        'approuvee'
-    ),
-    (
-        20,
-        1,
-        2,
-        'Soutien Sportif Espoir',
-        'Equipement et entraînement.',
-        'img_1_1774988780.png',
-        '0662000010',
-        '2026-04-01',
-        '2027-04-01',
-        'parrainage',
-        'approuvee'
-    );
+INSERT INTO organisations (id, idAdherent, nom, identifiantFiscal, adresse, ribAssociation, status)
+VALUES 
+(1, 7, 'Association Tawassol', 'IF882299', 'Rabat, Agdal', '007123456789012345678911', 'approuvee'),
+(2, 8, 'Fondation Al Khair', 'IF445566', 'Casablanca, Maarif', '007987654321098765432122', 'approuvee');
 
-INSERT INTO
-    campagnesFinancieres (
-        id,
-        objectifMontant,
-        montantCollecte
-    )
-SELECT id, 1200, 300
-FROM campagnes
-WHERE
-    type = 'parrainage';
+INSERT INTO campagnes (id, idAdherent, idCategorie, titre, description, image, telephone, dateDebut, dateFin, type, status)
+VALUES 
+(1, 7, 1, 'Urgence Chirurgie', 'Aide pour une opération urgente.', 'donation_1.jpg', '0661001122', '2026-04-01', '2026-06-01', 'argent', 'approuvee'),
+(2, 8, 3, 'Paniers Ramadan', 'Distribution de nourriture.', 'donation_1.jpg', '0661334455', '2026-04-01', '2026-05-15', 'argent', 'approuvee'),
+(3, 7, 5, 'Kafala Yassine', 'Parrainage mensuel pour orphelin.', 'donation_1.jpg', '0661001122', '2026-04-01', '2027-04-01', 'parrainage', 'approuvee'),
+(4, 8, 5, 'Kafala Sarah', 'Soutien scolaire et médical.', 'donation_1.jpg', '0661334455', '2026-04-01', '2027-04-01', 'parrainage', 'approuvee'),
+(5, 7, 2, 'Laptops pour Etudiants', 'Collecte de 10 ordinateurs.', 'donation_1.jpg', '0661001122', '2026-04-01', '2026-08-01', 'nature', 'approuvee'),
+(6, 8, 3, 'Vêtements Hiver', 'Collecte de manteaux et couvertures.', 'donation_1.jpg', '0661334455', '2026-04-01', '2026-11-01', 'nature', 'approuvee'),
+(7, 7, 1, 'Centre de Dialyse', 'Equipement par Association Tawassol.', 'donation_1.jpg', '0661001122', '2026-04-01', '2026-12-30', 'association', 'approuvee'),
+(8, 8, 4, 'Reboisement Atlas', 'Projet Fondation Al Khair.', 'donation_1.jpg', '0661334455', '2026-04-01', '2026-10-30', 'association', 'approuvee');
 
-INSERT INTO
-    campagnesParrainage (id, frequence)
-SELECT id, 'mensuel'
-FROM campagnes
-WHERE
-    type = 'parrainage';
+INSERT INTO campagnesFinancieres (id, objectifMontant, montantCollecte)
+VALUES 
+(1, 50000.00, 12000.00),
+(2, 30000.00, 5000.00),
+(3, 2000.00, 400.00),
+(4, 2000.00, 200.00),
+(7, 200000.00, 45000.00),
+(8, 150000.00, 10000.00);
 
--- 5. حملات من نوع NATURE (10 سطور)
-INSERT INTO
-    campagnes (
-        id,
-        idAdherent,
-        idCategorie,
-        titre,
-        description,
-        image,
-        telephone,
-        datedebut,
-        datefin,
-        type,
-        status
-    )
-VALUES (
-        21,
-        1,
-        2,
-        'Collecte Laptops Étudiants',
-        'Besoin de 20 PC portables.',
-        'img_1_1774988780.png',
-        '0663000001',
-        '2026-04-01',
-        '2026-12-01',
-        'nature',
-        'approuvee'
-    ),
-    (
-        22,
-        1,
-        3,
-        'Don de Couvertures',
-        'Pour l\'hiver en montagne.',
-        'img_1_1774988780.png',
-        '0663000002',
-        '2026-04-01',
-        '2026-12-01',
-        'nature',
-        'approuvee'
-    ),
-    (
-        23,
-        1,
-        1,
-        'Fauteuils Roulants',
-        'Besoin de 10 unités.',
-        'img_1_1774988780.png',
-        '0663000003',
-        '2026-04-01',
-        '2026-12-01',
-        'nature',
-        'approuvee'
-    ),
-    (
-        24,
-        1,
-        2,
-        'Livres Bibliothèque Rurale',
-        'Livres niveau primaire.',
-        'img_1_1774988780.png',
-        '0663000004',
-        '2026-04-01',
-        '2026-12-01',
-        'nature',
-        'approuvee'
-    ),
-    (
-        25,
-        1,
-        3,
-        'Vêtements Neufs Aïd',
-        'Pour 100 orphelins.',
-        'img_1_1774988780.png',
-        '0663000005',
-        '2026-04-01',
-        '2026-12-01',
-        'nature',
-        'approuvee'
-    ),
-    (
-        26,
-        1,
-        4,
-        'Plants d\'Arbres Fruitiers',
-        'Reboisement solidaire.',
-        'img_1_1774988780.png',
-        '0663000006',
-        '2026-04-01',
-        '2026-12-01',
-        'nature',
-        'approuvee'
-    ),
-    (
-        27,
-        1,
-        2,
-        'Tablettes Éducatives',
-        'Pour cours de soutien.',
-        'img_1_1774988780.png',
-        '0663000007',
-        '2026-04-01',
-        '2026-12-01',
-        'nature',
-        'approuvee'
-    ),
-    (
-        28,
-        1,
-        1,
-        'Matériel Pansement',
-        'Don pour petit dispensaire.',
-        'img_1_1774988780.png',
-        '0663000008',
-        '2026-04-01',
-        '2026-12-01',
-        'nature',
-        'approuvee'
-    ),
-    (
-        29,
-        1,
-        3,
-        'Vélos Scolaires',
-        'Transport pour filles rurales.',
-        'img_1_1774988780.png',
-        '0663000009',
-        '2026-04-01',
-        '2026-12-01',
-        'nature',
-        'approuvee'
-    ),
-    (
-        30,
-        1,
-        3,
-        'Kits Hygiène Femmes',
-        'Distribution en zone rurale.',
-        'img_1_1774988780.png',
-        '0663000010',
-        '2026-04-01',
-        '2026-12-01',
-        'nature',
-        'approuvee'
-    );
+INSERT INTO CampagnesArgent (id) VALUES (1), (2);
 
-INSERT INTO
-    campagnesNature (id, typeDon, nomArticle)
-SELECT id, 'materiel', 'Equipement'
-FROM campagnes
-WHERE
-    type = 'nature';
+INSERT INTO campagnesParrainage (id, frequence) VALUES (3, 'mensuel'), (4, 'mensuel');
 
--- 6. حملات من نوع ASSOCIATION (10 سطور)
-INSERT INTO
-    campagnes (
-        id,
-        idAdherent,
-        idCategorie,
-        titre,
-        description,
-        image,
-        telephone,
-        datedebut,
-        datefin,
-        type,
-        status
-    )
-VALUES (
-        31,
-        1,
-        1,
-        'Équipement Centre Dialyse',
-        'Projet de la Fondation Nour.',
-        'img_1_1774988780.png',
-        '0664000001',
-        '2026-04-01',
-        '2026-12-30',
-        'associationassociation',
-        'approuvee'
-    ),
-    (
-        32,
-        1,
-        2,
-        'Digital School Project',
-        'Équipement multimédia complet.',
-        'img_1_1774988780.png',
-        '0664000002',
-        '2026-04-01',
-        '2026-12-30',
-        'associationassociation',
-        'approuvee'
-    ),
-    (
-        33,
-        1,
-        4,
-        'Green Morocco 2026',
-        'Nettoyage et reboisement.',
-        'img_1_1774988780.png',
-        '0664000003',
-        '2026-04-01',
-        '2026-12-30',
-        'associationassociation',
-        'approuvee'
-    ),
-    (
-        34,
-        1,
-        3,
-        'Maison de l\'Espoir',
-        'Construction foyer étudiant.',
-        'img_1_1774988780.png',
-        '0664000004',
-        '2026-04-01',
-        '2026-12-30',
-        'associationassociation',
-        'approuvee'
-    ),
-    (
-        35,
-        1,
-        1,
-        'Bus de Don de Sang',
-        'Unité mobile pour la ville.',
-        'img_1_1774988780.png',
-        '0664000005',
-        '2026-04-01',
-        '2026-12-30',
-        'associationassociation',
-        'approuvee'
-    ),
-    (
-        36,
-        1,
-        3,
-        'Cantine Solidaire',
-        'Repas chauds pour sans-abris.',
-        'img_1_1774988780.png',
-        '0664000006',
-        '2026-04-01',
-        '2026-12-30',
-        'associationassociation',
-        'approuvee'
-    ),
-    (
-        37,
-        1,
-        2,
-        'Laboratoire Scientifique',
-        'Matériel pour lycée public.',
-        'img_1_1774988780.png',
-        '0664000007',
-        '2026-04-01',
-        '2026-12-30',
-        'associationassociation',
-        'approuvee'
-    ),
-    (
-        38,
-        1,
-        1,
-        'Prothèses pour Tous',
-        'Collecte pour handicapés.',
-        'img_1_1774988780.png',
-        '0664000008',
-        '2026-04-01',
-        '2026-12-30',
-        'associationassociation',
-        'approuvee'
-    ),
-    (
-        39,
-        1,
-        3,
-        'Centre de Formation Femmes',
-        'Apprentissage et autonomie.',
-        'img_1_1774988780.png',
-        '0664000009',
-        '2026-04-01',
-        '2026-12-30',
-        'associationassociation',
-        'approuvee'
-    ),
-    (
-        40,
-        1,
-        1,
-        'Hôpital de Jour Provincial',
-        'Achat scanner médical.',
-        'img_1_1774988780.png',
-        '0664000010',
-        '2026-04-01',
-        '2026-12-30',
-        'associationassociation',
-        'approuvee'
-    );
+INSERT INTO campagnesAssociation (id, idOrganisation) VALUES (7, 1), (8, 2);
 
-INSERT INTO
-    campagnesFinancieres (
-        id,
-        objectifMontant,
-        montantCollecte
-    )
-SELECT id, 100000, 25000
-FROM campagnes
-WHERE
-    type = 'associationassociation';
-
-INSERT INTO
-    campagnesAssociation (id, idOrganisation)
-SELECT id, 1
-FROM campagnes
-WHERE
-    type = 'associationassociation';
-
-update campagnes set image = 'donation_1.jpg';
+INSERT INTO campagnesNature (id, typeDon, nomArticle) 
+VALUES (5, 'materiel', 'Ordinateurs Portables'), (6, 'materiel', 'Vêtements');

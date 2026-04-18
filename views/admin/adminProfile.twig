@@ -20,7 +20,7 @@
 					
 					<div class="action-buttons">
 						<div class="profile-container">
-							<img src="{{ currentUser.imageProfile ? url('public/storage/profiles/') ~ currentUser.imageProfile : url('public/images/default-profile.png')}}" alt="Admin" class="avatar">
+							<img src="{{ currentUser.imageProfile ? url('public/storage/profiles/') ~ currentUser.imageProfile : url('public/images/profil.png')}}" alt="Admin" class="avatar">
 							<div class="user-info">
 								<span class="nom">{{ currentUser.nom ~ ' ' ~ currentUser.prenom }}</span>
 								<span class="email">{{ currentUser.email }}</span>
@@ -44,7 +44,7 @@
 							<form action="{{ url('admin/profile/update') }}" method="POST" enctype="multipart/form-data">
 								<div class="avatar-section">
 									<div class="avatar-wrapper">
-										<img src="{{ currentUser.imageProfile ? url('public/storage/profiles/') ~ currentUser.imageProfile : url('public/images/default-profile.png') }}" class="avatar-img" id="imagePreview">
+										<img src="{{ currentUser.imageProfile ? url('public/storage/profiles/') ~ currentUser.imageProfile : url('public/images/profil.png') }}" class="avatar-img" id="imagePreview">
 										<label for="avatarInput" class="upload-badge">
 											<i class="fa-solid fa-camera"></i>
 										</label>

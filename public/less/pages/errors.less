@@ -1,0 +1,96 @@
+// out: ../../css/errors.css
+
+@couleur-primaire: #C5F82A;
+@couleur-noire: #062121;
+@couleur-blanche: #FFFFFF;
+@couleur-gris-fonce: #1a2e2e;
+@couleur-grise-bordure: #e2e8f0;
+@couleur-grise-fond: #f8fafc;
+@couleur-texte-muet: #64748b;
+@police-principale: 'Inter', sans-serif;
+
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: @police-principale;
+
+    background: linear-gradient(135deg, @couleur-noire, @couleur-gris-fonce);
+    color: @couleur-blanche;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+
+.error-container {
+    text-align: center;
+    max-width: 500px;
+    padding: 45px;
+    border-radius: 20px;
+
+    background: fade(@couleur-blanche, 5%);
+    backdrop-filter: blur(12px);
+
+    border: 1px solid fade(@couleur-primaire, 20%);
+
+    box-shadow: 0 15px 50px fade(@couleur-noire, 60%);
+
+    animation: fadeIn 0.7s ease-in-out;
+}
+
+.error-code {
+    font-size: 110px;
+    font-weight: bold;
+    color: @couleur-primaire;
+    letter-spacing: 4px;
+
+    text-shadow: 0 0 15px fade(@couleur-primaire, 40%);
+}
+
+.error-title {
+    font-size: 28px;
+    margin: 10px 0;
+}
+
+.error-message {
+    font-size: 16px;
+    margin-bottom: 25px;
+    color: @couleur-texte-muet;
+}
+
+.btn {
+    display: inline-block;
+    padding: 12px 28px;
+
+    background: @couleur-primaire;
+    color: @couleur-noire;
+
+    text-decoration: none;
+    border-radius: 30px;
+
+    font-weight: 600;
+
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-3px) scale(1.05);
+
+    box-shadow: 0 10px 25px fade(@couleur-primaire, 50%);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

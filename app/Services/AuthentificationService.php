@@ -34,6 +34,26 @@ class AuthentificationService
         }
     }
 
+    public function getUsersList() {
+        $users = $this->authRepository->getAllUsers();
+        
+        foreach ($users as &$user) {
+            $user['time_ago'] = $this->formatTimeAgo($user['dateCreation']);
+        }
+        
+        return $users;
+    }
+
+    private function formatTimeAgo($date) {
+        $timestamp = strtotime($date);
+        $diff = time() - $timestamp;
+        
+        if ($diff < 86400) return "Aujourd'hui";
+        if ($diff < 2592000) return "Il y a " . round($diff / 86400) . " j";
+        if ($diff < 31536000) return "Il y a " . round($diff / 2592000) . " mois";
+        return "Il y a " . round($diff / 31536000) . " an(s)";
+    }
+
     public function loginWithGoogle($user)
     {
         try {

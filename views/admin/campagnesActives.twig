@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Tamghrabit - Validation Campagnes</title>
+		<link rel="stylesheet" href="{{ url('public/css/dashboard.css') }}">
+		<link rel="stylesheet" href="{{ url('public/css/campagnes-actives.css') }}">
+		<link rel="stylesheet" href="{{ url('public/css/all.min.css') }}">
+	</head>
+	<body>
+		<div class="main-wrapper">
+			{% include 'layouts/sidebar.twig' %}
+
+			<main>
+				<header>
+					<div class="search-bar">
+						<i class="fa-solid fa-magnifying-glass"></i>
+						<input type="text" placeholder="Rechercher par titre ou email .....">
+					</div>
+					<div class="profile-container">
+						<img src="{{ currentUser.imageProfile ? url('public/storage/profiles/' ~ currentUser.imageProfile) : url('public/images/default-profile.png') }}" class="avatar">
+						<div class="user-info">
+							<span class="nom">{{ currentUser.prenom }}
+								{{ currentUser.nom }}</span>
+						</div>
+					</div>
+				</header>
+
+				<div class="dashboard-body">
+					<div class="users-container">
+						<div class="table-header-main">
+							<div class="title-section">
+								<h2>Campagnes Actives</h2>
+							</div>
+							<div class="filter-section">
+								<span class="label">Statut:</span>
+								<select class="status-select">
+									<option value="all">Tous</option>
+									<option value="active" selected>En ligne</option>
+								</select>
+							</div>
+						</div>
+
+						<table class="modern-table">
+							<thead>
+								<tr>
+									
+									<th>CAMPAGNE & ORGANISATEUR</th>
+									<th>STATUT</th>
+									<th>OBJECTIF</th>
+									<th>CRÉÉE LE</th>
+									<th class="text-right">ACTIONS</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for c in campagnes %}
+									<tr>
+										<td>
+											<div class="user-cell">
+												<div class="main-img-container">
+													<img src="{{ url('public/storage/campagnes/' ~ c.image) }}" class="campagne-img">
+													<img src="{{ c.imageProfile ? url('public/storage/profiles/' ~ c.imageProfile) : url('public/images/default.png') }}" class="owner-avatar">
+												</div>
+												<div class="info">
+													<span class="name">{{ c.titre }}</span>
+													<span class="email">{{ c.emailAdherent }}</span>
+												</div>
+											</div>
+										</td>
+										<td>
+											<span class="status-indicator status-active">
+												<span class="dot"></span>
+												Vérifié
+											</span>
+										</td>
+										<td>
+											<div class="amount-cell">
+												<strong>{{ c.objectifMontant|number_format(0, '.', ' ') }}
+													DH</strong>
+												<div class="progress-mini">
+													<div class="bar" style="width: 45%;"></div>
+												</div>
+											</div>
+										</td>
+										<td>
+											<span class="date-text">Il y a
+												{{ date(c.dateCreation).diff(date()).days }}
+												jours</span>
+										</td>
+										<td class="text-right">
+											<div class="action-btns-wrapper" style="display: flex; align-items: center; justify-content: flex-end; gap: 10px;">
+
+												<form action="{{ url('admin/campagnes/update-status') }}" method="POST" class="quick-status-form">
+													<input type="hidden" name="id" value="{{ c.id }}">
+													<select name="status" class="status-dropdown" onchange="this.form.submit()">
+														<option value="active" selected disabled>Actions...</option>
+														<option value="terminee">Marquer comme Terminée</option>
+														<option value="rejetee">Refuser / Annuler</option>
+													</select>
+												</form>
+											</div>
+										</td>
+									</tr>
+								{% else %}
+									<tr>
+										<td colspan="6" class="empty-state">Aucune campagne active trouvée.</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</main>
+		</div>
+	</body>
+</html>

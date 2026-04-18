@@ -23,7 +23,7 @@ $method = $_SERVER['REQUEST_METHOD'];
 $router = Router::getRouter();
 $router->get("accueil", ['App\Controllers\HomeController', 'index'])->name('accueil');
 
-$router->get("adherent/dashboard", ['App\Controllers\AdherentDashboardController', 'dashboard'])->name('adherent.dashboard');
+$router->get("adherent/dashboard", ['App\Controllers\AdherentController', 'dashboard'])->name('adherent.dashboard');
 
 $router->get("login", ['App\Controllers\Auth\AuthenticatedSessionController', 'create'])->name('login.create');
 $router->post("login", ['App\Controllers\Auth\AuthenticatedSessionController', 'store'])->name('login.store');
@@ -31,9 +31,11 @@ $router->get("register", ['App\Controllers\Auth\RegisteredUserController', 'crea
 $router->post("register", ['App\Controllers\Auth\RegisteredUserController', 'store'])->name('register.store');
 
 $router->get("campagne/create", ['App\Controllers\CampagneController', 'create'])->name('campagne.create');
+$router->get("campagne/gerer", ['App\Controllers\CampagneController', 'gererCampagne']);
 $router->get("explorer", ['App\Controllers\CampagneController', 'explorer'])->name('explorer');
 $router->get("campagnes", ['App\Controllers\CampagneController', 'mesCampagnes'])->name('mes.ampagnes');
 $router->get("campagne/show", ['App\Controllers\CampagneController', 'show']);
+$router->get('campagne/edit', ['App\Controllers\CampagneController', 'edit']);
 
 $router->get("admin/profile", ['App\Controllers\ProfileController', 'adminProfile']);
 $router->get("profile/settings", ['App\Controllers\ProfileController', 'settings'])->name('settings');
@@ -91,6 +93,16 @@ $router->get('auth/google/callback', ['App\Controllers\Auth\GoogleAuthController
 $router->get("verify/email", ['App\Controllers\Auth\VerifyEmailController', 'verify'])->name('verify.email');
 
 $router->post("donation/checkout", ['App\Controllers\DonationController', 'checkout']);
+$router->get("donations", ['App\Controllers\DonationController', 'myDonations'])->name('mes.donations');
+
+$router->post("campagne/update", ['App\Controllers\CampagneController', 'update'])->name('campagne.update');
+$router->post("campagne/delete", ['App\Controllers\CampagneController', 'delete']);
+$router->post("campagne/terminer", ['App\Controllers\CampagneController', 'terminer']);
+$router->get("admin/campagnes/pending", ['App\Controllers\CampagneController', 'pending']);
+$router->post("admin/campagnes/verify", ['App\Controllers\CampagneController', 'verify']);
+
+$router->post('admin/campagnes/update-status',  ['App\Controllers\CampagneController', 'updateStatus']);
+$router->get("admin/campagnes/actives", ['App\Controllers\CampagneController', 'campagnesActives']);
 
 
 $router->dispatch($method, $url);

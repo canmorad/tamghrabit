@@ -1,7 +1,7 @@
 <div class="form-section">
 	<h3 class="section-title">Informations Générales</h3>
 
-	{% if suffix != 'nature'%}
+	{% if suffix != 'nature' %}
 		<div class="info-profile-data">
 			<i class="fa-solid fa-circle-info"></i>
 			<span>Les fonds seront versés sur le
@@ -13,7 +13,7 @@
 	<div class="grid-row">
 		<div class="form-group full">
 			<label>Titre de la campagne</label>
-			<input type="text" name="titre" placeholder="Ex: Construction d'une école..." required>
+			<input type="text" name="titre" value="{{ campagne.titre|default('') }}" placeholder="Ex: Construction d'une école..." required>
 		</div>
 	</div>
 
@@ -23,45 +23,51 @@
 			<select name="idCategorie" required>
 				<option value="">Choisir une catégorie</option>
 				{% for cat in categories %}
-					<option value="{{ cat.id }}">{{ cat.nom }}</option>
+					<option value="{{ cat.id }}" {{ (campagne and campagne.idCategorie == cat.id) ? 'selected' : '' }}>
+						{{ cat.nom }}
+					</option>
 				{% endfor %}
 			</select>
 		</div>
 
 		<div class="form-group">
 			<label>Numéro de téléphone</label>
-			<input type="tel" name="telephone" placeholder="+212 600-000000" required>
+			<input type="tel" name="telephone" value="{{ campagne.telephone|default('') }}" placeholder="+212 600-000000" required>
 		</div>
 	</div>
 
 	<div class="grid-row">
 		<div class="form-group">
 			<label>Date de début</label>
-			<input type="date" name="dateDebut" required>
+			<input type="date" name="dateDebut" value="{{ campagne.dateDebut ? campagne.dateDebut|date('Y-m-d') : '' }}" required>
 		</div>
 
 		<div class="form-group">
 			<label>Date de fin</label>
-			<input type="date" name="dateFin" required>
+			<input type="date" name="dateFin" value="{{ campagne.dateFin ? campagne.dateFin|date('Y-m-d') : '' }}" required>
 		</div>
 	</div>
 
 	<div class="form-group">
 		<label>Description</label>
-		<textarea name="description" rows="4" placeholder="Détails du projet..." required></textarea>
+		<textarea name="description" rows="4" placeholder="Détails du projet...">{{ campagne.description|default('') }}</textarea>
 	</div>
 
 	<div class="form-group">
 		<label>Image de la campagne</label>
 		<div class="file-upload">
-			<input type="file" name="image" id="comp-img-{{ suffix }}" accept="image/*" required onchange="previewImage(event, this)">
+			<input type="file" name="image" id="comp-img-{{ suffix }}" accept="image/*" {{ campagne ? '' : 'required' }} onchange="previewImage(event, this)">
 			<label for="comp-img-{{ suffix }}">
 				<i class="fa-solid fa-cloud-arrow-up"></i>
-				Choisir une image
-			</label>
-		</div>
-		<div class="image-preview-container" style="display:none; margin-top: 10px;">
-			<img class="image-preview-img" src="#" alt="Aperçu" style="width: 100px; border-radius: 8px;">
-		</div>
-	</div>
+				{{ campagne ? 'Modifier l\'image' : 'Choisir une image' }}
+            </label>
+        </div>
+        
+        <div class="image-preview-container" 
+             style="{{ campagne.image ? 'display:block;' : 'display:none;' }} margin-top: 10px;">
+            <img class="image-preview-img" 
+                 src="{{ campagne.image ? url('public/storage/campagnes/' ~ campagne.image) : '#' }}" 
+                 alt="Aperçu" style="width: 100px; border-radius: 8px;">
+        </div>
+    </div>
 </div>

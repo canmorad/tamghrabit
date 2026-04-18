@@ -13,7 +13,7 @@
 		<div class="page-wrapper">
 			<header class="main-header">
 				<div class="container">
-					<a href="{{ url('campagne/index') }}" class="back-link">
+					<a href="{{ url(route('explorer')) }}" class="back-link">
 						<i class="fa-solid fa-arrow-left"></i>
 						Retour aux campagnes
 					</a>
@@ -22,7 +22,7 @@
 
 			<div class="container campagne-detail-container">
 				<main class="main-content">
-					<div class="badge-category">{{ c.categorie_nom }}</div>
+					<div class="badge-category">{{ c.categorieNom }}</div>
 					<h1>{{ c.titre }}</h1>
 
 					<div class="main-image-wrapper">
@@ -36,7 +36,7 @@
 							</div>
 							<div class="author-text">
 								<p>Organisée par
-									<strong>{{ c.organisation_nom ?: 'Donateur vérifié' }}</strong>
+									<strong>{{ c.organisationNom ?: 'Donateur vérifié' }}</strong>
 								</p>
 								<span>
 									<i class="fa-solid fa-check-circle"></i>
@@ -63,13 +63,13 @@
 
 						<script>
 							setTimeout(() => {
-const alert = document.getElementById('flash-alert');
-if (alert) 
-alert.style.display = 'none';
+							const alert = document.getElementById('flash-alert');
+							if (alert) 
+							alert.style.display = 'none';
 
 
 
-}, 4000);
+							}, 4000);
 						</script>
 					{% endif %}
 					<div class="sticky-card">
@@ -106,7 +106,7 @@ alert.style.display = 'none';
 									<input type="hidden" name="idCampagne" value="{{ c.id }}">
 
 									<div class="amount-input-wrapper" style="margin-bottom: 12px;">
-										<input type="number" name="amount" placeholder="Montant en DH" class="form-control" min="10" style="width: 100%; padding: 15px; border-radius: 10px; border: 1px solid #ddd;">
+										<input type="number" name="montant" placeholder="Montant en DH" class="form-control" min="10" style="width: 100%; padding: 15px; border-radius: 10px; border: 1px solid #ddd;">
 									</div>
 									<button type="submit" class="btn-primary-lg" style="width: 100%;">
 										<i class="fa-solid fa-heart"></i>

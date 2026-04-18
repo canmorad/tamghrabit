@@ -62,7 +62,7 @@ class ProfileService
                 $corpsMessage
             );
         } catch (Throwable $e) {
-            $this->handleServiceException($e, "Erreur lors de l'envoi de l'email. Veuillez réessayer.");
+            $this->handle($e, "Erreur lors de l'envoi de l'email. Veuillez réessayer.");
         }
     }
 
@@ -86,7 +86,7 @@ class ProfileService
         try {
             return $this->profileRepository->confirmEmailUpdate($temp['idUtilisateur'], $temp['nouveauEmail']);
         } catch (Throwable $e) {
-            $this->handleServiceException($e, "Erreur lors de la confirmation de l'email.");
+            $this->handle($e, "Erreur lors de la confirmation de l'email.");
         }
     }
 
@@ -103,7 +103,7 @@ class ProfileService
             $this->commit();
         } catch (Throwable $e) {
             $this->rollBack();
-            $this->handleServiceException($e, 'Erreur lors de la modification du mot de passe.');
+            $this->handle($e, 'Erreur lors de la modification du mot de passe.');
         }
     }
 
@@ -116,7 +116,7 @@ class ProfileService
             return true;
         } catch (Throwable $e) {
             $this->rollBack();
-            $this->handleServiceException($e, "Une erreur est survenue lors de la mise à jour du profil.");
+            $this->handle($e, "Une erreur est survenue lors de la mise à jour du profil.");
         }
     }
 
@@ -150,7 +150,7 @@ class ProfileService
                 unlink($fullDestination);
             }
 
-            $this->handleServiceException($e, "Erreur lors de la mise à jour de l'image.");
+            $this->handle($e, "Erreur lors de la mise à jour de l'image.");
         }
     }
 }
