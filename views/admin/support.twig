@@ -4,7 +4,6 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Paramètres - Tamghrabit</title>
-
 		<link rel="stylesheet" href="{{ url('public/css/dashboard.css') }}">
 		<link rel="stylesheet" href="{{ url('public/css/support.css') }}">
 		<link rel="stylesheet" href="{{ url('public/css/all.min.css') }}">
@@ -21,12 +20,24 @@
 						<input type="text" placeholder="Rechercher dans les paramètres...">
 					</div>
 					<div class="action-buttons">
-						<div class="profile-container">
-							<img src="{{ currentUser.imageProfile ? url('public/storage/profiles/' ~ currentUser.imageProfile) : url('public/images/default-profile.png') }}" class="avatar">
-							<div class="user-info">
-								<span class="nom">{{ currentUser.prenom }}
-									{{ currentUser.nom }}</span>
-								<span class="email">{{ currentUser.email }}</span>
+						<button class="icon-btn">
+							<i class="fa-solid fa-moon"></i>
+						</button>
+						<a href="{{url(route('chat'))}}" class="icon-btn">
+							<i class="fa-solid fa-message"></i>
+						</a>
+						<button class="icon-btn">
+							<i class="fa-solid fa-bell"></i>
+						</button>
+
+						<div class="action-buttons">
+							<div class="profile-container">
+								<img src="{{ currentUser.imageProfile ? url('public/storage/profiles/' ~ currentUser.imageProfile) : url('public/images/default-profile.png') }}" class="avatar">
+								<div class="user-info">
+									<span class="nom">{{ currentUser.prenom }}
+										{{ currentUser.nom }}</span>
+									<span class="email">{{ currentUser.email }}</span>
+								</div>
 							</div>
 						</div>
 					</div>

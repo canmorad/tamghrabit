@@ -187,9 +187,15 @@ class CampagneRepository
 
     public function getActiveCampagnes()
     {
-        $sql = "select c.*, a.prenom as prenomAdherent, a.nom as nomAdherent, a.email as emailAdherent, a.imageProfile
+        $sql = "select c.*, cat.nom as categorieNom, 
+            cf.objectifMontant, cf.montantCollecte,
+            cn.typeDon, cn.nomArticle, -- هادو مهمين للـ Nature
+            a.prenom as prenomAdherent, a.nom as nomAdherent, a.email as emailAdherent, a.imageProfile
             from campagnes c 
             join users a on c.idAdherent = a.id 
+            join categories cat on c.idCategorie = cat.id
+            left join campagnesFinancieres cf on c.id = cf.id
+            left join campagnesNature cn on c.id = cn.id
             where c.status = 'approuvee' 
             order by c.dateCreation desc";
 

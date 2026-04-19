@@ -147,7 +147,7 @@
 #profile-main-container .form-group select:focus {
   border-color: #C5F82A;
   outline: none;
-  background: #FFFFFF;
+  background: #F4F7F7;
   box-shadow: 0 0 0 3px rgba(197, 248, 42, 0.2);
 }
 #profile-main-container .identity-document-select {
@@ -274,7 +274,7 @@
   border: 2px dashed #C5F82A;
 }
 #profile-main-container .org-card-item {
-  background: #FFFFFF;
+  background: #F4F7F7;
   padding: 20px 25px;
   border-radius: 16px;
   display: flex;
@@ -326,7 +326,7 @@
 }
 #profile-main-container .org-card-item .org-btns .icon-action-btn:hover {
   background: #062121;
-  color: #FFFFFF;
+  color: #F4F7F7;
   border-color: #062121;
 }
 #profile-main-container .org-card-item .org-btns .icon-action-btn.delete {
@@ -334,13 +334,13 @@
 }
 #profile-main-container .org-card-item .org-btns .icon-action-btn.delete:hover {
   background: #EF4444;
-  color: #FFFFFF;
+  color: #F4F7F7;
   border-color: #EF4444;
 }
 #profile-main-container .btn-submit {
   padding: 14px 30px;
   background-color: #062121;
-  color: #FFFFFF;
+  color: #F4F7F7;
   border: none;
   border-radius: 10px;
   font-weight: 700;
@@ -446,7 +446,7 @@
 }
 .custom-dropdown .dropdown-selected:hover {
   border-color: #C5F82A;
-  background: #FFFFFF;
+  background: #F4F7F7;
 }
 .custom-dropdown .dropdown-selected i {
   margin-left: auto;

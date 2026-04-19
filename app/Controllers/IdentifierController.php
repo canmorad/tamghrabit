@@ -89,14 +89,18 @@ class IdentifierController extends Controller
 
         $validate = new Validator($data);
 
-        if ($idType === 'cni') {
-            $validate->field("cniRecto", "Carte Recto")->file_required()->is_image();
-            $validate->field("cniVerso", "Carte Verso")->file_required()->is_image();
-        } elseif ($idType === 'passport') {
-            $validate->field("passport", "Passport")->file_required()->is_image();
-        } else {
-            echo json_encode(['type' => 'error', 'message' => "Veuillez choisir un type d'identité."]);
-            exit;
+        $existingIdentifier = $this->identifierService->getIdentifierByUserId($userSession->getId());
+
+        if (!$existingIdentifier) {
+            if ($idType === 'cni') {
+                $validate->field("cniRecto", "Carte Recto")->file_required()->is_image();
+                $validate->field("cniVerso", "Carte Verso")->file_required()->is_image();
+            } elseif ($idType === 'passport') {
+                $validate->field("passport", "Passport")->file_required()->is_image();
+            } else {
+                echo json_encode(['type' => 'error', 'message' => "Veuillez choisir un type d'identité."]);
+                exit;
+            }
         }
 
         if (!$validate->isValid()) {

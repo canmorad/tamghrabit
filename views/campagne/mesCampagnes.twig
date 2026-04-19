@@ -3,10 +3,9 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>Tamghrabit | Mes Campagnes</title>
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-		<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 		<link rel="stylesheet" href="{{ url('public/css/dashboard.css') }}">
 		<link rel="stylesheet" href="{{ url('public/css/mes-campagnes.css') }}">
+		<link rel="stylesheet" href="{{ url('public/css/all.min.css') }}">
 	</head>
 	<body>
 		<div class="main-wrapper">
@@ -21,14 +20,21 @@
 						<button class="icon-btn">
 							<i class="fa-solid fa-moon"></i>
 						</button>
+						<a href="{{url(route('chat'))}}" class="icon-btn">
+							<i class="fa-solid fa-message"></i>
+						</a>
 						<button class="icon-btn">
 							<i class="fa-solid fa-bell"></i>
 						</button>
-						<div class="profile-container">
-							<img src="{{ url('public/images/profile-cv.png') }}" class="avatar">
-							<div class="user-info">
-								<span class="nom">Morad Benaissa</span>
-								<span class="email">moradbenaissa@gmail.com</span>
+
+						<div class="action-buttons">
+							<div class="profile-container">
+								<img src="{{ currentUser.imageProfile ? url('public/storage/profiles/' ~ currentUser.imageProfile) : url('public/images/default-profile.png') }}" class="avatar">
+								<div class="user-info">
+									<span class="nom">{{ currentUser.prenom }}
+										{{ currentUser.nom }}</span>
+									<span class="email">{{ currentUser.email }}</span>
+								</div>
 							</div>
 						</div>
 					</div>

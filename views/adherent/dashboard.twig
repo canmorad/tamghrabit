@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Mon Espace - Tamghrabit</title>
-    <link rel="stylesheet" href="{{ url('public/css/dashboard.css') }}">
-    <link rel="stylesheet" href="{{ url('public/css/dashboard-adherent.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body>
-    <div class="main-wrapper">
-        {% include 'layouts/sidebar.twig' %}
+	<head>
+		<meta charset="UTF-8">
+		<title>Mon Espace - Tamghrabit</title>
+		<link rel="stylesheet" href="{{ url('public/css/dashboard.css') }}">
+		<link rel="stylesheet" href="{{ url('public/css/dashboard-adherent.css') }}">
+		<link rel="stylesheet" href="{{ url('public/css/all.min.css') }}">
 
-        <header>
+	</head>
+	<body>
+		<div class="main-wrapper">
+			{% include 'layouts/sidebar.twig' %}
+
+			<header>
                 <div class="welcome-text">
                     <h1>Tableau de bord</h1>
                     <p>Bienvenue, {{ currentUser.prenom }} ! Voici ce qui se passe aujourd'hui.</p>
@@ -26,71 +27,86 @@
                     </div>
                 </div>
             </header>
-        
-        <main class="adherent-dashboard">
 
-            <div class="stats-row">
-                <div class="card">
-                    <div class="icon"><i class="fa-solid fa-hand-holding-heart"></i></div>
-                    <div class="info">
-                        <span>Total Donné</span>
-                        <strong>{{ stats.total_donated|number_format(0, '.', ' ') }} DH</strong>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="icon"><i class="fa-solid fa-bullhorn"></i></div>
-                    <div class="info">
-                        <span>Mes Campagnes</span>
-                        <strong>{{ stats.my_campagnes_count }}</strong>
-                    </div>
-                </div>
-            </div>
+			<main class="adherent-dashboard">
 
-            <div class="grid-content">
-                <div class="section-box activity-table">
-                    <h3><i class="fa-solid fa-bolt"></i> Dernières activités</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Donateur</th>
-                                <th>Campagne</th>
-                                <th>Montant</th>
-                                <th>Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for don in stats.recent_donations %}
-                            <tr>
-                                <td>{{ don.prenom }} {{ don.nom }}</td>
-                                <td>{{ don.titre }}</td>
-                                <td><strong>{{ don.montant|number_format(2, '.', ' ') }} DH</strong></td>
-                                <td>{{ don.dateDon|date('d/m/Y') }}</td>
-                            </tr>
-                            {% else %}
-                            <tr><td colspan="4" style="text-align: center; background: none;">Aucun don reçu pour le moment.</td></tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+				<div class="stats-row">
+					<div class="card">
+						<div class="icon">
+							<i class="fa-solid fa-hand-holding-heart"></i>
+						</div>
+						<div class="info">
+							<span>Total Donné</span>
+							<strong>{{ stats.total_donated|number_format(0, '.', ' ') }}
+								DH</strong>
+						</div>
+					</div>
+					<div class="card">
+						<div class="icon">
+							<i class="fa-solid fa-bullhorn"></i>
+						</div>
+						<div class="info">
+							<span>Mes Campagnes</span>
+							<strong>{{ stats.my_campagnes_count }}</strong>
+						</div>
+					</div>
+				</div>
 
-                <div class="section-box progression-list">
-                    <h3><i class="fa-solid fa-chart-line"></i> Progression Financière</h3>
-                    {% for item in stats.progress_data %}
-                    <div class="prog-item">
-                        <div class="prog-info">
-                            <span class="titre">{{ item.titre }}</span>
-                            <span class="percent">{{ ((item.montantCollecte / item.objectifMontant) * 100)|round }}%</span>
-                        </div>
-                        <div class="bar-container">
-                            <div class="bar-fill" style="width: {{ (item.montantCollecte / item.objectifMontant) * 100 }}%"></div>
-                        </div>
-                    </div>
-                    {% else %}
-                        <p style="color: #94A3B8; font-size: 14px;">Aucune campagne financière active.</p>
-                    {% endfor %}
-                </div>
-            </div>
-        </main>
-    </div>
-</body>
+				<div class="grid-content">
+					<div class="section-box activity-table">
+						<h3>
+							<i class="fa-solid fa-bolt"></i>
+							Dernières activités</h3>
+						<table>
+							<thead>
+								<tr>
+									<th>Donateur</th>
+									<th>Campagne</th>
+									<th>Montant</th>
+									<th>Date</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for don in stats.recent_donations %}
+									<tr>
+										<td>{{ don.prenom }}
+											{{ don.nom }}</td>
+										<td>{{ don.titre }}</td>
+										<td>
+											<strong>{{ don.montant|number_format(2, '.', ' ') }}
+												DH</strong>
+										</td>
+										<td>{{ don.dateDon|date('d/m/Y') }}</td>
+									</tr>
+								{% else %}
+									<tr>
+										<td colspan="4" style="text-align: center; background: none;">Aucun don reçu pour le moment.</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+
+					<div class="section-box progression-list">
+						<h3>
+							<i class="fa-solid fa-chart-line"></i>
+							Progression Financière</h3>
+						{% for item in stats.progress_data %}
+							<div class="prog-item">
+								<div class="prog-info">
+									<span class="titre">{{ item.titre }}</span>
+									<span class="percent">{{ ((item.montantCollecte / item.objectifMontant) * 100)|round }}%</span>
+								</div>
+								<div class="bar-container">
+									<div class="bar-fill" style="width: {{ (item.montantCollecte / item.objectifMontant) * 100 }}%"></div>
+								</div>
+							</div>
+						{% else %}
+							<p style="color: #94A3B8; font-size: 14px;">Aucune campagne financière active.</p>
+						{% endfor %}
+					</div>
+				</div>
+			</main>
+		</div>
+	</body>
 </html>

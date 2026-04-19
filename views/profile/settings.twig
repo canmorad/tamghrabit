@@ -21,18 +21,30 @@
 						<input type="text" placeholder="Rechercher dans les paramètres...">
 					</div>
 					<div class="action-buttons">
-						<div class="profile-container">
-							<img src="{{ currentUser.imageProfile ? url('public/storage/profiles/' ~ currentUser.imageProfile) : url('public/images/default-profile.png') }}" class="avatar">
-							<div class="user-info">
-								<span class="nom">{{ currentUser.prenom }}
-									{{ currentUser.nom }}</span>
-								<span class="email">{{ currentUser.email }}</span>
+						<button class="icon-btn">
+							<i class="fa-solid fa-moon"></i>
+						</button>
+						<a href="{{url(route('chat'))}}" class="icon-btn">
+							<i class="fa-solid fa-message"></i>
+						</a>
+						<button class="icon-btn">
+							<i class="fa-solid fa-bell"></i>
+						</button>
+
+						<div class="action-buttons">
+							<div class="profile-container">
+								<img src="{{ currentUser.imageProfile ? url('public/storage/profiles/' ~ currentUser.imageProfile) : url('public/images/profil.png') }}" class="avatar">
+								<div class="user-info">
+									<span class="nom">{{ currentUser.prenom }}
+										{{ currentUser.nom }}</span>
+									<span class="email">{{ currentUser.email }}</span>
+								</div>
 							</div>
 						</div>
 					</div>
 				</header>
 
-				<section class="dashboard-body">
+				<section class="adherent-dashboard">
 					<div class="profile-settings-container">
 
 						<nav class="profile-tabs">

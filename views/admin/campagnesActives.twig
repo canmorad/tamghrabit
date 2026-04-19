@@ -76,11 +76,20 @@
 										</td>
 										<td>
 											<div class="amount-cell">
-												<strong>{{ c.objectifMontant|number_format(0, '.', ' ') }}
-													DH</strong>
-												<div class="progress-mini">
-													<div class="bar" style="width: 45%;"></div>
-												</div>
+												{% if c.type == 'nature' %}
+													<strong style="color: #3b82f6;">
+														<i class="fa-solid fa-box-open"></i> 
+														{{ c.typeDon|capitalize }}
+													</strong>
+													<div class="date-text" style="font-size: 11px;">{{ c.nomArticle }}</div>
+												{% else %}
+													<strong>{{ c.objectifMontant|number_format(0, '.', ' ') }} DH</strong>
+													<div class="progress-mini">
+														{% set percentage = (c.montantCollecte / c.objectifMontant * 100)|round %}
+														<div class="bar" style="width: {{ percentage > 100 ? 100 : percentage }}%;"></div>
+													</div>
+													<span class="date-text" style="font-size: 10px;">{{ percentage }}% collecté</span>
+												{% endif %}
 											</div>
 										</td>
 										<td>
@@ -89,8 +98,7 @@
 												jours</span>
 										</td>
 										<td class="text-right">
-											<div class="action-btns-wrapper" style="display: flex; align-items: center; justify-content: flex-end; gap: 10px;">
-
+											<div class="action-btns-wrapper" >
 												<form action="{{ url('admin/campagnes/update-status') }}" method="POST" class="quick-status-form">
 													<input type="hidden" name="id" value="{{ c.id }}">
 													<select name="status" class="status-dropdown" onchange="this.form.submit()">

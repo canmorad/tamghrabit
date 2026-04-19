@@ -1,9 +1,8 @@
 .verify-container {
-  background: #FFFFFF;
+  background: #F4F7F7;
   border-radius: 16px;
   border: 1px solid #E2E8F0;
   margin: 24px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 .verify-container .table-header {
   padding: 25px 30px;
@@ -66,7 +65,7 @@
   color: #64748B;
 }
 .view-btn {
-  background: #FFFFFF;
+  background: #F4F7F7;
   border: 1px solid #E2E8F0;
   padding: 8px 16px;
   border-radius: 10px;
@@ -84,7 +83,7 @@
   text-align: right;
 }
 .actions-cell .btn-quick-approve {
-  background: #FFFFFF;
+  background: #F4F7F7;
   border: 1px solid #E2E8F0;
   padding: 8px 16px;
   border-radius: 10px;
@@ -144,7 +143,7 @@
 .modal-header h3 {
   margin: 0;
   font-size: 18px;
-  color: #FFFFFF;
+  color: #F4F7F7;
   font-weight: 700;
   letter-spacing: 0.5px;
 }

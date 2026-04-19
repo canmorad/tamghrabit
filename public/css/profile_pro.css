@@ -1,5 +1,5 @@
 #profile-main-container {
-  background-color: #FFFFFF;
+  background-color: #F4F7F7;
   border-radius: 20px;
   padding: 30px;
   border: 1px solid #E2E8F0;
@@ -83,7 +83,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  border: 2px solid #FFFFFF;
+  border: 2px solid #F4F7F7;
 }
 #profile-main-container .grid-row {
   display: grid;
@@ -111,10 +111,10 @@
 #profile-main-container .form-group input:focus {
   border-color: #C5F82A;
   outline: none;
-  background: #FFFFFF;
+  background: #F4F7F7;
 }
 #profile-main-container .org-card-item {
-  background: #FFFFFF;
+  background: #F4F7F7;
   padding: 15px 20px;
   border-radius: 16px;
   display: flex;
@@ -141,7 +141,7 @@
 #profile-main-container .btn-submit {
   padding: 12px 25px;
   background: #062121;
-  color: #FFFFFF;
+  color: #F4F7F7;
   border: none;
   border-radius: 10px;
   font-weight: 700;

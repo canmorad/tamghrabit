@@ -13,7 +13,7 @@ use App\Entities\Adherent;
 class GoogleAuthController extends Controller
 {
     private $authService;
-    private $googleClient;
+    private $client;
 
     public function __construct()
     {
@@ -23,18 +23,17 @@ class GoogleAuthController extends Controller
         $config = require __DIR__ . '/../../Helpers/config.php';
         $googleConfig = $config['google'];
 
-        $client = new Client();
-        $client->setClientId($googleConfig['client_id']);
-        $client->setClientSecret($googleConfig['client_secret']);
-        $client->setRedirectUri($googleConfig['redirect_uri']);
-        $client->addScope("email");
-        $client->addScope("profile");
-
+        $this->client = new Client();
+        $this->client->setClientId($googleConfig['client_id']);
+        $this->client->setClientSecret($googleConfig['client_secret']);
+        $this->client->setRedirectUri($googleConfig['redirect_uri']);
+        $this->client->addScope("email");
+        $this->client->addScope("profile");
     }
 
     public function redirectToGoogle()
     {
-        header('Location: ' . $this->googleClient->createAuthUrl());
+        header('Location: ' . $this->client->createAuthUrl());
         exit;
     }
 
@@ -48,10 +47,10 @@ class GoogleAuthController extends Controller
         }
 
         try {
-            $token = $this->googleClient->fetchAccessTokenWithAuthCode($_GET['code']);
-            $this->googleClient->setAccessToken($token);
+            $token = $this->client->fetchAccessTokenWithAuthCode($_GET['code']);
+            $this->client->setAccessToken($token);
 
-            $googleService = new Oauth2($this->googleClient);
+            $googleService = new Oauth2($this->client);
             $googleUser = $googleService->userinfo->get();
 
             $user = new User($googleUser->familyName ?? $googleUser->name, $googleUser->givenName ?? '', $googleUser->email, '');
